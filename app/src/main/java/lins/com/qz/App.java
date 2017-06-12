@@ -9,6 +9,7 @@ import java.util.List;
 
 import cn.bmob.v3.Bmob;
 import cn.jpush.android.api.JPushInterface;
+import io.rong.imkit.RongIM;
 import lins.com.qz.bean.AddAddress;
 import lins.com.qz.utils.SharedData;
 
@@ -29,6 +30,7 @@ public class App extends Application{
 
         Bmob.initialize(this,"33e6d0b9cc101e2998dc0493a98e1b5d");
         JPushInterface.init(this);
+        RongIM.init(this);
 
     }
     public static Context getContext() {

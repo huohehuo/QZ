@@ -61,6 +61,7 @@ public class WelcomeActivity extends BaseActivity {
     //跳过登陆界面，自动登录
     private void autoLogin(){
         if ("1".equals(data.getString(Config.IS_AUTO_LOGIN,"0"))){
+
             BmobUser.loginByAccount(data.getString(USER_NAME,""),
                     data.getString(USER_PWD,""),
                     new LogInListener<User>() {

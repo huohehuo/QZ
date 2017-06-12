@@ -23,12 +23,16 @@ import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.model.Conversation;
 import lins.com.qz.utils.IntentServiceUtil.BackService;
 import lins.com.qz.utils.IntentServiceUtil.ServiceUtil;
 import lins.com.qz.adapter.MainAdapter;
@@ -50,6 +54,8 @@ public class MainActivity extends BaseActivity{
     private ArrayList<String> addressList;
     private OptionsPickerView adrrPick;
     public static boolean isForeground = false;
+    private Map<String,Boolean> map=new HashMap<String, Boolean>();
+
     BmobUser bmobUser;
     private String atadrs = App.getSharedData(Config.AT_ADDRESS);
     private Handler handler = new Handler(){
@@ -83,9 +89,11 @@ public class MainActivity extends BaseActivity{
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.content.toolbar.ivTopArrow.setImageResource(R.drawable.bulb);
         binding.content.toolbar.tvTopTitle.setText("首页");
+        binding.content.toolbar.ivTopRight.setImageResource(R.drawable.add);
         setDrawerLeftEdgeSize(this, binding.drawerLayout, 0.2f);//设置抽屉滑动响应范围
 
-        ServiceUtil.startServiceUtil(MainActivity.this);
+        map.put(Conversation.ConversationType.PRIVATE.getName(),false);
+//        ServiceUtil.startServiceUtil(MainActivity.this);
         binding.content.ryMain.setAdapter(mainAdapter = new MainAdapter(MainActivity.this));
         binding.content.ryMain.setLayoutManager(new LinearLayoutManager(this));
         bmobUser = BmobUser.getCurrentUser();
@@ -171,6 +179,13 @@ public class MainActivity extends BaseActivity{
             public void onOptionsSelect(int options1, int option2, int options3) {
                 App.setSharedData(Config.AT_ADDRESS,addressList.get(options1));
                 getMainData();
+            }
+        });
+
+        binding.content.toolbar.ivTopRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RongIM.getInstance().startConversationList(MainActivity.this,map);
             }
         });
     }

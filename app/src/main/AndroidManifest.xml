@@ -203,7 +203,53 @@
         <service
             android:name=".utils.IntentServiceUtil.ServiceUtil"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true"/>
+
+
+        <!--会话列表-->
+        <activity
+            android:name=".ui.ConversationListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                x`
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="lins.com.qz"
+                    android:pathPrefix="/conversationlist"
+                    android:scheme="rong" />
+            </intent-filter>
+        </activity>
+        <!--会话界面-->
+        <activity
+            android:name=".ui.ConversationActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="lins.com.qz"
+                    android:pathPrefix="/conversation/"
+                    android:scheme="rong" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="lins.com.qz.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/rc_file_path" />
+        </provider>
     </application>
 
 </manifest>
