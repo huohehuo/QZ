@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:context="lins.com.qz.MainActivity">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/top_bar" />
+
+        <com.jude.easyrecyclerview.EasyRecyclerView
+            android:id="@+id/ry_main"
+            android:layout_below="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:recyclerClipToPadding="true"
+            app:recyclerPadding="8dp"
+            app:recyclerPaddingBottom="8dp"
+            app:recyclerPaddingLeft="8dp"
+            app:recyclerPaddingRight="8dp"
+            app:recyclerPaddingTop="8dp"
+            app:scrollbarStyle="insideOverlay"
+            app:scrollbars="none" />
+        <ImageView
+            android:id="@+id/iv_choose_addr"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="15dp"
+            android:src="@drawable/eye"
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
+    </RelativeLayout>
+</layout>

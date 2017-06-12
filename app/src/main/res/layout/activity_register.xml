@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_login">
+
+        <EditText
+            android:id="@+id/et_Username_reg"
+            style="@style/AppTheme.EditText.Big"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:layout_above="@+id/et_Password_reg"
+            android:layout_marginBottom="@dimen/dp_14"
+            android:layout_marginLeft="@dimen/dp_55"
+            android:layout_marginRight="@dimen/dp_55"
+            android:drawableLeft="@drawable/selector_ic_person"
+            android:hint="@string/username" />
+
+        <EditText
+            android:id="@+id/et_Password_reg"
+            style="@style/AppTheme.EditText.Big"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:layout_above="@+id/et_Confirm_reg"
+            android:layout_marginBottom="@dimen/dp_14"
+            android:layout_marginLeft="@dimen/dp_55"
+            android:layout_marginRight="@dimen/dp_55"
+            android:drawableLeft="@drawable/selector_ic_lock"
+            android:hint="@string/please_enter_password"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/et_Confirm_reg"
+            style="@style/AppTheme.EditText.Big"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:layout_above="@+id/btn_Register_reg"
+            android:layout_marginBottom="@dimen/dp_30"
+            android:layout_marginLeft="@dimen/dp_55"
+            android:layout_marginRight="@dimen/dp_55"
+            android:drawableLeft="@drawable/selector_ic_lock_outline"
+            android:hint="@string/please_confirm_password"
+            android:inputType="textPassword" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginRight="@dimen/dp_16"
+            android:src="@mipmap/screen_bottom_line"
+            android:id="@+id/imageView2" />
+
+        <Button
+            android:id="@+id/btn_Register_reg"
+            android:background="@drawable/btn_login"
+            android:layout_width="222dp"
+            android:layout_height="@dimen/dp_60"
+            android:layout_marginBottom="166dp"
+            android:text="@string/register"
+            android:textSize="@dimen/sp_16"
+            android:layout_above="@+id/imageView2"
+            android:layout_centerHorizontal="true" />
+
+
+    </RelativeLayout>
+</layout>

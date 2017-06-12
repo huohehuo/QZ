@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/activity_welcome"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        tools:context="lins.com.qz.ui.login.WelcomeActivity">
+
+        <LinearLayout
+            android:id="@+id/ll"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_wel_icon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/eye" />
+
+            <TextView
+                android:id="@+id/tv_wel_string"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="From GuangXi Studio @2017"
+                android:textSize="13dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LINS提供技术服务"
+                android:textSize="10dp" />
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

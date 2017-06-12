@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#676d73</color>
+    <color name="colorPrimaryDark">#676d73</color>
+    <color name="colorAccent">#333f56</color>
+
+    <color name="bg_all">#eceae1</color>
+    <color name="light_gray">#fff5f5f5</color>
+
+
+
+    <color name="all_bg">#b0b1b1</color>
+
+
+    <color name="colorDrawerBackground">#92643d</color>
+    <color name="colorTextHint">#bb9a82</color>
+
+
+    <color name="transparent_btn_bg">#4DDAFBF5</color>
+    <color name="text_color_white">#FFFFFFFF</color>
+    <color name="text_color_hint">#bb9a82</color>
+
+    <color name="theme">#414a58</color>
+    <color name="theme_light">#66717f</color>
+    <color name="gray_text">#a1a1a1</color>
+
+    <color name="colorPrimaryBlack">#100000</color>
+    <color name="colorPrimaryDarkBlack">#000000</color>
+    <color name="colorAccentBlack">#3f4a57</color>
+
+    <color name="colorLoadMoreButtonPressed">#A8A8A8</color>
+    <color name="pop_up_bg">#82d9d3d3</color>
+    <color name="gift_msg_text_color">#fac365</color>
+    <color name="tool_bar_bg">#363E5D</color>
+    <color name="tab_selected_bg">#67B8AA</color>
+    <color name="light_blue">#83ded0</color>
+    <color name="comment_blue">#5a6da1</color>
+    <color name="white">#FFF</color>
+    <color name="block_gray">#aaaaaa</color>
+
+    <color name="bg">#ededed</color>
+    <color name="error_red">#f24f4f</color>
+
+    <color name="app_bg">#e7e7e7</color>
+    <!-- 透明的 -->
+
+    <color name="text_white_shadow_color">#ff5a9487</color>
+    <color name="item_weibo">#cccccc</color>
+    <color name="black">#000</color>
+    <color name="backview">#eaeaea</color>
+</resources>

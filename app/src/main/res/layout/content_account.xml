@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="lins.com.qz.ui.AccountActivity"
+    tools:showIn="@layout/activity_account">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/ll_head"
+            app:layout_anchorGravity="bottom|right|end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_me"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/select_home_rank_sub_btn_bg"
+                android:text="关于我"
+                android:textColor="@drawable/select_tab_text" />
+
+            <Button
+                android:id="@+id/btn_msg"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/select_home_rank_sub_btn_bg"
+                android:text="发布"
+                android:textColor="@drawable/select_tab_text" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="#aaaaaa"
+            android:layout_margin="10dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="#aaaaaa"
+            android:layout_margin="10dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="#aaaaaa"
+            android:layout_margin="10dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="#aaaaaa"
+            android:layout_margin="10dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="#aaaaaa"
+            android:layout_margin="10dp"/>
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>
+</layout>

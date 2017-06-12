@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/customviewlayTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:background="#0000">
+
+        <TextView
+            android:id="@+id/customviewtvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:text="地址信息添加"
+            android:textColor="#707070" />
+
+        <ImageButton
+            android:id="@+id/customviewtvimgCancel"
+            android:layout_width="33dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="9dp"
+            android:background="@drawable/close" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/mysv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/customviewlayTitle"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/customviewlayMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+                <EditText
+                    android:id="@+id/dialog_input_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:maxLength="8"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:hint="请输入"
+                    android:textAlignment="center"
+                    android:background="@drawable/bg_edittext">
+                    <requestFocus/>
+                </EditText>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/customviewlayLink"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mysv"
+                android:orientation="horizontal"
+                android:paddingBottom="20dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
+
+                <Button
+                    android:id="@+id/dialog_input_add"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:background="#0000"
+                    android:linksClickable="true"
+                    android:text="添加" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
