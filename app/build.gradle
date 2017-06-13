@@ -69,4 +69,5 @@ dependencies {
     compile 'cn.bmob.android:http-legacy:1.0'
     compile project(':IMKit')
     compile project(':IMLib')
+    compile files('libs/volley.jar')
 }
