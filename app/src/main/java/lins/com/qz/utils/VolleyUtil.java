@@ -1,34 +1,59 @@
 package lins.com.qz.utils;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Map;
 
 import lins.com.qz.App;
+import lins.com.qz.Config;
 import lins.com.qz.R;
-
+import com.android.volley.toolbox.HttpHeaderParser;
 /**
  * Created by LINS on 2017/6/13.
  */
 
 public class VolleyUtil {
+    private static VolleyUtil instance;
+    private RequestQueue queue;
+    Context context;
+    private VolleyUtil(Context context) {
+        if (queue ==null){
+            queue = Volley.newRequestQueue(context);
+        }
+        this.context = context;
+    }
+
+    public static synchronized VolleyUtil getInstance(Context context) {
+        if (instance == null) {
+            instance = new VolleyUtil(context);
+        }
+        return instance;
+    }
 
     //运用Volley框架获取网络数据（默认GET方法）
     public static void testVolley() throws IOException {
@@ -57,9 +82,16 @@ public class VolleyUtil {
     }
 
     //用post方法获取网络信息
-    public static void getToken() throws IOException {
-        RequestQueue queue = Volley.newRequestQueue(App.getContext());
+    public static void getToken(Activity activity,final String userid, final String name){
+        RequestQueue queue = Volley.newRequestQueue(activity);
+        StringBuffer res = new StringBuffer();
         String url = "http://api.cn.ronghub.com/user/getToken.json";
+        final String App_Key = "mgb7ka1nmfvmg"; //开发者平台分配的 App Key。
+        final String App_Secret = "r4vHGteobc";
+        final String Timestamp = String.valueOf(System.currentTimeMillis() / 1000);//时间戳，从 1970 年 1 月 1 日 0 点 0 分 0 秒开始到现在的秒数。
+        final String Nonce = String.valueOf(Math.floor(Math.random() * 1000000));//随机数，无长度限制。
+        final String Signature = sha1(App_Secret + Nonce + Timestamp);//数据签名。
+
         // ?ver=1&subid=1&dir=1&nid=1&stamp=20140321&cnt=20";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -67,7 +99,15 @@ public class VolleyUtil {
                     @Override
                     public void onResponse(String response) {
                         // TODO 自动生成的方法存根
-                        Log.d("check>>>>>>", response);
+                        Log.e("check>>>>>>", response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            Log.e("token",jsonObject.get("token").toString());
+                            App.setSharedData(Config.HAVE_RONG_TOKEN,jsonObject.get("token").toString());
+                            RongUtil.connectRong(App.getSharedData(Config.HAVE_RONG_TOKEN));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                 }, new Response.ErrorListener() {
@@ -75,45 +115,90 @@ public class VolleyUtil {
             @Override
             public void onErrorResponse(VolleyError error) {
                 // TODO 自动生成的方法存根
-                Log.d("check>>>>>>", "出错。。。。。。");
+//                Log.e("check>>>>>>", "出错。。。。。。"+error.getMessage());
+                NetworkResponse response = error.networkResponse;
+                if (error instanceof ServerError && response != null) {
+                    try {
+                        String res = new String(response.data,
+                                HttpHeaderParser.parseCharset(response.headers));
+                        // Now you can use any deserializer to make sense of data
+                        JSONObject obj = new JSONObject(res);
+                        Log.e("volly",obj.toString());
+                    } catch (UnsupportedEncodingException e1) {
+                        // Couldn't properly decode data to string
+                        e1.printStackTrace();
+                    } catch (JSONException e2) {
+                        // returned data is not JSONObject?
+                        e2.printStackTrace();
+                    }
+                }
             }
 
         }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("App-Key",App_Key);
+//                map.put("appSecret",App_Secret);
+                map.put("Nonce",Nonce);
+                map.put("Timestamp",Timestamp);
+                map.put("Signature",Signature);
+                map.put("Content-Type", "application/x-www-form-urlencoded");
+                return map;
+            }
+
             // 重写该方法，构造出post请求信息
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 // TODO 自动生成的方法存根
                 Map<String, String> map = new HashMap<String, String>();
-                map.put("userId", "1");
-                map.put("name", "1");
-                map.put("portraitUri", "1");
-                map.put("nid", "1");
-                map.put("stamp", "20140321");
-                map.put("cnt", "20");
+                map.put("userId", userid);
+                map.put("name", name);
+                map.put("portraitUri", "https://github.com/huohehuo/QZ/blob/master/app/src/main/res/drawable/mricon.png");
                 return map;
             }
         };
         queue.add(stringRequest);
 
     }
+    //SHA1加密//http://www.rongcloud.cn/docs/server.html#通用_API_接口签名规则
+    private static String sha1(String data){
+        StringBuffer buf = new StringBuffer();
+        try{
+            MessageDigest md = MessageDigest.getInstance("SHA1");
+            md.update(data.getBytes());
+            byte[] bits = md.digest();
+            for(int i = 0 ; i < bits.length;i++){
+                int a = bits[i];
+                if(a<0) a+=256;
+                if(a<16) buf.append("0");
+                buf.append(Integer.toHexString(a));
+            }
+        }catch(Exception e){
+
+        }
+        return buf.toString();
+    }
     //直接返回json对象的网络获取信息
     public static void testVolley3() throws IOException {
         RequestQueue queue = Volley.newRequestQueue(App.getContext());
-        String url = "http://118.244.212.82:9092/newsClient/news_list?ver=1&subid=1&dir=1&nid=1&stamp=20140321&cnt=20";
+        String url = "http://api.cn.ronghub.com/user/getToken.json?userId=aaaa" +
+                "&name=1yuiy" +
+                "&portraitUri=https://github.com/huohehuo/QZ/blob/master/app/src/main/res/drawable/mricon.png";
         JsonObjectRequest stringRequest = new JsonObjectRequest(url, null,
                 new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
                         //返回json数据格式
-                        Log.d("json_cheack.....", response.toString());
+                        Log.e("json_cheack.....", response.toString());
                     }
                 }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 // TODO 自动生成的方法存根
-
+                Log.e("json_cheack.....",error.toString());
             }
         });
         queue.add(stringRequest);

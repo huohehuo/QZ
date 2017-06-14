@@ -26,4 +26,6 @@ public class Config {
 
     public static final String PATH_SELECT_COVER     =Environment.getExternalStorageDirectory().getAbsolutePath()+"/live36G/cover";
 
+
+    public static final String HAVE_RONG_TOKEN="have_the_token_of_rong";
 }

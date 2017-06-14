@@ -45,6 +45,9 @@ import lins.com.qz.ui.EditUserInfoActivity;
 import lins.com.qz.ui.ShowActivity;
 import lins.com.qz.ui.addActivity;
 import lins.com.qz.ui.login.LoginActivity;
+import lins.com.qz.utils.RongUtil;
+import lins.com.qz.utils.SharedData;
+import lins.com.qz.utils.VolleyUtil;
 
 import static lins.com.qz.App.getHashData;
 
@@ -128,6 +131,13 @@ public class MainActivity extends BaseActivity{
     protected void initEvent() {
         navClick();
         initAddrData();
+        //登录融云IM
+//        if (App.getHashData(Config.HAVE_RONG_TOKEN)!=null&&!"".equals(App.getHashData(Config.HAVE_RONG_TOKEN))){
+//            RongUtil.connectRong(App.getSharedData(Config.HAVE_RONG_TOKEN));
+//        }else{
+//            VolleyUtil.getToken(MainActivity.this,"aaaaa","aaaaa");
+//
+//        }
         binding.content.ryMain.setRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
