@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <fragment
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/conversationlist"
-        android:name="io.rong.imkit.fragment.ConversationListFragment"/>
+        android:orientation="vertical">
 
-</LinearLayout>
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/top_bar" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_conlist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <!--<fragment-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:id="@+id/conversationlist"-->
+        <!--android:name="io.rong.imkit.fragment.ConversationListFragment"/>-->
+
+    </LinearLayout>
+</layout>

@@ -4,6 +4,13 @@ import android.util.Log;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
+import lins.com.qz.App;
+import lins.com.qz.Config;
+import lins.com.qz.ui.login.WelcomeActivity;
+
+import static android.R.attr.data;
+import static lins.com.qz.Config.USER_NAME;
+import static lins.com.qz.Config.USER_PWD;
 
 /**
  * Created by LINS on 2017/6/13.
@@ -30,11 +37,14 @@ public class RongUtil {
              */
             @Override
             public void onTokenIncorrect() {
-                Log.d("RongCloud", "--error---connect");
+                Log.e("RongCloud", "--error---connect");
+                //重新获取token
+                VolleyUtil.getInstance(App.getContext()).getToken(App.getObjectId(), App.getSharedData(USER_NAME));
+
             }
             @Override
             public void onSuccess(String userid) {
-                Log.e("RongCloud", "--onSuccess---connect" + userid);
+                Log.e("RongCloud", "--onSuccess---融云帐号登录id：" + userid+"__"+App.getSharedData(Config.USER_NAME));
 //                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
 //                    finish();
             }

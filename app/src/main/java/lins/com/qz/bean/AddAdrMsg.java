@@ -40,4 +40,13 @@ public class AddAdrMsg extends BmobObject{
     public void setPic(String pic) {
         this.pic = pic;
     }
+
+    @Override
+    public String toString() {
+        return "AddAdrMsg{" +
+                "title='" + title + '\'' +
+                ", addr='" + addr + '\'' +
+                ", pic='" + pic + '\'' +
+                '}';
+    }
 }

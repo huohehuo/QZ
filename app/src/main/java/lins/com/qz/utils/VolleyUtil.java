@@ -81,9 +81,9 @@ public class VolleyUtil {
 
     }
 
-    //用post方法获取网络信息
-    public static void getToken(Activity activity,final String userid, final String name){
-        RequestQueue queue = Volley.newRequestQueue(activity);
+    //POST：获取融云IM的Token
+    public void getToken(final String userid, final String name){
+        RequestQueue queue = Volley.newRequestQueue(context);
         StringBuffer res = new StringBuffer();
         String url = "http://api.cn.ronghub.com/user/getToken.json";
         final String App_Key = "mgb7ka1nmfvmg"; //开发者平台分配的 App Key。
@@ -95,16 +95,16 @@ public class VolleyUtil {
         // ?ver=1&subid=1&dir=1&nid=1&stamp=20140321&cnt=20";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
-
                     @Override
                     public void onResponse(String response) {
                         // TODO 自动生成的方法存根
-                        Log.e("check>>>>>>", response);
+                        Log.e("连接融云服务器：返回数据：", response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-                            Log.e("token",jsonObject.get("token").toString());
+                            Log.e("获取融云token",jsonObject.get("token").toString());
                             App.setSharedData(Config.HAVE_RONG_TOKEN,jsonObject.get("token").toString());
                             RongUtil.connectRong(App.getSharedData(Config.HAVE_RONG_TOKEN));
+                            Log.e("存入：",App.getSharedData(Config.HAVE_RONG_TOKEN)+"");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -123,7 +123,7 @@ public class VolleyUtil {
                                 HttpHeaderParser.parseCharset(response.headers));
                         // Now you can use any deserializer to make sense of data
                         JSONObject obj = new JSONObject(res);
-                        Log.e("volly",obj.toString());
+                        Log.e("连接融云：错误：",obj.toString());
                     } catch (UnsupportedEncodingException e1) {
                         // Couldn't properly decode data to string
                         e1.printStackTrace();

@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.graphics.Point;
+import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -20,6 +22,8 @@ import android.support.v4.widget.DrawerLayout;
 
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
+import com.tencent.connect.share.QQShare;
+import com.tencent.tauth.Tencent;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -33,8 +37,10 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.UserInfo;
+import lins.com.qz.bean.User;
+import lins.com.qz.ui.chat.IMActivity;
 import lins.com.qz.utils.IntentServiceUtil.BackService;
-import lins.com.qz.utils.IntentServiceUtil.ServiceUtil;
 import lins.com.qz.adapter.MainAdapter;
 import lins.com.qz.ui.base.BaseActivity;
 import lins.com.qz.bean.AddAddress;
@@ -45,32 +51,40 @@ import lins.com.qz.ui.EditUserInfoActivity;
 import lins.com.qz.ui.ShowActivity;
 import lins.com.qz.ui.addActivity;
 import lins.com.qz.ui.login.LoginActivity;
-import lins.com.qz.utils.RongUtil;
-import lins.com.qz.utils.SharedData;
-import lins.com.qz.utils.VolleyUtil;
+import lins.com.qz.utils.share.QShareIO;
+import lins.com.qz.utils.share.QShareListener;
 
 import static lins.com.qz.App.getHashData;
 
-public class MainActivity extends BaseActivity{
+public class MainActivity extends BaseActivity implements QShareIO {
     ActivityMainBinding binding;
     private MainAdapter mainAdapter;
     private ArrayList<String> addressList;
     private OptionsPickerView adrrPick;
     public static boolean isForeground = false;
-    private Map<String,Boolean> map=new HashMap<String, Boolean>();
-
+    private Map<String, Boolean> map = new HashMap<String, Boolean>();
+    private Tencent mTencent = App.getTencent();
     BmobUser bmobUser;
     private String atadrs = App.getSharedData(Config.AT_ADDRESS);
-    private Handler handler = new Handler(){
+    private QShareIO qShareIO = new QShareIO() {
+        @Override
+        public void getShareData(String str) {
+            showToast("分享成功");
+            Log.e("share","分享成功");
+        }
+    };
+
+
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
+            switch (msg.what) {
                 case 0://更新地址列表
-                    Log.e("handler","更新地址列表数据");
-                    if (App.getHashData(Config.ADDRESS_LIST)!=null){
+                    Log.e("handler", "更新地址列表数据");
+                    if (App.getHashData(Config.ADDRESS_LIST) != null) {
                         addressList.clear();
-                        for (AddAddress adr: (List<AddAddress>)getHashData(Config.ADDRESS_LIST)
+                        for (AddAddress adr : (List<AddAddress>) getHashData(Config.ADDRESS_LIST)
                                 ) {
                             addressList.add(adr.getAddr());
                         }
@@ -91,11 +105,11 @@ public class MainActivity extends BaseActivity{
     protected void initView() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.content.toolbar.ivTopArrow.setImageResource(R.drawable.bulb);
-        binding.content.toolbar.tvTopTitle.setText("首页");
+        binding.content.toolbar.tvTopTitle.setText("首页"+App.getSharedData(Config.USER_NAME));
         binding.content.toolbar.ivTopRight.setImageResource(R.drawable.add);
         setDrawerLeftEdgeSize(this, binding.drawerLayout, 0.2f);//设置抽屉滑动响应范围
 
-        map.put(Conversation.ConversationType.PRIVATE.getName(),false);
+        map.put(Conversation.ConversationType.PRIVATE.getName(), false);
 //        ServiceUtil.startServiceUtil(MainActivity.this);
         binding.content.ryMain.setAdapter(mainAdapter = new MainAdapter(MainActivity.this));
         binding.content.ryMain.setLayoutManager(new LinearLayoutManager(this));
@@ -106,7 +120,7 @@ public class MainActivity extends BaseActivity{
 //        handler.postDelayed(updataNum,2000);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Config.MAIN_RECEIVER_ACTION);
-        registerReceiver(receiver,intentFilter);
+        registerReceiver(receiver, intentFilter);
 
 //        sendBroadcast(new Intent(Config.RECEIVER_IN_SERVICE).putExtra("content","0"));
         //后台获取主页列表条目数
@@ -116,7 +130,22 @@ public class MainActivity extends BaseActivity{
 //        BmobUser bmobUser = BmobUser.getCurrentUser();
 //        BackService.getAddressList(LoginActivity.this,bmobUser.getObjectId(),"addr");
 
-
+        //这里作用
+        // 需要获取数据库的好友信息（如id，头像url之类的）遍历出来
+        // 这样在聊天页面才会有相应的头像显示
+        RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
+            @Override
+            public UserInfo getUserInfo(String s) {
+                //        for (Friend i : friendlist) {
+//            if (i.getUserid().equals(s)) {
+//                return new UserInfo(i.getUserId(), i.getUserName(), Uri.parse(i.getUri));
+//            }
+//        }
+                Log.e("MainActivity","UserId is "+s);
+                return new UserInfo("asdf", "asdf111",Uri.parse("https://www.baidu.com/img/mother_483c0201c53a4bc3c2e15e968723b25a.png"));
+//        return null;
+            }
+        },true);
 
     }
 //    Runnable updataNum=new Runnable() {
@@ -142,9 +171,9 @@ public class MainActivity extends BaseActivity{
             @Override
             public void onRefresh() {
                 binding.content.toolbar.pbTopRight.setVisibility(View.VISIBLE);
-                if (App.getHashData(Config.ADDRESS_LIST)!=null){
+                if (App.getHashData(Config.ADDRESS_LIST) != null) {
                     addressList.clear();
-                    for (AddAddress adr: (List<AddAddress>)getHashData(Config.ADDRESS_LIST)
+                    for (AddAddress adr : (List<AddAddress>) getHashData(Config.ADDRESS_LIST)
                             ) {
                         addressList.add(adr.getAddr());
                     }
@@ -187,7 +216,7 @@ public class MainActivity extends BaseActivity{
         adrrPick.setOnoptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int option2, int options3) {
-                App.setSharedData(Config.AT_ADDRESS,addressList.get(options1));
+                App.setSharedData(Config.AT_ADDRESS, addressList.get(options1));
                 getMainData();
             }
         });
@@ -195,30 +224,66 @@ public class MainActivity extends BaseActivity{
         binding.content.toolbar.ivTopRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RongIM.getInstance().startConversationList(MainActivity.this,map);
+                startActivity(IMActivity.class);
+                //默认的启动会话列表的方式，就是在清单文件写好data，
+                // 在activity中不必做其他操作，只需在xml中设置相应的fragment
+//                RongIM.getInstance().startConversationList(MainActivity.this,map);
             }
         });
     }
 
-    private void navClick(){
-        startActivityWith(addActivity.class,binding.layoutNav.llAdd);
-        startActivityWith(AccountActivity.class,binding.layoutNav.llMe);
-        startActivityWith(EditUserInfoActivity.class,binding.layoutNav.ivNavHead);
+    private void navClick() {
+        startActivityWith(addActivity.class, binding.layoutNav.llAdd);
+        startActivityWith(AccountActivity.class, binding.layoutNav.llMe);
+        startActivityWith(EditUserInfoActivity.class, binding.layoutNav.ivNavHead);
         binding.layoutNav.llAbout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                BmobQuery<User> shuoBmobQuery = new BmobQuery<>();
+                shuoBmobQuery.addWhereEqualTo("username","asdf");
+//        shuoBmobQuery.setLimit(App.getHashMainNum(Config.NUM_OF_MAIN));
+                shuoBmobQuery.findObjects(new FindListener<User>() {
+                    @Override
+                    public void done(List<User> list, BmobException e) {
+                        if (e == null) {
+                            Log.e("getuser",list.get(0).toString());
 
+                        } else {
+                            showToast("获取数据失败");
+                        }
+                        binding.content.toolbar.pbTopRight.setVisibility(View.GONE);
+//                closeDialog();
+                    }
+                });
             }
         });
         //退出登录（将会取消自动登录）
         binding.layoutNav.llExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                App.setSharedData(Config.IS_AUTO_LOGIN,"0");
+                RongIM.getInstance().logout();
+                App.clearShareData();
                 startActivity(LoginActivity.class);
                 finish();
             }
         });
+        binding.layoutNav.tvShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Bundle params = new Bundle();
+                params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
+                params.putString(QQShare.SHARE_TO_QQ_TITLE, "要分享的标题");
+                params.putString(QQShare.SHARE_TO_QQ_SUMMARY, "要分享的摘要");
+                params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, "http://www.qq.com/news/1.html");
+                params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, "http://imgcache.qq.com/qzone/space_item/pre/0/66768.gif");
+                params.putString(QQShare.SHARE_TO_QQ_APP_NAME, "测试应用222222");
+                mTencent.shareToQQ(MainActivity.this, params, new QShareListener(qShareIO));
+            }
+        });
+
+
+
+
         binding.drawerLayout.closeDrawer(GravityCompat.START);
     }
 
@@ -228,9 +293,9 @@ public class MainActivity extends BaseActivity{
 
     @Override
     protected void onResume() {
-        isForeground= true;
+        isForeground = true;
         super.onResume();
-        BackService.getAddressList(MainActivity.this,bmobUser.getObjectId(),"addr");
+        BackService.getAddressList(MainActivity.this, bmobUser.getObjectId(), "addr");
         getMainData();
     }
 
@@ -240,10 +305,10 @@ public class MainActivity extends BaseActivity{
         super.onPause();
     }
 
-    private void getMainData(){
+    private void getMainData() {
         mainAdapter.clear();
         BmobQuery<AddAdrMsg> shuoBmobQuery = new BmobQuery<>();
-        shuoBmobQuery.addWhereEqualTo("addr",App.getSharedData(Config.AT_ADDRESS));
+        shuoBmobQuery.addWhereEqualTo("addr", App.getSharedData(Config.AT_ADDRESS));
 //        shuoBmobQuery.setLimit(App.getHashMainNum(Config.NUM_OF_MAIN));
         shuoBmobQuery.findObjects(new FindListener<AddAdrMsg>() {
             @Override
@@ -260,12 +325,12 @@ public class MainActivity extends BaseActivity{
     }
 
     void initAddrData() {
-        if (App.getHashData(Config.ADDRESS_LIST)!=null){
-            for (AddAddress adr: (List<AddAddress>)getHashData(Config.ADDRESS_LIST)
+        if (App.getHashData(Config.ADDRESS_LIST) != null) {
+            for (AddAddress adr : (List<AddAddress>) getHashData(Config.ADDRESS_LIST)
                     ) {
                 addressList.add(adr.getAddr());
             }
-        }else{
+        } else {
             addressList.add("nothing");
         }
 
@@ -278,15 +343,15 @@ public class MainActivity extends BaseActivity{
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String str=intent.getStringExtra("content");
-            Log.e("reciver","广播获得数据："+str);
-            switch (str){
+            String str = intent.getStringExtra("content");
+            Log.e("reciver", "广播获得数据：" + str);
+            switch (str) {
                 case "0":
-                    Log.e("reciver","广播：执行更新地址列表");
+                    Log.e("reciver", "广播：执行更新地址列表");
                     handler.sendEmptyMessage(0);
                     break;
                 case "1":
-                    Log.e("reciver","收到jpush数据");
+                    Log.e("reciver", "收到jpush数据");
                     handler.sendEmptyMessage(1);
             }
         }
@@ -296,16 +361,12 @@ public class MainActivity extends BaseActivity{
     protected void onDestroy() {
 //        handler.removeCallbacks(updataNum);
         unregisterReceiver(receiver);
-        ServiceUtil.stopServiceUtil(MainActivity.this);
+//        ServiceUtil.stopServiceUtil(MainActivity.this);
         super.onDestroy();
     }
 
     /**
      * 设置全屏滑动
-     *
-     * @param activity
-     * @param drawerLayout
-     * @param displayWidthPercentage
      */
     private void setDrawerLeftEdgeSize(Activity activity, DrawerLayout drawerLayout, float displayWidthPercentage) {
         if (activity == null || drawerLayout == null) return;
@@ -331,6 +392,7 @@ public class MainActivity extends BaseActivity{
     }
 
     private long firstTime = 0;
+
     //双击退出程序
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -348,5 +410,13 @@ public class MainActivity extends BaseActivity{
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+
+
+    @Override
+    public void getShareData(String str) {
+        Log.e("back",str);
+            showToast(str);
     }
 }

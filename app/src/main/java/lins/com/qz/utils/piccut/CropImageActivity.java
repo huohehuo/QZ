@@ -1,4 +1,4 @@
-package lins.com.qz.utils;
+package lins.com.qz.utils.piccut;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

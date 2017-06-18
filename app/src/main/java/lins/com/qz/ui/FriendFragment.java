@@ -31,12 +31,12 @@ public class FriendFragment extends Fragment {
         binding.ryFriend.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-        adapter.add("alskdjf");
-        adapter.add("alskdjf");
-        adapter.add("alskdjf");
-        adapter.add("alskdjf");
-        adapter.add("alskdjf");
-        adapter.add("alskdjf");
+        adapter.add("asdf");
+        adapter.add("asdf");
+        adapter.add("asdf");
+        adapter.add("asdf");
+        adapter.add("asdf");
+        adapter.add("asdf");
         adapter.add("alskdjf");
         adapter.add("alskdjf");
         adapter.add("alskdjf");

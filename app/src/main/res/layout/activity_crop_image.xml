@@ -30,7 +30,7 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <lins.com.qz.utils.CropImageView
+        <lins.com.qz.utils.piccut.CropImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/cropView"

@@ -26,5 +26,8 @@ public class SharedData {
     public String getString(String key, String defaultValue){
         return kv.getString(key, defaultValue);
     }
+    public void clearShareData(){
+        kv.getAll().clear();
+    }
 
 }

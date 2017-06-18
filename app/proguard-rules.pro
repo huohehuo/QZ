@@ -28,3 +28,11 @@
 -dontwarn com.google.**
 -keep class com.google.gson.** {*;}
 -keep class com.google.protobuf.** {*;}
+
+
+-dontwarn io.rong.push.**
+ -dontnote com.xiaomi.**
+-dontnote com.google.android.gms.gcm.**
+ -dontnote io.rong.**
+
+-keep class lins.com.qz.utils.RongReceiver {*;}

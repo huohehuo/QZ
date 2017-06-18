@@ -10,13 +10,23 @@ import android.view.View;
 
 import com.bigkoo.pickerview.OptionsPickerView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
+import cn.bmob.v3.listener.UploadFileListener;
+import lins.com.qz.App;
 import lins.com.qz.Config;
 import lins.com.qz.R;
+import lins.com.qz.bean.Friend;
+import lins.com.qz.bean.Friends;
+import lins.com.qz.bean.User;
 import lins.com.qz.ui.base.BaseActivity;
 import lins.com.qz.bean.PickerViewBean;
 import lins.com.qz.databinding.ActivityEditUserInfoBinding;
@@ -43,6 +53,7 @@ public class EditUserInfoActivity extends BaseActivity {
         binding.toolbar.tvTopTitle.setText("个人资料");
         selectPhotoDialog=new SelectPhotoDialog(EditUserInfoActivity.this, R.style.CustomDialog);
         bmobUser = BmobUser.getCurrentUser();
+        bmobUser.getEmail();
 
     }
 
@@ -83,6 +94,25 @@ public class EditUserInfoActivity extends BaseActivity {
                 binding.tvAddr.setText(provinces.get(options1).getStr() + cities.get(options1).get(option2));
             }
         });
+
+
+        Friends friends = new Friends();
+        friends.setObjectId(App.getObjectId());
+        friends.addUnique("friendlist",new Friend("5a57b5b19e","asdf",
+                "https://www.baidu.com/img/mother_483c0201c53a4bc3c2e15e968723b25a.png","nothing"));
+        friends.addUnique("friendlist",new Friend("6d6dc15ee1","ww",
+                "https://www.baidu.com/img/mother_483c0201c53a4bc3c2e15e968723b25a.png","nothing"));
+        friends.save(new SaveListener<String>() {
+            @Override
+            public void done(String s, BmobException e) {
+                if(e==null){
+                    Log.e("bmob","保存成功");
+                }else{
+                    Log.e("bmob","保存失败："+e.getMessage());
+                }
+            }
+        });
+
 
     }
 
@@ -177,6 +207,38 @@ public class EditUserInfoActivity extends BaseActivity {
                     // Glide.with(EditMyInfoActivity.this).load(new File(URL.PATH_SELECT_AVATAR)).into(binding.ciAvatar);
                     Bitmap bitmap = BitmapFactory.decodeFile(Config.PATH_SELECT_AVATAR);
                     binding.ivEditIcon.setImageBitmap(bitmap);
+                    Log.e("icon",Config.PATH_SELECT_AVATAR);
+                    final BmobFile bmobFile = new BmobFile(new File(Config.PATH_SELECT_AVATAR));
+                    bmobFile.uploadblock(new UploadFileListener() {
+
+                        @Override
+                        public void done(BmobException e) {
+                            if(e==null){
+                                User user = new User();
+                                user.setIconpic(bmobFile.getFileUrl());
+                                user.update(bmobUser.getObjectId(), new UpdateListener() {
+                                    @Override
+                                    public void done(BmobException e) {
+                                        if (e==null){
+                                            Log.e("updata","更新头像成功");
+                                        }
+                                    }
+                                });
+                                Log.e("updataIcon","success updata"+ bmobFile.getFileUrl());
+                                //bmobFile.getFileUrl()--返回的上传文件的完整地址
+                            }else{
+                                Log.e("updataIcon","error updata" + e.getMessage());
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onProgress(Integer value) {
+                            // 返回的上传进度（百分比）
+                        }
+                    });
+
                     /*Qiniu.uploadFile(URL.PATH_SELECT_AVATAR, new Qiniu.Callback() {
                         @Override
                         public void uploadResult(String remoteUrl, boolean ok, String error) {

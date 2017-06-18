@@ -1,18 +1,28 @@
 package lins.com.qz.ui.base;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import cn.bmob.v3.BmobUser;
 import lins.com.qz.App;
+import lins.com.qz.Config;
 import lins.com.qz.R;
+import lins.com.qz.ui.login.WelcomeActivity;
 import lins.com.qz.utils.DialogUtils;
+import lins.com.qz.utils.RongUtil;
+import lins.com.qz.utils.VolleyUtil;
+
+import static lins.com.qz.Config.USER_NAME;
+import static lins.com.qz.Config.USER_PWD;
 
 
 /**
@@ -22,6 +32,7 @@ import lins.com.qz.utils.DialogUtils;
 public abstract class BaseActivity extends AppCompatActivity {
     private Toast toast;
     private Dialog dialog;
+    public BmobUser bmobUser;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +41,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         initView();//初始化页面
         initEvent();//初始化事件
         getData();//加载数据
+
+        bmobUser = BmobUser.getCurrentUser();
     }
 
     /**
@@ -107,6 +120,16 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (dialog!=null){
             DialogUtils.closeDialog(dialog);
             finish();
+        }
+    }
+
+    public void checkIM(){
+        if (App.getSharedData(Config.HAVE_RONG_TOKEN) != null && !"".equals(App.getSharedData(Config.HAVE_RONG_TOKEN))) {
+            RongUtil.connectRong(App.getSharedData(Config.HAVE_RONG_TOKEN));
+        }else{
+            Log.e("无Token","重新获取Token"+App.getSharedData(Config.HAVE_RONG_TOKEN));
+            VolleyUtil.getInstance(App.getContext())
+                    .getToken(App.getObjectId(), App.getSharedData(USER_NAME));
         }
     }
 

@@ -3,6 +3,8 @@ package lins.com.qz.utils;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 
+import lins.com.qz.utils.piccut.CropImageActivity;
+
 
 /**
  * Created by sky on 2017/2/7.

@@ -2,6 +2,7 @@ package lins.com.qz.ui.login;
 
 import android.databinding.DataBindingUtil;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -15,17 +16,20 @@ import lins.com.qz.App;
 import lins.com.qz.Config;
 import lins.com.qz.MainActivity;
 import lins.com.qz.R;
+import lins.com.qz.bean.locationBean.LUser;
 import lins.com.qz.ui.base.BaseActivity;
 import lins.com.qz.bean.User;
 import lins.com.qz.databinding.ActivityWelcomeBinding;
+import lins.com.qz.utils.RongUtil;
+import lins.com.qz.utils.SaveService;
 import lins.com.qz.utils.SharedData;
+import lins.com.qz.utils.VolleyUtil;
 
 import static lins.com.qz.Config.USER_NAME;
 import static lins.com.qz.Config.USER_PWD;
 
 public class WelcomeActivity extends BaseActivity {
     ActivityWelcomeBinding binding;
-    private SharedData data;
     private Animation animation;
     private Handler handler = new Handler();
     @Override
@@ -33,7 +37,6 @@ public class WelcomeActivity extends BaseActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_welcome);
-        data= new SharedData(App.getContext());
     }
 
     //执行登录操作
@@ -60,14 +63,19 @@ public class WelcomeActivity extends BaseActivity {
     }
     //跳过登陆界面，自动登录
     private void autoLogin(){
-        if ("1".equals(data.getString(Config.IS_AUTO_LOGIN,"0"))){
-
-            BmobUser.loginByAccount(data.getString(USER_NAME,""),
-                    data.getString(USER_PWD,""),
+        if ("1".equals(App.getSharedData(Config.IS_AUTO_LOGIN))){
+            Log.e("自动登录",App.getSharedData(USER_NAME));
+            BmobUser.loginByAccount(App.getSharedData(USER_NAME),
+                    App.getSharedData(USER_PWD),
                     new LogInListener<User>() {
                         @Override
                         public void done(User user, BmobException e) {
                             if (e == null){
+                                SaveService.startSaveLocationUser(App.getContext(),user.getAge(),
+                                        user.getSex(),user.getNote(),user.getIconpic());
+                                Log.e("user", user.toString() + "\n");
+                                //检查Im是否存在Token。存在就登录，否则服务器重新获取
+                                checkIM();
                                 startActivity(MainActivity.class);
                                 finish();
                             }else{

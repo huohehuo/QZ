@@ -20,8 +20,12 @@ import lins.com.qz.ui.base.BaseActivity;
 import lins.com.qz.bean.User;
 import lins.com.qz.databinding.ActivityLoginBinding;
 import lins.com.qz.utils.RongUtil;
+import lins.com.qz.utils.SaveService;
 import lins.com.qz.utils.SharedData;
 import lins.com.qz.utils.VolleyUtil;
+
+import static lins.com.qz.Config.USER_NAME;
+import static lins.com.qz.Config.USER_PWD;
 
 //登录
 public class LoginActivity extends BaseActivity {
@@ -46,14 +50,15 @@ public class LoginActivity extends BaseActivity {
                             @Override
                             public void done(User user, BmobException e) {
                                 if (e == null) {
-                                    data.putString(Config.USER_NAME, binding.etUsername.getText().toString());
-                                    data.putString(Config.USER_PWD, binding.etPassword.getText().toString());
-                                    if (App.getHashData(Config.HAVE_RONG_TOKEN) == null || "".equals(App.getHashData(Config.HAVE_RONG_TOKEN))) {
-                                        VolleyUtil.getToken(LoginActivity.this, binding.etUsername.getText().toString(), binding.etUsername.getText().toString());
-                                    }else{
-                                        RongUtil.connectRong(App.getSharedData(Config.HAVE_RONG_TOKEN));
-                                    }
-
+                                Log.e("user",user.toString()+"\n");
+//                                    App.setSharedData(Config.HAVE_RONG_TOKEN,"");
+                                    App.setSharedData(Config.USER_NAME, binding.etUsername.getText().toString());
+                                    App.setSharedData(Config.USER_PWD, binding.etPassword.getText().toString());
+                                    SaveService.startSaveLocationUser(App.getContext(),user.getAge(),
+                                            user.getSex(),user.getNote(),user.getIconpic());
+                                    //若无token，则从融云服务器获取token
+                                    checkIM();
+                                    //设置为下次自动登录
                                     App.setSharedData(Config.IS_AUTO_LOGIN, "1");
                                     startActivity(MainActivity.class);
                                     finish();

@@ -19,10 +19,13 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
+import lins.com.qz.App;
 import lins.com.qz.R;
 import lins.com.qz.ui.base.BaseActivity;
 import lins.com.qz.databinding.ActivityAccountBinding;
 import lins.com.qz.utils.SelectPhotoDialog;
+
+import static lins.com.qz.R.id.ivImage;
 
 public class AccountActivity extends BaseActivity {
     ActivityAccountBinding binding;
@@ -36,52 +39,54 @@ public class AccountActivity extends BaseActivity {
     @Override
     protected void initView() {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_account);
-        setSupportActionBar(binding.toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-//        initListener();
-//        oldView = binding.icBottom.btnMe;
-//        oldView.setSelected(true);
-//        selectPhotoDialog=new SelectPhotoDialog(AccountActivity.this, R.style.MyDialog);
+        binding.toolbar.ivTopArrow.setImageResource(R.drawable.back);
+        binding.toolbar.tvTopTitle.setText("个人资料");
+        binding.toolbar.tvTopRight.setText("修改");
 
-        CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle("标题");
-
-        ImageView ivImage = (ImageView) findViewById(R.id.ivImage);
-        Glide.with(ivImage.getContext())
+        Glide.with(AccountActivity.this)
                 .load("https://www.baidu.com/img/mother_483c0201c53a4bc3c2e15e968723b25a.png")
-                .fitCenter()
-                .into(ivImage);
+                .into(binding.ivImage);
+        if (App.getDaoManager().lUserQuery().getIconurl()!=null
+                &&!"".equals(App.getDaoManager().lUserQuery().getIconurl())){
+            Glide.with(AccountActivity.this)
+                    .load(App.getDaoManager().lUserQuery().getIconurl())
+//                .placeholder(R.drawable.ic_account_circle)
+                    .fitCenter()
+                    .into(binding.ivicon);
+        }else{
+            Glide.with(AccountActivity.this)
+                    .load("https://github.com/huohehuo/QZ/blob/master/app/src/main/res/drawable/mricon.png?raw=true")
+//                .placeholder(R.drawable.ic_account_circle)
+                    .fitCenter()
+                    .into(binding.ivicon);
+        }
 
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(mViewPager);
+//        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(binding.viewpager);
         final View view = LayoutInflater.from(this).inflate(R.layout.test,null);
         view.setBackground(getResources().getDrawable(R.color.error_red));
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-        tabLayout.addTab(tabLayout.newTab().setText("内容简介"));
-        tabLayout.addTab(tabLayout.newTab().setText("作者简介"));
-        tabLayout.addTab(tabLayout.newTab().setText("目录"));
-        tabLayout.setupWithViewPager(mViewPager);
-        tabLayout.getTabAt(0).setCustomView(view);
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                tab.setIcon(R.drawable.about);
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+//        tabLayout.addTab(tabLayout.newTab().setText("个人简介").setIcon(R.drawable.about));
+//        tabLayout.addTab(tabLayout.newTab().setText("周计划").setIcon(R.drawable.about));
+//        tabLayout.addTab(tabLayout.newTab().setText("目录").setIcon(R.drawable.about));
+        tabLayout.setupWithViewPager(binding.viewpager);
+//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//                tab.setIcon(R.drawable.about);
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//
+//            }
+//        });
     }
 
 //    private void initListener() {
@@ -120,31 +125,27 @@ public class AccountActivity extends BaseActivity {
 //
 //    }
 
-    private void changeTab(View v){
-        oldView.setSelected(false);
-        oldView = v;
-        oldView.setSelected(true);
-    }
 
     @Override
     protected void initEvent() {
-
+        binding.toolbar.ivTopArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        binding.toolbar.tvTopRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(EditUserInfoActivity.class);
+            }
+        });
     }
 
     @Override
     protected void getData() {
 
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
 
     private void setupViewPager(ViewPager mViewPager) {
         MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager());
