@@ -123,13 +123,20 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void checkIM(){
+    public void checkIM(String rongid){
+        if (rongid==null){
+            return;
+        }
+        if ("".equals(rongid)){
+            return;
+        }
         if (App.getSharedData(Config.HAVE_RONG_TOKEN) != null && !"".equals(App.getSharedData(Config.HAVE_RONG_TOKEN))) {
             RongUtil.connectRong(App.getSharedData(Config.HAVE_RONG_TOKEN));
         }else{
+            App.setSharedData(Config.USER_RONG_UUID,rongid);
             Log.e("无Token","重新获取Token"+App.getSharedData(Config.HAVE_RONG_TOKEN));
             VolleyUtil.getInstance(App.getContext())
-                    .getToken(App.getObjectId(), App.getSharedData(USER_NAME));
+                    .getToken(rongid, App.getSharedData(USER_NAME));
         }
     }
 

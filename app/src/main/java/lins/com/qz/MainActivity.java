@@ -27,6 +27,7 @@ import com.tencent.tauth.Tencent;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,10 +37,14 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import io.rong.imkit.RongIM;
+import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
+import lins.com.qz.bean.Friend;
 import lins.com.qz.bean.User;
+import lins.com.qz.bean.locationBean.LUser;
 import lins.com.qz.ui.chat.IMActivity;
+import lins.com.qz.ui.chat.RongUserInfoProvide;
 import lins.com.qz.utils.IntentServiceUtil.BackService;
 import lins.com.qz.adapter.MainAdapter;
 import lins.com.qz.ui.base.BaseActivity;
@@ -100,7 +105,7 @@ public class MainActivity extends BaseActivity implements QShareIO {
 
         }
     };
-
+    private static List<LUser> partUsers = new ArrayList<LUser>();
     @Override
     protected void initView() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
@@ -133,17 +138,20 @@ public class MainActivity extends BaseActivity implements QShareIO {
         //这里作用
         // 需要获取数据库的好友信息（如id，头像url之类的）遍历出来
         // 这样在聊天页面才会有相应的头像显示
+//        RongIM.setUserInfoProvider(new RongUserInfoProvide(),true);
+        partUsers.add(new LUser("1e60f61ba78d4b8fa1b5c2886b662c0b","ww","http://bmob-cdn-12281.b0.upaiyun.com/2017/06/20/0c6667253a72463cacc8ddf923e399cb.png"));
+        partUsers.add(new LUser("baa7b5acafb744b383fc9c5cb6aaee18","qq","http://bmob-cdn-12281.b0.upaiyun.com/2017/06/20/0c6667253a72463cacc8ddf923e399cb.png"));
         RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
             @Override
             public UserInfo getUserInfo(String s) {
-                //        for (Friend i : friendlist) {
-//            if (i.getUserid().equals(s)) {
-//                return new UserInfo(i.getUserId(), i.getUserName(), Uri.parse(i.getUri));
-//            }
-//        }
+                for (LUser i : partUsers) {
+                    if (i.getRongid().equals(s)) {
+                        return new UserInfo(i.getRongid(), i.getUsername(), Uri.parse(i.getIconurl()));
+                    }
+                }
                 Log.e("MainActivity","UserId is "+s);
-                return new UserInfo("asdf", "asdf111",Uri.parse("https://www.baidu.com/img/mother_483c0201c53a4bc3c2e15e968723b25a.png"));
-//        return null;
+//                return new UserInfo("1e60f61ba78d4b8fa1b5c2886b662c0b", "ww", Uri.parse("http://bmob-cdn-12281.b0.upaiyun.com/2017/06/20/0c6667253a72463cacc8ddf923e399cb.png"));
+        return null;
             }
         },true);
 
@@ -239,29 +247,50 @@ public class MainActivity extends BaseActivity implements QShareIO {
         binding.layoutNav.llAbout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BmobQuery<User> shuoBmobQuery = new BmobQuery<>();
-                shuoBmobQuery.addWhereEqualTo("username","asdf");
-//        shuoBmobQuery.setLimit(App.getHashMainNum(Config.NUM_OF_MAIN));
-                shuoBmobQuery.findObjects(new FindListener<User>() {
+                BmobQuery<User> innerQuery = new BmobQuery<User>();
+                String[] friendIds={"asdf","ww"};//好友的objectId数组
+                innerQuery.addWhereContainedIn("objectId", Arrays.asList(friendIds));
+//查询帖子
+                BmobQuery<AddAddress> query = new BmobQuery<AddAddress>();
+                query.addWhereMatchesQuery("author", "_User", innerQuery);
+                query.findObjects(new FindListener<AddAddress>() {
                     @Override
-                    public void done(List<User> list, BmobException e) {
-                        if (e == null) {
-                            Log.e("getuser",list.get(0).toString());
+                    public void done(List<AddAddress> object,BmobException e) {
+                        if(e==null){
+                            for (AddAddress user:object){
+                                Log.e(">>>",user.toString());
+                            }
 
-                        } else {
-                            showToast("获取数据失败");
+                            Log.i("bmob","成功");
+                        }else{
+                            Log.i("bmob","失败："+e.getMessage());
                         }
-                        binding.content.toolbar.pbTopRight.setVisibility(View.GONE);
-//                closeDialog();
                     }
                 });
+
+//                BmobQuery<User> shuoBmobQuery = new BmobQuery<>();
+//                shuoBmobQuery.addWhereEqualTo("username","asdf");
+////        shuoBmobQuery.setLimit(App.getHashMainNum(Config.NUM_OF_MAIN));
+//                shuoBmobQuery.findObjects(new FindListener<User>() {
+//                    @Override
+//                    public void done(List<User> list, BmobException e) {
+//                        if (e == null) {
+//                            Log.e("getuser",list.get(0).toString());
+//
+//                        } else {
+//                            showToast("获取数据失败");
+//                        }
+//                        binding.content.toolbar.pbTopRight.setVisibility(View.GONE);
+////                closeDialog();
+//                    }
+//                });
             }
         });
         //退出登录（将会取消自动登录）
         binding.layoutNav.llExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RongIM.getInstance().logout();
+//                RongIM.getInstance().logout();
                 App.clearShareData();
                 startActivity(LoginActivity.class);
                 finish();

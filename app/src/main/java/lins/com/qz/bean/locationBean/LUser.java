@@ -17,6 +17,7 @@ public class LUser {
     private String sex;
     private String age;
     private String note;
+    private String rongid;
     private String phone;
     private String email;
     private String iconurl;
@@ -74,15 +75,16 @@ public class LUser {
     public void setId(Long id) {
         this.id = id;
     }
-    @Generated(hash = 1410548009)
+    @Generated(hash = 1889630353)
     public LUser(Long id, String objectid, String username, String sex, String age,
-            String note, String phone, String email, String iconurl) {
+            String note, String rongid, String phone, String email, String iconurl) {
         this.id = id;
         this.objectid = objectid;
         this.username = username;
         this.sex = sex;
         this.age = age;
         this.note = note;
+        this.rongid = rongid;
         this.phone = phone;
         this.email = email;
         this.iconurl = iconurl;
@@ -91,14 +93,29 @@ public class LUser {
     public LUser() {
     }
 
+    public LUser(String rongid, String username, String iconurl) {
+        this.rongid = rongid;
+        this.username = username;
+        this.iconurl = iconurl;
+    }
+
+    public String getRongid() {
+        return this.rongid;
+    }
+    public void setRongid(String rongid) {
+        this.rongid = rongid;
+    }
+
     @Override
     public String toString() {
         return "LUser{" +
-                "objectid='" + objectid + '\'' +
+                "id=" + id +
+                ", objectid='" + objectid + '\'' +
                 ", username='" + username + '\'' +
                 ", sex='" + sex + '\'' +
                 ", age='" + age + '\'' +
                 ", note='" + note + '\'' +
+                ", rongid='" + rongid + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", iconurl='" + iconurl + '\'' +

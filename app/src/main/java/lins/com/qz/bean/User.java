@@ -11,6 +11,7 @@ import static android.R.attr.name;
 public class User extends BmobUser {
     private String sex;
     private String age;
+    private String rongid;//为一个唯一的UUID
     private String note;
     private String iconpic;
 
@@ -55,11 +56,20 @@ public class User extends BmobUser {
         this.iconpic = iconpic;
     }
 
+    public String getRongid() {
+        return rongid;
+    }
+
+    public void setRongid(String rongid) {
+        this.rongid = rongid;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "sex='" + sex + '\'' +
                 ", age='" + age + '\'' +
+                ", rongid='" + rongid + '\'' +
                 ", note='" + note + '\'' +
                 ", iconpic='" + iconpic + '\'' +
                 '}';

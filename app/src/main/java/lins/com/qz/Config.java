@@ -16,6 +16,10 @@ public class Config {
     public static String ADDRESS_LIST = "address_list";
     public static String AT_ADDRESS="at_address";
 
+    public static final String USER_RONG_UUID="user_rong_uuid";
+
+
+
     public static final String MAIN_RECEIVER_ACTION= "main_receiver_action";
 
     public static final String MAIN_SERVICE_ACTION = "main_service_action";

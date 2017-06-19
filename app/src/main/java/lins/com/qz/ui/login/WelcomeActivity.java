@@ -72,10 +72,10 @@ public class WelcomeActivity extends BaseActivity {
                         public void done(User user, BmobException e) {
                             if (e == null){
                                 SaveService.startSaveLocationUser(App.getContext(),user.getAge(),
-                                        user.getSex(),user.getNote(),user.getIconpic());
+                                        user.getSex(),user.getNote(),user.getIconpic(),user.getRongid());
                                 Log.e("user", user.toString() + "\n");
                                 //检查Im是否存在Token。存在就登录，否则服务器重新获取
-                                checkIM();
+                                checkIM(user.getRongid());
                                 startActivity(MainActivity.class);
                                 finish();
                             }else{

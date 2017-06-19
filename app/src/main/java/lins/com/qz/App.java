@@ -119,7 +119,10 @@ public class App extends MultiDexApplication {
         }
         return daoManager;
     }
-
+    //获取uuid，给当前用户设定一个唯一值，用于融云userid
+    public static String getUUID(){
+        return java.util.UUID.randomUUID().toString().replaceAll("-", "");
+    }
 
     /*
          * GreenDao相关

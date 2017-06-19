@@ -32,4 +32,12 @@ public class AddAddress extends BmobObject{
     public void setAddr(String addr) {
         this.addr = addr;
     }
+
+    @Override
+    public String toString() {
+        return "AddAddress{" +
+                "belong='" + belong + '\'' +
+                ", addr='" + addr + '\'' +
+                '}';
+    }
 }

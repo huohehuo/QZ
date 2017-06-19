@@ -39,7 +39,7 @@ public class RongUtil {
             public void onTokenIncorrect() {
                 Log.e("RongCloud", "--error---connect");
                 //重新获取token
-                VolleyUtil.getInstance(App.getContext()).getToken(App.getObjectId(), App.getSharedData(USER_NAME));
+                VolleyUtil.getInstance(App.getContext()).getToken(App.getSharedData(Config.USER_RONG_UUID), App.getSharedData(USER_NAME));
 
             }
             @Override
