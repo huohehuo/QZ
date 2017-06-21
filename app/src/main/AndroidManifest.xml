@@ -353,7 +353,10 @@
         <!-- 分享 ,用于统一处理回调      END -->
         <service
             android:name=".utils.SaveService"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <activity android:name=".ui.SysNotifyActivity" />
+        <activity android:name=".ui.WebActivity"></activity>
     </application>
 
 </manifest>

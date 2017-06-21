@@ -43,6 +43,7 @@ import io.rong.imlib.model.UserInfo;
 import lins.com.qz.bean.Friend;
 import lins.com.qz.bean.User;
 import lins.com.qz.bean.locationBean.LUser;
+import lins.com.qz.ui.SysNotifyActivity;
 import lins.com.qz.ui.chat.IMActivity;
 import lins.com.qz.ui.chat.RongUserInfoProvide;
 import lins.com.qz.utils.IntentServiceUtil.BackService;
@@ -247,26 +248,31 @@ public class MainActivity extends BaseActivity implements QShareIO {
         binding.layoutNav.llAbout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BmobQuery<User> innerQuery = new BmobQuery<User>();
-                String[] friendIds={"asdf","ww"};//好友的objectId数组
-                innerQuery.addWhereContainedIn("objectId", Arrays.asList(friendIds));
-//查询帖子
-                BmobQuery<AddAddress> query = new BmobQuery<AddAddress>();
-                query.addWhereMatchesQuery("author", "_User", innerQuery);
-                query.findObjects(new FindListener<AddAddress>() {
-                    @Override
-                    public void done(List<AddAddress> object,BmobException e) {
-                        if(e==null){
-                            for (AddAddress user:object){
-                                Log.e(">>>",user.toString());
-                            }
+                startActivity(SysNotifyActivity.class);
 
-                            Log.i("bmob","成功");
-                        }else{
-                            Log.i("bmob","失败："+e.getMessage());
-                        }
-                    }
-                });
+
+//                BmobQuery<User> innerQuery = new BmobQuery<User>();
+//                String[] friendIds={"asdf","ww"};//好友的objectId数组
+//                innerQuery.addWhereContainedIn("objectId", Arrays.asList(friendIds));
+////查询帖子
+//                BmobQuery<AddAddress> query = new BmobQuery<AddAddress>();
+//                query.addWhereMatchesQuery("author", "_User", innerQuery);
+//                query.findObjects(new FindListener<AddAddress>() {
+//                    @Override
+//                    public void done(List<AddAddress> object,BmobException e) {
+//                        if(e==null){
+//                            for (AddAddress user:object){
+//                                Log.e(">>>",user.toString());
+//                            }
+//
+//                            Log.i("bmob","成功");
+//                        }else{
+//                            Log.i("bmob","失败："+e.getMessage());
+//                        }
+//                    }
+//                });
+
+
 
 //                BmobQuery<User> shuoBmobQuery = new BmobQuery<>();
 //                shuoBmobQuery.addWhereEqualTo("username","asdf");
