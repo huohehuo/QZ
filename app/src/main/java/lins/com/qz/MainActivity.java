@@ -14,6 +14,7 @@ import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -43,6 +44,7 @@ import io.rong.imlib.model.UserInfo;
 import lins.com.qz.bean.Friend;
 import lins.com.qz.bean.User;
 import lins.com.qz.bean.locationBean.LUser;
+import lins.com.qz.thirdparty.codecamera.CaptureActivity;
 import lins.com.qz.ui.SysNotifyActivity;
 import lins.com.qz.ui.chat.IMActivity;
 import lins.com.qz.ui.chat.RongUserInfoProvide;
@@ -60,6 +62,7 @@ import lins.com.qz.ui.login.LoginActivity;
 import lins.com.qz.utils.share.QShareIO;
 import lins.com.qz.utils.share.QShareListener;
 
+import static android.R.attr.scheme;
 import static lins.com.qz.App.getHashData;
 
 public class MainActivity extends BaseActivity implements QShareIO {
@@ -124,6 +127,7 @@ public class MainActivity extends BaseActivity implements QShareIO {
         addressList = new ArrayList<>();
         adrrPick = new OptionsPickerView(this);
 //        handler.postDelayed(updataNum,2000);
+        //注册广播监听器
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Config.MAIN_RECEIVER_ACTION);
         registerReceiver(receiver, intentFilter);
@@ -214,9 +218,6 @@ public class MainActivity extends BaseActivity implements QShareIO {
         binding.content.ivChooseAddr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent();
-//                intent.putExtra("contenta","0");
-//                sendBroadcast(intent);
                 adrrPick.show();
             }
         });
@@ -241,10 +242,12 @@ public class MainActivity extends BaseActivity implements QShareIO {
         });
     }
 
+    //侧栏菜单事件
     private void navClick() {
         startActivityWith(addActivity.class, binding.layoutNav.llAdd);
         startActivityWith(AccountActivity.class, binding.layoutNav.llMe);
         startActivityWith(EditUserInfoActivity.class, binding.layoutNav.ivNavHead);
+        //关于
         binding.layoutNav.llAbout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -297,11 +300,20 @@ public class MainActivity extends BaseActivity implements QShareIO {
             @Override
             public void onClick(View view) {
 //                RongIM.getInstance().logout();
-                App.clearShareData();
-                startActivity(LoginActivity.class);
-                finish();
+                //<a href="myapp://jp.app/openwith?name=zhangsan&age=26">启动应用程序</a>
+                String url = "gotoapp://apphost/openwith?name=zhangsan&age=26";
+                String scheme = Uri.parse(url).getScheme();//还需要判断host
+                if (TextUtils.equals("gotoapp", scheme)) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(intent);
+                }
+
+//                App.clearShareData();
+//                startActivity(LoginActivity.class);
+//                finish();
             }
         });
+        //分享
         binding.layoutNav.tvShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -315,8 +327,12 @@ public class MainActivity extends BaseActivity implements QShareIO {
                 mTencent.shareToQQ(MainActivity.this, params, new QShareListener(qShareIO));
             }
         });
-
-
+        binding.layoutNav.ivNavEwm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, CaptureActivity.class));
+            }
+        });
 
 
         binding.drawerLayout.closeDrawer(GravityCompat.START);
@@ -330,7 +346,7 @@ public class MainActivity extends BaseActivity implements QShareIO {
     protected void onResume() {
         isForeground = true;
         super.onResume();
-        BackService.getAddressList(MainActivity.this, bmobUser.getObjectId(), "addr");
+//        BackService.getAddressList(MainActivity.this, bmobUser.getObjectId(), "addr");
         getMainData();
     }
 

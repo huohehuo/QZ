@@ -45,6 +45,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         bmobUser = BmobUser.getCurrentUser();
     }
 
+//    public void setToolBar(String )
     /**
      * 跳转至Activity
      * @param pClass

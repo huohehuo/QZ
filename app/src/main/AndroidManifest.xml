@@ -34,6 +34,11 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
 
     <application
         android:name=".App"
@@ -356,7 +361,25 @@
             android:exported="false" />
 
         <activity android:name=".ui.SysNotifyActivity" />
-        <activity android:name=".ui.WebActivity"></activity>
+        <activity android:name=".ui.WebActivity" />
+        <activity android:name=".ui.AboutMeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="apphost"
+                    android:pathPrefix="/openwith"
+                    android:scheme="gotoapp" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".thirdparty.codecamera.CaptureActivity"/>
+        <activity
+            android:name=".thirdparty.codecamera.EncodeQrActivity"
+            android:label="@string/title_activity_encode_qr" >
+        </activity>
     </application>
 
 </manifest>

@@ -61,4 +61,7 @@ public class Config {
 
     //-------------------------------------------- WeChat ----------------------------------
     public static final String WX_APP_ID="wx639f8c1b491a8b64";
+
+
+
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.LocationManager;
+import android.os.Handler;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
@@ -38,6 +39,11 @@ public class App extends MultiDexApplication {
     private static Tencent mTencent;
     private DaoSession mDaoSession;
     private static DaoManager daoManager;
+
+
+    //扫描
+    private static int mainThreadId;
+    private static Handler handler;
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -47,6 +53,10 @@ public class App extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         mContext = this;
+
+        mainThreadId = android.os.Process.myTid();// 获取当前主线程id
+        handler = new Handler();
+
         GreenDaoManager.getInstance();
         initDaoSession();
         Bmob.initialize(this,"33e6d0b9cc101e2998dc0493a98e1b5d");
@@ -62,7 +72,12 @@ public class App extends MultiDexApplication {
     public static Context getContext() {
         return mContext;
     }
-
+    public static int getMainThreadId() {
+        return mainThreadId;
+    }
+    public static Handler getHandler() {
+        return handler;
+    }
     public static String getSharedData(String key) {
         return new SharedData(mContext).getString(key,"0");
     }
