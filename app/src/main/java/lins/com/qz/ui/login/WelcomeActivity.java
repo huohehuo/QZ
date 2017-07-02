@@ -65,20 +65,23 @@ public class WelcomeActivity extends BaseActivity {
     private void autoLogin(){
         if ("1".equals(App.getSharedData(Config.IS_AUTO_LOGIN))){
             Log.e("自动登录",App.getSharedData(USER_NAME));
+            App.e("welcomeLogin","自动登录"+App.getSharedData(USER_NAME));
             BmobUser.loginByAccount(App.getSharedData(USER_NAME),
                     App.getSharedData(USER_PWD),
                     new LogInListener<User>() {
                         @Override
                         public void done(User user, BmobException e) {
                             if (e == null){
+                                //将用户基本信息存入本地
                                 SaveService.startSaveLocationUser(App.getContext(),user.getAge(),
                                         user.getSex(),user.getNote(),user.getIconpic(),user.getRongid());
-                                Log.e("user", user.toString() + "\n");
                                 //检查Im是否存在Token。存在就登录，否则服务器重新获取
                                 checkIM(user.getRongid());
+
                                 startActivity(MainActivity.class);
                                 finish();
                             }else{
+                                App.e("welcome","登录失败："+e.toString());
                                 showToast("登录失败");
                                 startActivity(LoginActivity.class);
                                 finish();

@@ -13,7 +13,7 @@ public class GreenDaoManager {
     private static GreenDaoManager mInstance;
     private DaoMaster mDaoMaster;
     private DaoSession mDaoSession;
-
+//    private FrdsManager frdsManager;
 
     private GreenDaoManager() {
         DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(App.getContext(), "note.db", null);

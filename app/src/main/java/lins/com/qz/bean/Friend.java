@@ -1,53 +1,59 @@
 package lins.com.qz.bean;
 
+import java.util.List;
+
+import cn.bmob.v3.BmobObject;
+
 /**
  * Created by LINS on 2017/6/18.
  */
 
-public class Friend {
+public class Friend extends BmobObject{
 
-    private String objid;
-    private String fname;
-    private String ficonurl;
-    private String fnote;
+    private List<DataBean> friends;
 
-    public Friend(String objid, String fname, String ficonurl, String fnote) {
-        this.objid = objid;
-        this.fname = fname;
-        this.ficonurl = ficonurl;
-        this.fnote = fnote;
+
+    public List<DataBean> getFriends() {
+        return friends;
     }
 
-    public String getObjid() {
-        return objid;
+    public void setFriends(List<DataBean> friends) {
+        this.friends = friends;
     }
 
-    public void setObjid(String objid) {
-        this.objid = objid;
-    }
+    public class DataBean{
+        private String name;
+        private String rongid;
+        private String head_icon;
 
-    public String getFname() {
-        return fname;
-    }
+        public DataBean(String rongid, String name, String head_icon) {
+            this.rongid = rongid;
+            this.name = name;
+            this.head_icon = head_icon;
+        }
 
-    public void setFname(String fname) {
-        this.fname = fname;
-    }
+        public String getName() {
+            return name;
+        }
 
-    public String getFiconurl() {
-        return ficonurl;
-    }
+        public void setName(String name) {
+            this.name = name;
+        }
 
-    public void setFiconurl(String ficonurl) {
-        this.ficonurl = ficonurl;
-    }
+        public String getRongid() {
+            return rongid;
+        }
 
-    public String getFnote() {
-        return fnote;
-    }
+        public void setRongid(String rongid) {
+            this.rongid = rongid;
+        }
 
-    public void setFnote(String fnote) {
-        this.fnote = fnote;
-    }
+        public String getHead_icon() {
+            return head_icon;
+        }
 
+        public void setHead_icon(String head_icon) {
+            this.head_icon = head_icon;
+        }
+    }
 }

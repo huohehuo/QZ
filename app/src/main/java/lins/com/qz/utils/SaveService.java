@@ -103,8 +103,8 @@ public class SaveService extends IntentService {
      * parameters.
      */
     private void handleActionFoo(String age, String sex, String note, String iconurl, final String rongid) {
-        BmobUser bmobUser = BmobUser.getCurrentUser();
-        LUser lUser = new LUser();
+        final BmobUser bmobUser = BmobUser.getCurrentUser();
+        final LUser lUser = new LUser();
         lUser.setAge(age);
         lUser.setSex(sex);
         lUser.setNote(note);
@@ -114,6 +114,12 @@ public class SaveService extends IntentService {
         if (rongid != null && !"".equals(rongid)) {
             lUser.setRongid(rongid);
             App.setSharedData(Config.USER_RONG_UUID,rongid);
+            lUser.setObjectid(bmobUser.getObjectId());
+            lUser.setUsername(bmobUser.getUsername());
+            lUser.setEmail(bmobUser.getEmail());
+            lUser.setPhone(bmobUser.getMobilePhoneNumber());
+            App.getDaoManager().insert(lUser);
+            Log.e("后台保存的数据LUser", App.getDaoManager().query(bmobUser.getUsername()).toString());
         } else {
             Log.e("login","登录账户无融云IM，生成ing");
             final String rong=App.getUUID();
@@ -125,21 +131,29 @@ public class SaveService extends IntentService {
                 @Override
                 public void done(BmobException e) {
                     if (e==null){
-                        Log.e("rong","生成融云IM账户id----成功");
+                        Log.e("rong","生成融云IM账户id----更新成功");
+                        lUser.setObjectid(bmobUser.getObjectId());
+                        lUser.setUsername(bmobUser.getUsername());
+                        lUser.setEmail(bmobUser.getEmail());
+                        lUser.setPhone(bmobUser.getMobilePhoneNumber());
+                        App.getDaoManager().insert(lUser);
+                        Log.e("后台保存的数据LUser", App.getDaoManager().query(bmobUser.getUsername()).toString());
                         VolleyUtil.getInstance(App.getContext())
                                 .getToken(rong, App.getSharedData(USER_NAME));
                     }else{
-                        Log.e("rong","生成融云IM账户id----失败");
+                        Log.e("rong","生成融云IM账户id----更新失败");
+                        lUser.setObjectid(bmobUser.getObjectId());
+                        lUser.setUsername(bmobUser.getUsername());
+                        lUser.setEmail(bmobUser.getEmail());
+                        lUser.setPhone(bmobUser.getMobilePhoneNumber());
+                        App.getDaoManager().insert(lUser);
+                        Log.e("后台保存的数据LUser", App.getDaoManager().query(bmobUser.getUsername()).toString());
                     }
                 }
             });
+            //注意，此处若是rongId上传至用户数据更新时失败，本地可能会不存在rongid
         }
-        lUser.setObjectid(bmobUser.getObjectId());
-        lUser.setUsername(bmobUser.getUsername());
-        lUser.setEmail(bmobUser.getEmail());
-        lUser.setPhone(bmobUser.getMobilePhoneNumber());
-        App.getDaoManager().insert(lUser);
-        Log.e("后台保存的数据LUser", App.getDaoManager().lUserQuery().toString());
+
     }
 
     /**

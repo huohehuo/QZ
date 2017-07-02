@@ -8,6 +8,7 @@ import android.location.LocationManager;
 import android.os.Handler;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
+import android.util.Log;
 
 import com.tencent.tauth.Tencent;
 
@@ -162,6 +163,13 @@ public class App extends MultiDexApplication {
     }
 
 
+    public static void e(String tag,String str){
+        if (str==null){
+            Log.e(tag,"---------|\n"+"！！！！ 传值为空 NULL"+"\n---------");
+        }else{
+            Log.e(tag,"---------|\n"+str+"\n---------");
+        }
+    }
 
 
 

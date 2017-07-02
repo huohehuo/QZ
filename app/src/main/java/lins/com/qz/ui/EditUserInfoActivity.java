@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
 import com.bigkoo.pickerview.OptionsPickerView;
+import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,6 +35,9 @@ import lins.com.qz.databinding.ActivityEditUserInfoBinding;
 import lins.com.qz.utils.SelectPhotoDialog;
 import lins.com.qz.utils.SelectPicUtil;
 
+import static lins.com.qz.R.drawable.close;
+import static lins.com.qz.R.drawable.user;
+
 public class EditUserInfoActivity extends BaseActivity {
     ActivityEditUserInfoBinding binding;
     private static final int    REQUEST_NICKNAME = 0;
@@ -45,16 +50,20 @@ public class EditUserInfoActivity extends BaseActivity {
     ArrayList<ArrayList<String>> cities;
     OptionsPickerView locationPicker, constellationPicker;
     BmobUser bmobUser;
+    private String iconUrl;
+    private String userName;
     String sex = "1";
     @Override
     protected void initView() {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_edit_user_info);
         binding.toolbar.tvTopRight.setText("保存");
         binding.toolbar.tvTopTitle.setText("个人资料");
+        //图片选择器
         selectPhotoDialog=new SelectPhotoDialog(EditUserInfoActivity.this, R.style.CustomDialog);
+        //获取本地Bmob用户对象
         bmobUser = BmobUser.getCurrentUser();
-        bmobUser.getEmail();
-
+        userName = bmobUser.getUsername();
+        App.e("edit","更新前："+userName);
     }
 
     @Override
@@ -63,31 +72,35 @@ public class EditUserInfoActivity extends BaseActivity {
         initConstellation();
         initPicker();
 
+        //图片选择
         binding.ivEditIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SelectPicUtil.showSelectPhoto(EditUserInfoActivity.this,REQUEST_CHANGE_AVATAR, Config.PATH_SELECT_AVATAR,selectPhotoDialog);
             }
         });
+        //星座
         binding.tvStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 constellationPicker.show();
             }
         });
+        //所在地
         binding.tvAddr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 locationPicker.show();
             }
         });
+        //星座选择
         constellationPicker.setOnoptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int option2, int options3) {
                 binding.tvStar.setText(constellationList.get(options1));
             }
         });
-
+        //所在地选择
         locationPicker.setOnoptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int option2, int options3) {
@@ -95,31 +108,56 @@ public class EditUserInfoActivity extends BaseActivity {
             }
         });
 
-
-        Friends friends = new Friends();
-        friends.setObjectId(App.getObjectId());
-        friends.addUnique("friendlist",new Friend("5a57b5b19e","asdf",
-                "https://www.baidu.com/img/mother_483c0201c53a4bc3c2e15e968723b25a.png","nothing"));
-        friends.addUnique("friendlist",new Friend("6d6dc15ee1","ww",
-                "https://www.baidu.com/img/mother_483c0201c53a4bc3c2e15e968723b25a.png","nothing"));
-        friends.save(new SaveListener<String>() {
+        binding.toolbar.tvTopRight.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void done(String s, BmobException e) {
-                if(e==null){
-                    Log.e("bmob","保存成功");
+            public void onClick(View view) {
+                showDialog("更新中...");
+                if (checkOutInput()){
+                    updataUser();
                 }else{
-                    Log.e("bmob","保存失败："+e.getMessage());
+                    showToast("请输入相应数据");
                 }
             }
         });
+
+
+//        Friends friends = new Friends();
+//        friends.setObjectId(App.getObjectId());
+//        friends.addUnique("friendlist",new Friend("5a57b5b19e","asdf",
+//                "https://www.baidu.com/img/mother_483c0201c53a4bc3c2e15e968723b25a.png","nothing"));
+//        friends.addUnique("friendlist",new Friend("6d6dc15ee1","ww",
+//                "https://www.baidu.com/img/mother_483c0201c53a4bc3c2e15e968723b25a.png","nothing"));
+//        friends.save(new SaveListener<String>() {
+//            @Override
+//            public void done(String s, BmobException e) {
+//                if(e==null){
+//                    Log.e("bmob","保存成功");
+//                }else{
+//                    Log.e("bmob","保存失败："+e.getMessage());
+//                }
+//            }
+//        });
 
 
     }
 
     @Override
     protected void getData() {
+        binding.etName.setText(userName);//昵称
+        String note = App.getDaoManager().query(bmobUser.getUsername()).getNote();
+        if (note!=null){
+            binding.etNote.setText(note);
+        }
+        //头像
+        String icon = App.getDaoManager().query(bmobUser.getUsername()).getIconurl();
+        if (icon!=null){
+            Glide.with(this).load(icon)
+                    .into(binding.ivEditIcon);
+        }
 
     }
+
+    //星座初始化
     void initConstellation() {
         constellationList = new ArrayList<>();
         constellationList.add(getString(R.string.aries));
@@ -136,6 +174,7 @@ public class EditUserInfoActivity extends BaseActivity {
         constellationList.add(getString(R.string.pisces));
     }
 
+    //所在地初始化
     void initLocation() {
         provinces = new ArrayList<>();
         cities = new ArrayList<>();
@@ -191,6 +230,90 @@ public class EditUserInfoActivity extends BaseActivity {
 //        }
 //        sex = sexNow;
 //    }
+
+    private boolean checkOutInput(){
+        if (TextUtils.isEmpty(binding.etName.getText().toString())){
+            showToast("请输入昵称");
+            return false;
+        }
+//        if (TextUtils.isEmpty(binding.etNote.getText().toString())){
+//            showToast("请输入");
+//            return false;
+//        }
+        return true;
+    }
+
+    //更新用户数据
+    private void updataUser(){
+        //更新
+        File file =new File(Config.PATH_SELECT_AVATAR);
+        //若上一步获取图片失败（或者本地历史存过的地址的缓存图片被删除），则不更新头像，只更新昵称签名之类的
+        if (file==null){
+            User user = new User();
+            user.setUsername(binding.etName.getText().toString());
+            user.setNote("".equals(binding.etNote.getText().toString())?"":binding.etNote.getText().toString());
+            user.update(bmobUser.getObjectId(), new UpdateListener() {
+                @Override
+                public void done(BmobException e) {
+                    if (e==null){
+                        //由于更新前后的昵称可能会有变化，所以本地数据库也要更新相应的昵称,签名，头像
+                        App.getDaoManager().updateUserIconNameNote(userName,"",
+                                BmobUser.getCurrentUser().getUsername(),
+                                binding.etNote.getText().toString());
+                        App.e("updata","用户数据更新成功");
+                        closeDialgWithActivity();
+                    }else{
+                        closeDialog();
+                        showToast("更新失败，请重试");
+                    }
+                }
+            });
+            return;
+        }else{
+            final BmobFile bmobFile = new BmobFile(file);
+            bmobFile.uploadblock(new UploadFileListener() {
+
+                @Override
+                public void done(BmobException e) {
+                    if(e==null){
+                        User user = new User();
+                        user.setUsername(binding.etName.getText().toString());
+                        user.setNote("".equals(binding.etNote.getText().toString())?"":binding.etNote.getText().toString());
+                        user.setIconpic(bmobFile.getFileUrl());
+                        user.update(bmobUser.getObjectId(), new UpdateListener() {
+                            @Override
+                            public void done(BmobException e) {
+                                if (e==null){
+                                    //由于更新前后的昵称可能会有变化，所以本地数据库也要更新相应的昵称,签名，头像
+                                    App.getDaoManager().updateUserIconNameNote(userName,bmobFile.getFileUrl(),
+                                            BmobUser.getCurrentUser().getUsername(),
+                                            binding.etNote.getText().toString());
+                                    App.e("updata","用户数据更新成功");
+                                    closeDialgWithActivity();
+                                }else{
+                                    closeDialog();
+                                    showToast("更新失败，请重试");
+                                }
+                            }
+                        });
+                        Log.e("updataIcon","success updata"+ bmobFile.getFileUrl());
+                        //bmobFile.getFileUrl()--返回的上传文件的完整地址
+                    }else{
+                        Log.e("updataIcon","error updata" + e.getMessage());
+
+                    }
+
+                }
+
+                @Override
+                public void onProgress(Integer value) {
+                    // 返回的上传进度（百分比）
+                }
+            });
+        }
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -208,36 +331,7 @@ public class EditUserInfoActivity extends BaseActivity {
                     Bitmap bitmap = BitmapFactory.decodeFile(Config.PATH_SELECT_AVATAR);
                     binding.ivEditIcon.setImageBitmap(bitmap);
                     Log.e("icon",Config.PATH_SELECT_AVATAR);
-                    final BmobFile bmobFile = new BmobFile(new File(Config.PATH_SELECT_AVATAR));
-                    bmobFile.uploadblock(new UploadFileListener() {
 
-                        @Override
-                        public void done(BmobException e) {
-                            if(e==null){
-                                User user = new User();
-                                user.setIconpic(bmobFile.getFileUrl());
-                                user.update(bmobUser.getObjectId(), new UpdateListener() {
-                                    @Override
-                                    public void done(BmobException e) {
-                                        if (e==null){
-                                            Log.e("updata","更新头像成功");
-                                        }
-                                    }
-                                });
-                                Log.e("updataIcon","success updata"+ bmobFile.getFileUrl());
-                                //bmobFile.getFileUrl()--返回的上传文件的完整地址
-                            }else{
-                                Log.e("updataIcon","error updata" + e.getMessage());
-
-                            }
-
-                        }
-
-                        @Override
-                        public void onProgress(Integer value) {
-                            // 返回的上传进度（百分比）
-                        }
-                    });
 
                     /*Qiniu.uploadFile(URL.PATH_SELECT_AVATAR, new Qiniu.Callback() {
                         @Override

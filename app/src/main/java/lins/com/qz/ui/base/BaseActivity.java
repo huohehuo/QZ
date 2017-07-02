@@ -125,17 +125,25 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void checkIM(String rongid){
+        String token =App.getSharedData(Config.HAVE_RONG_TOKEN);
         if (rongid==null){
+            Log.e("checkIM","rongid is null");
             return;
         }
         if ("".equals(rongid)){
+            Log.e("checkIM","rongid is nothing");
             return;
         }
-        if (App.getSharedData(Config.HAVE_RONG_TOKEN) != null && !"".equals(App.getSharedData(Config.HAVE_RONG_TOKEN))) {
-            RongUtil.connectRong(App.getSharedData(Config.HAVE_RONG_TOKEN));
+        //判断是否存在融云token，连接登录
+        if (token != null && !"".equals(token)) {
+            //存在
+            RongUtil.connectRong(token);
         }else{
-            App.setSharedData(Config.USER_RONG_UUID,rongid);
-            Log.e("无Token","重新获取Token"+App.getSharedData(Config.HAVE_RONG_TOKEN));
+            //否则，获取本地保存的融云id（实际是之前通过UUID生成的，并传至服务器的字段）
+            App.setSharedData(Config.USER_RONG_UUID,rongid);//将rongid存入本地
+//            Log.e("无Token","重新获取Token";
+            App.e("BaseActivity","本地无token,重新从融云服务器获取");
+            //执行网络操作：从融云服务器获取Token
             VolleyUtil.getInstance(App.getContext())
                     .getToken(rongid, App.getSharedData(USER_NAME));
         }

@@ -50,14 +50,16 @@ public class LoginActivity extends BaseActivity {
                             @Override
                             public void done(User user, BmobException e) {
                                 if (e == null) {
-                                Log.e("user",user.toString()+"\n");
-                                    App.setSharedData(Config.HAVE_RONG_TOKEN,"");
+                                    App.e("Login","登录获的user"+user.toString()+"\n");
+                                    App.setSharedData(Config.HAVE_RONG_TOKEN,"");//清空token，放置登录im错乱
                                     App.setSharedData(Config.USER_NAME, binding.etUsername.getText().toString());
                                     App.setSharedData(Config.USER_PWD, binding.etPassword.getText().toString());
+                                    //将数据存入本地
                                     SaveService.startSaveLocationUser(App.getContext(),user.getAge(),
                                             user.getSex(),user.getNote(),user.getIconpic(),user.getRongid());
                                     //若无token，则从融云服务器获取token
                                     checkIM(user.getRongid());
+
                                     //设置为下次自动登录
                                     App.setSharedData(Config.IS_AUTO_LOGIN, "1");
                                     startActivity(MainActivity.class);

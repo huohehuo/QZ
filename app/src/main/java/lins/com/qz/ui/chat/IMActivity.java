@@ -16,8 +16,11 @@ import java.util.List;
 import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.model.Conversation;
 import lins.com.qz.R;
+import lins.com.qz.adapter.AboutMeAdapter;
 import lins.com.qz.databinding.ConversationlistBinding;
-import lins.com.qz.ui.chat.MyFriendFragment;
+import lins.com.qz.ui.AboutMeActivity;
+import lins.com.qz.ui.DetailFragment;
+import lins.com.qz.ui.FriendFragment;
 
 
 /**             会话列表
@@ -26,11 +29,9 @@ import lins.com.qz.ui.chat.MyFriendFragment;
 
 public class IMActivity extends FragmentActivity {
     ConversationlistBinding binding;
-    private ViewPager mViewPager;
+    private AboutMeAdapter adapter;
     private Fragment mConversationList;
     private Fragment mConversationFragment = null;
-    private List<Fragment> mFragment = new ArrayList<>();
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,9 +39,10 @@ public class IMActivity extends FragmentActivity {
         binding.toolbar.ivTopArrow.setImageResource(R.drawable.back);
         binding.toolbar.tvTopTitle.setText("IM");
         mConversationList  = initConversationList();//获取融云会话列表对象
-        mFragment.add(mConversationList);
-        mFragment.add(MyFriendFragment.getInstance());
-        binding.vpConlist.setAdapter(fragmentPagerAdapter);
+
+
+        setupViewPager(binding.viewpager);
+        binding.tabChat.setupWithViewPager(binding.viewpager);
 
         binding.toolbar.ivTopArrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +50,13 @@ public class IMActivity extends FragmentActivity {
                 finish();
             }
         });
+    }
+
+    private void setupViewPager(ViewPager mViewPager) {
+        AboutMeAdapter adapter = new AboutMeAdapter(getSupportFragmentManager());
+        adapter.addFragment(mConversationList,"消息");
+        adapter.addFragment(ChatFriendFragment.getInstance(),"我的好友");
+        mViewPager.setAdapter(adapter);
     }
 
     //动态加载会话列表，就不用在清单文件设置相应的data，启动会话列表也不用使用固定的instance启动
@@ -67,17 +76,4 @@ public class IMActivity extends FragmentActivity {
             return mConversationFragment;
         }
     }
-
-
-    private FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
-        @Override
-        public Fragment getItem(int position) {
-            return mFragment.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragment.size();
-        }
-    };
 }

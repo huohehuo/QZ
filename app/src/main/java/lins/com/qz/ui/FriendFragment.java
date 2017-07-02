@@ -31,21 +31,21 @@ public class FriendFragment extends Fragment {
         binding.ryFriend.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-        adapter.add("asdf");
-        adapter.add("asdf");
-        adapter.add("asdf");
-        adapter.add("asdf");
-        adapter.add("asdf");
-        adapter.add("asdf");
-        adapter.add("alskdjf");
-        adapter.add("alskdjf");
-        adapter.add("alskdjf");
+//        adapter.add("asdf");
+//        adapter.add("asdf");
+//        adapter.add("asdf");
+//        adapter.add("asdf");
+//        adapter.add("asdf");
+//        adapter.add("asdf");
+//        adapter.add("alskdjf");
+//        adapter.add("alskdjf");
+//        adapter.add("alskdjf");
 
 
         binding.ryFriend.setRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                adapter.add("很棒啊");
+//                adapter.add("很棒啊");
             }
         });
 

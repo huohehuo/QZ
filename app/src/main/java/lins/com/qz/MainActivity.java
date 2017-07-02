@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,8 +20,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
@@ -28,7 +28,6 @@ import com.tencent.tauth.Tencent;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,31 +37,28 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import io.rong.imkit.RongIM;
-import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
-import lins.com.qz.bean.Friend;
-import lins.com.qz.bean.User;
-import lins.com.qz.bean.locationBean.LUser;
-import lins.com.qz.thirdparty.codecamera.CaptureActivity;
-import lins.com.qz.ui.SysNotifyActivity;
-import lins.com.qz.ui.chat.IMActivity;
-import lins.com.qz.ui.chat.RongUserInfoProvide;
-import lins.com.qz.utils.IntentServiceUtil.BackService;
 import lins.com.qz.adapter.MainAdapter;
-import lins.com.qz.ui.base.BaseActivity;
 import lins.com.qz.bean.AddAddress;
 import lins.com.qz.bean.AddAdrMsg;
+import lins.com.qz.bean.locationBean.LChatFrds;
+import lins.com.qz.bean.locationBean.LUser;
 import lins.com.qz.databinding.ActivityMainBinding;
-import lins.com.qz.ui.AccountActivity;
+import lins.com.qz.manager.FrdsManager;
+import lins.com.qz.thirdparty.codecamera.CaptureActivity;
+import lins.com.qz.ui.AboutMeActivity;
 import lins.com.qz.ui.EditUserInfoActivity;
 import lins.com.qz.ui.ShowActivity;
+import lins.com.qz.ui.SysNotifyActivity;
 import lins.com.qz.ui.addActivity;
+import lins.com.qz.ui.base.BaseActivity;
+import lins.com.qz.ui.chat.IMActivity;
 import lins.com.qz.ui.login.LoginActivity;
+import lins.com.qz.utils.IntentServiceUtil.InitChatService;
 import lins.com.qz.utils.share.QShareIO;
 import lins.com.qz.utils.share.QShareListener;
 
-import static android.R.attr.scheme;
 import static lins.com.qz.App.getHashData;
 
 public class MainActivity extends BaseActivity implements QShareIO {
@@ -144,21 +140,22 @@ public class MainActivity extends BaseActivity implements QShareIO {
         // 需要获取数据库的好友信息（如id，头像url之类的）遍历出来
         // 这样在聊天页面才会有相应的头像显示
 //        RongIM.setUserInfoProvider(new RongUserInfoProvide(),true);
-        partUsers.add(new LUser("1e60f61ba78d4b8fa1b5c2886b662c0b","ww","http://bmob-cdn-12281.b0.upaiyun.com/2017/06/20/0c6667253a72463cacc8ddf923e399cb.png"));
-        partUsers.add(new LUser("baa7b5acafb744b383fc9c5cb6aaee18","qq","http://bmob-cdn-12281.b0.upaiyun.com/2017/06/20/0c6667253a72463cacc8ddf923e399cb.png"));
-        RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
-            @Override
-            public UserInfo getUserInfo(String s) {
-                for (LUser i : partUsers) {
-                    if (i.getRongid().equals(s)) {
-                        return new UserInfo(i.getRongid(), i.getUsername(), Uri.parse(i.getIconurl()));
-                    }
-                }
-                Log.e("MainActivity","UserId is "+s);
-//                return new UserInfo("1e60f61ba78d4b8fa1b5c2886b662c0b", "ww", Uri.parse("http://bmob-cdn-12281.b0.upaiyun.com/2017/06/20/0c6667253a72463cacc8ddf923e399cb.png"));
-        return null;
-            }
-        },true);
+        InitChatService.initChatUser(this);
+//        partUsers.add(new LUser("1e60f61ba78d4b8fa1b5c2886b662c0b","ww","http://bmob-cdn-12281.b0.upaiyun.com/2017/06/20/0c6667253a72463cacc8ddf923e399cb.png"));
+//        partUsers.add(new LUser("baa7b5acafb744b383fc9c5cb6aaee18","qq","http://bmob-cdn-12281.b0.upaiyun.com/2017/06/20/0c6667253a72463cacc8ddf923e399cb.png"));
+//        RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
+//            @Override
+//            public UserInfo getUserInfo(String s) {
+//                for (LUser i : partUsers) {
+//                    if (i.getRongid().equals(s)) {
+//                        return new UserInfo(i.getRongid(), i.getUsername(), Uri.parse(i.getIconurl()));
+//                    }
+//                }
+//                Log.e("MainActivity","UserId is "+s);
+////                return new UserInfo("1e60f61ba78d4b8fa1b5c2886b662c0b", "ww", Uri.parse("http://bmob-cdn-12281.b0.upaiyun.com/2017/06/20/0c6667253a72463cacc8ddf923e399cb.png"));
+//        return null;
+//            }
+//        },true);
 
     }
 //    Runnable updataNum=new Runnable() {
@@ -245,7 +242,7 @@ public class MainActivity extends BaseActivity implements QShareIO {
     //侧栏菜单事件
     private void navClick() {
         startActivityWith(addActivity.class, binding.layoutNav.llAdd);
-        startActivityWith(AccountActivity.class, binding.layoutNav.llMe);
+        startActivityWith(AboutMeActivity.class, binding.layoutNav.llMe);
         startActivityWith(EditUserInfoActivity.class, binding.layoutNav.ivNavHead);
         //关于
         binding.layoutNav.llAbout.setOnClickListener(new View.OnClickListener() {
@@ -299,18 +296,18 @@ public class MainActivity extends BaseActivity implements QShareIO {
         binding.layoutNav.llExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                RongIM.getInstance().logout();
+                RongIM.getInstance().logout();
                 //<a href="myapp://jp.app/openwith?name=zhangsan&age=26">启动应用程序</a>
-                String url = "gotoapp://apphost/openwith?name=zhangsan&age=26";
-                String scheme = Uri.parse(url).getScheme();//还需要判断host
-                if (TextUtils.equals("gotoapp", scheme)) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    startActivity(intent);
-                }
+//                String url = "gotoapp://apphost/openwith?name=zhangsan&age=26";
+//                String scheme = Uri.parse(url).getScheme();//还需要判断host
+//                if (TextUtils.equals("gotoapp", scheme)) {
+//                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//                    startActivity(intent);
+//                }
 
-//                App.clearShareData();
-//                startActivity(LoginActivity.class);
-//                finish();
+                App.clearShareData();
+                startActivity(LoginActivity.class);
+                finish();
             }
         });
         //分享
@@ -340,6 +337,8 @@ public class MainActivity extends BaseActivity implements QShareIO {
 
     @Override
     protected void getData() {
+        new FrdsManager().insert(new LChatFrds(null,"ww","1e60f61ba78d4b8fa1b5c2886b662c0b",
+                "http://bmob-cdn-12281.b0.upaiyun.com/2017/06/20/0c6667253a72463cacc8ddf923e399cb.png"));
     }
 
     @Override

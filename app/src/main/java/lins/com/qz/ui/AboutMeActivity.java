@@ -3,13 +3,23 @@ package lins.com.qz.ui;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 
+import com.bumptech.glide.Glide;
+
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobUser;
+import lins.com.qz.App;
 import lins.com.qz.R;
+import lins.com.qz.adapter.AboutMeAdapter;
 import lins.com.qz.databinding.ActivityAboutMeBinding;
 import lins.com.qz.ui.base.BaseActivity;
+
+import static android.R.attr.action;
 
 public class AboutMeActivity extends BaseActivity {
     ActivityAboutMeBinding binding;
@@ -19,7 +29,10 @@ public class AboutMeActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_about_me);
         binding.toolbar.ivTopArrow.setImageResource(R.drawable.ic_arrow_drop_down_black_24dp);
         binding.toolbar.tvTopTitle.setText("个人信息");
+        binding.toolbar.tvTopRight.setText("修改");
 
+        setupViewPager(binding.viewpager);
+        binding.tabAboutMe.setupWithViewPager(binding.viewpager);
     }
 
     @Override
@@ -32,22 +45,55 @@ public class AboutMeActivity extends BaseActivity {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             startActivity(intent);
         }*/
-        Intent i_getvalue = getIntent();
-        String action = i_getvalue.getAction();
-
-        if(Intent.ACTION_VIEW.equals(action)){
-            Uri uri = i_getvalue.getData();
-            if(uri != null){
-                String name = uri.getQueryParameter("name");
-                String age= uri.getQueryParameter("age");
-                binding.tvMe.setText(name+"\n"+age);
+        Intent getAction = getIntent();
+        if (getAction!=null){
+            String action = getAction.getAction();
+            if(Intent.ACTION_VIEW.equals(action)){
+                Uri uri = getAction.getData();
+                if(uri != null){
+                    String name = uri.getQueryParameter("name");
+                    String age= uri.getQueryParameter("age");
+                    binding.tvName.setText(name);
+                    binding.tvSay.setText(age);
+//                binding.tvMe.setText(name+"\n"+age);
+                }
             }
+        }else{
+
         }
 
+        binding.toolbar.tvTopRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(EditUserInfoActivity.class);
+            }
+        });
     }
-
+    private void setupViewPager(ViewPager mViewPager) {
+        AboutMeAdapter adapter = new AboutMeAdapter(getSupportFragmentManager());
+        adapter.addFragment(DetailFragment.newInstance("有没有很棒"),"详细资料");
+        adapter.addFragment(new FriendFragment(),"我的计划");
+        adapter.addFragment(DetailFragment.newInstance( "有有有"),"关注");
+        mViewPager.setAdapter(adapter);
+    }
     @Override
     protected void getData() {
-
+        String icon = App.getDaoManager().query(BmobUser.getCurrentUser().getUsername()).getIconurl();
+        App.e("About",icon);
+        if (icon!=null &&!"".equals(icon)){
+            App.e("About__have",icon);
+            Glide.with(AboutMeActivity.this)
+                    .load(icon)
+//                .placeholder(R.drawable.ic_account_circle)
+                    .fitCenter()
+                    .into(binding.ivicon);
+        }else{
+            App.e("About__nothing",icon);
+            Glide.with(AboutMeActivity.this)
+                    .load("https://github.com/huohehuo/QZ/blob/master/app/src/main/res/drawable/mricon.png?raw=true")
+//                .placeholder(R.drawable.ic_account_circle)
+                    .fitCenter()
+                    .into(binding.ivicon);
+        }
     }
 }

@@ -37,18 +37,18 @@ public class RegisterActivity extends BaseActivity {
                     public void done(User user, BmobException e) {
                         if (e == null){
                             showToast("注册成功");
-                            User user2 = new User();
-                            user2.setRongid(App.getUUID());
-                            user2.update(bmobUser.getObjectId(), new UpdateListener() {
-                                @Override
-                                public void done(BmobException e) {
-                                    if (e==null){
-                                        Log.e("rong","生成融云IM账户id----成功");
-                                    }else{
-                                        Log.e("rong","生成融云IM账户id----失败");
-                                    }
-                                }
-                            });
+//                            User user2 = new User();
+//                            user2.setRongid(App.getUUID());
+//                            user2.update(bmobUser.getObjectId(), new UpdateListener() {
+//                                @Override
+//                                public void done(BmobException e) {
+//                                    if (e==null){
+//                                        Log.e("rong","生成融云IM账户id----成功");
+//                                    }else{
+//                                        Log.e("rong","生成融云IM账户id----失败");
+//                                    }
+//                                }
+//                            });
                             finish();
                         }else{
                             showToast("注册失败");

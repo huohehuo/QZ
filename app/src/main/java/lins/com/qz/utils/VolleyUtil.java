@@ -82,7 +82,7 @@ public class VolleyUtil {
     }
 
     //POST：获取融云IM的Token
-    public void getToken(final String userid, final String name){
+    public void getToken(final String rongid, final String name){
         RequestQueue queue = Volley.newRequestQueue(context);
         StringBuffer res = new StringBuffer();
         String url = "http://api.cn.ronghub.com/user/getToken.json";
@@ -98,13 +98,15 @@ public class VolleyUtil {
                     @Override
                     public void onResponse(String response) {
                         // TODO 自动生成的方法存根
-                        Log.e("连接融云服务器：返回数据：", response);
+//                        Log.e("连接融云服务器：返回数据：", response);
+                        App.e("Volley","连接融云服务器：返回数据："+response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-                            Log.e("获取融云token",jsonObject.get("token").toString());
+                            App.e("Volley","将token存入本地："+jsonObject.get("token").toString());
+                            //存入本地token
                             App.setSharedData(Config.HAVE_RONG_TOKEN,jsonObject.get("token").toString());
+                            //登录融云
                             RongUtil.connectRong(App.getSharedData(Config.HAVE_RONG_TOKEN));
-                            Log.e("存入：",App.getSharedData(Config.HAVE_RONG_TOKEN)+"");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -152,7 +154,7 @@ public class VolleyUtil {
             protected Map<String, String> getParams() throws AuthFailureError {
                 // TODO 自动生成的方法存根
                 Map<String, String> map = new HashMap<String, String>();
-                map.put("userId", userid);
+                map.put("userId", rongid);
                 map.put("name", name);
                 map.put("portraitUri", "https://github.com/huohehuo/QZ/blob/master/app/src/main/res/drawable/mricon.png");
                 return map;

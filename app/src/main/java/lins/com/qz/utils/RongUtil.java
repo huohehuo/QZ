@@ -37,16 +37,14 @@ public class RongUtil {
              */
             @Override
             public void onTokenIncorrect() {
-                Log.e("RongCloud", "--error---connect");
-                //重新获取token
+                App.e("RongCloud","--error---connect");
+                //重新获取token；传值：通过生成的UUID与用户名生成对应的融云id
                 VolleyUtil.getInstance(App.getContext()).getToken(App.getSharedData(Config.USER_RONG_UUID), App.getSharedData(USER_NAME));
 
             }
             @Override
             public void onSuccess(String userid) {
-                Log.e("RongCloud", "--onSuccess---融云帐号登录id：" + userid+"__"+App.getSharedData(Config.USER_NAME));
-//                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-//                    finish();
+                App.e("RongCloud","--onSuccess---融云帐号登录id：" + userid+"__"+App.getSharedData(Config.USER_NAME));
             }
 
             @Override
