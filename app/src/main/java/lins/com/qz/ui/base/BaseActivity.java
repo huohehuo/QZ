@@ -21,6 +21,7 @@ import lins.com.qz.utils.DialogUtils;
 import lins.com.qz.utils.RongUtil;
 import lins.com.qz.utils.VolleyUtil;
 
+import static lins.com.qz.App.userName;
 import static lins.com.qz.Config.USER_NAME;
 import static lins.com.qz.Config.USER_PWD;
 

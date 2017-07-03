@@ -20,6 +20,7 @@ import lins.com.qz.databinding.ActivityAboutMeBinding;
 import lins.com.qz.ui.base.BaseActivity;
 
 import static android.R.attr.action;
+import static lins.com.qz.App.userName;
 
 public class AboutMeActivity extends BaseActivity {
     ActivityAboutMeBinding binding;
@@ -78,7 +79,8 @@ public class AboutMeActivity extends BaseActivity {
     }
     @Override
     protected void getData() {
-        String icon = App.getDaoManager().query(BmobUser.getCurrentUser().getUsername()).getIconurl();
+        App.e("dd",userName);
+        String icon= App.getDaoManager().query(userName).getIconurl();
         App.e("About",icon);
         if (icon!=null &&!"".equals(icon)){
             App.e("About__have",icon);

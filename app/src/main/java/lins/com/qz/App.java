@@ -40,7 +40,8 @@ public class App extends MultiDexApplication {
     private static Tencent mTencent;
     private DaoSession mDaoSession;
     private static DaoManager daoManager;
-
+    public static String userName="";
+    public static String bmobObjectId="";
 
     //扫描
     private static int mainThreadId;
@@ -164,8 +165,8 @@ public class App extends MultiDexApplication {
 
 
     public static void e(String tag,String str){
-        if (str==null){
-            Log.e(tag,"---------|\n"+"！！！！ 传值为空 NULL"+"\n---------");
+        if (str==null||"".equals(str)){
+            Log.e(tag,"---------|\n"+"！！！！ 传值为空 / NULL"+"\n---------");
         }else{
             Log.e(tag,"---------|\n"+str+"\n---------");
         }

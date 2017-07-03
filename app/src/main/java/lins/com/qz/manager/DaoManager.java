@@ -40,8 +40,9 @@ public class DaoManager {
                 .where(LUserDao.Properties.Username.eq(name)).build().unique();
         if(findUser != null) {
             return findUser;
+        }else{
+            return new LUser("","","");
         }
-        return new LUser("","","");
     }
 
     public LUser lUserQuery() {

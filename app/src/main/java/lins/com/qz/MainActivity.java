@@ -47,6 +47,7 @@ import lins.com.qz.bean.locationBean.LUser;
 import lins.com.qz.databinding.ActivityMainBinding;
 import lins.com.qz.manager.FrdsManager;
 import lins.com.qz.thirdparty.codecamera.CaptureActivity;
+import lins.com.qz.thirdparty.codecamera.EncodeQrActivity;
 import lins.com.qz.ui.AboutMeActivity;
 import lins.com.qz.ui.EditUserInfoActivity;
 import lins.com.qz.ui.ShowActivity;
@@ -243,7 +244,7 @@ public class MainActivity extends BaseActivity implements QShareIO {
     private void navClick() {
         startActivityWith(addActivity.class, binding.layoutNav.llAdd);
         startActivityWith(AboutMeActivity.class, binding.layoutNav.llMe);
-        startActivityWith(EditUserInfoActivity.class, binding.layoutNav.ivNavHead);
+        startActivityWith(EncodeQrActivity.class, binding.layoutNav.ivNavHead);
         //关于
         binding.layoutNav.llAbout.setOnClickListener(new View.OnClickListener() {
             @Override

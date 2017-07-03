@@ -105,6 +105,13 @@ public class SaveService extends IntentService {
     private void handleActionFoo(String age, String sex, String note, String iconurl, final String rongid) {
         final BmobUser bmobUser = BmobUser.getCurrentUser();
         final LUser lUser = new LUser();
+        final String name = bmobUser.getUsername();
+        final String email = bmobUser.getEmail();
+        final String phone = bmobUser.getMobilePhoneNumber();
+        final String objid = bmobUser.getObjectId();
+        App.userName=name;
+        App.bmobObjectId = objid;
+
         lUser.setAge(age);
         lUser.setSex(sex);
         lUser.setNote(note);
@@ -114,12 +121,12 @@ public class SaveService extends IntentService {
         if (rongid != null && !"".equals(rongid)) {
             lUser.setRongid(rongid);
             App.setSharedData(Config.USER_RONG_UUID,rongid);
-            lUser.setObjectid(bmobUser.getObjectId());
-            lUser.setUsername(bmobUser.getUsername());
-            lUser.setEmail(bmobUser.getEmail());
-            lUser.setPhone(bmobUser.getMobilePhoneNumber());
+            lUser.setObjectid(objid);
+            lUser.setUsername(name);
+            lUser.setEmail(email);
+            lUser.setPhone(phone);
             App.getDaoManager().insert(lUser);
-            Log.e("后台保存的数据LUser", App.getDaoManager().query(bmobUser.getUsername()).toString());
+            Log.e("后台保存的数据LUser", App.getDaoManager().query(name).toString());
         } else {
             Log.e("login","登录账户无融云IM，生成ing");
             final String rong=App.getUUID();
@@ -132,22 +139,22 @@ public class SaveService extends IntentService {
                 public void done(BmobException e) {
                     if (e==null){
                         Log.e("rong","生成融云IM账户id----更新成功");
-                        lUser.setObjectid(bmobUser.getObjectId());
-                        lUser.setUsername(bmobUser.getUsername());
-                        lUser.setEmail(bmobUser.getEmail());
-                        lUser.setPhone(bmobUser.getMobilePhoneNumber());
+                        lUser.setObjectid(objid);
+                        lUser.setUsername(name);
+                        lUser.setEmail(email);
+                        lUser.setPhone(phone);
                         App.getDaoManager().insert(lUser);
-                        Log.e("后台保存的数据LUser", App.getDaoManager().query(bmobUser.getUsername()).toString());
+                        Log.e("后台保存的数据LUser", App.getDaoManager().query(name).toString());
                         VolleyUtil.getInstance(App.getContext())
                                 .getToken(rong, App.getSharedData(USER_NAME));
                     }else{
                         Log.e("rong","生成融云IM账户id----更新失败");
-                        lUser.setObjectid(bmobUser.getObjectId());
-                        lUser.setUsername(bmobUser.getUsername());
-                        lUser.setEmail(bmobUser.getEmail());
-                        lUser.setPhone(bmobUser.getMobilePhoneNumber());
+                        lUser.setObjectid(objid);
+                        lUser.setUsername(name);
+                        lUser.setEmail(email);
+                        lUser.setPhone(phone);
                         App.getDaoManager().insert(lUser);
-                        Log.e("后台保存的数据LUser", App.getDaoManager().query(bmobUser.getUsername()).toString());
+                        Log.e("后台保存的数据LUser", App.getDaoManager().query(name).toString());
                     }
                 }
             });
