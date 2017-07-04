@@ -36,12 +36,15 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.UpdateListener;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
 import lins.com.qz.adapter.MainAdapter;
 import lins.com.qz.bean.AddAddress;
 import lins.com.qz.bean.AddAdrMsg;
+import lins.com.qz.bean.PlanBean;
+import lins.com.qz.bean.User;
 import lins.com.qz.bean.locationBean.LChatFrds;
 import lins.com.qz.bean.locationBean.LUser;
 import lins.com.qz.databinding.ActivityMainBinding;
@@ -49,6 +52,7 @@ import lins.com.qz.manager.FrdsManager;
 import lins.com.qz.thirdparty.codecamera.CaptureActivity;
 import lins.com.qz.thirdparty.codecamera.EncodeQrActivity;
 import lins.com.qz.ui.AboutMeActivity;
+import lins.com.qz.ui.AddPlanActivity;
 import lins.com.qz.ui.EditUserInfoActivity;
 import lins.com.qz.ui.ShowActivity;
 import lins.com.qz.ui.SysNotifyActivity;
@@ -87,14 +91,6 @@ public class MainActivity extends BaseActivity implements QShareIO {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0://更新地址列表
-                    Log.e("handler", "更新地址列表数据");
-                    if (App.getHashData(Config.ADDRESS_LIST) != null) {
-                        addressList.clear();
-                        for (AddAddress adr : (List<AddAddress>) getHashData(Config.ADDRESS_LIST)
-                                ) {
-                            addressList.add(adr.getAddr());
-                        }
-                    }
                     binding.content.ryMain.setRefreshing(true);
                     binding.content.ryMain.setRefreshing(false);
 
@@ -106,7 +102,6 @@ public class MainActivity extends BaseActivity implements QShareIO {
 
         }
     };
-    private static List<LUser> partUsers = new ArrayList<LUser>();
     @Override
     protected void initView() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
@@ -119,86 +114,43 @@ public class MainActivity extends BaseActivity implements QShareIO {
 //        ServiceUtil.startServiceUtil(MainActivity.this);
         binding.content.ryMain.setAdapter(mainAdapter = new MainAdapter(MainActivity.this));
         binding.content.ryMain.setLayoutManager(new LinearLayoutManager(this));
+
         bmobUser = BmobUser.getCurrentUser();
 
         addressList = new ArrayList<>();
         adrrPick = new OptionsPickerView(this);
-//        handler.postDelayed(updataNum,2000);
         //注册广播监听器
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Config.MAIN_RECEIVER_ACTION);
         registerReceiver(receiver, intentFilter);
 
 //        sendBroadcast(new Intent(Config.RECEIVER_IN_SERVICE).putExtra("content","0"));
-        //后台获取主页列表条目数
-//        BackService.getMainNum(LoginActivity.this);
 
-//        //后台获取地址列表数据
-//        BmobUser bmobUser = BmobUser.getCurrentUser();
-//        BackService.getAddressList(LoginActivity.this,bmobUser.getObjectId(),"addr");
-
-        //这里作用
-        // 需要获取数据库的好友信息（如id，头像url之类的）遍历出来
-        // 这样在聊天页面才会有相应的头像显示
-//        RongIM.setUserInfoProvider(new RongUserInfoProvide(),true);
         InitChatService.initChatUser(this);
-//        partUsers.add(new LUser("1e60f61ba78d4b8fa1b5c2886b662c0b","ww","http://bmob-cdn-12281.b0.upaiyun.com/2017/06/20/0c6667253a72463cacc8ddf923e399cb.png"));
-//        partUsers.add(new LUser("baa7b5acafb744b383fc9c5cb6aaee18","qq","http://bmob-cdn-12281.b0.upaiyun.com/2017/06/20/0c6667253a72463cacc8ddf923e399cb.png"));
-//        RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
-//            @Override
-//            public UserInfo getUserInfo(String s) {
-//                for (LUser i : partUsers) {
-//                    if (i.getRongid().equals(s)) {
-//                        return new UserInfo(i.getRongid(), i.getUsername(), Uri.parse(i.getIconurl()));
-//                    }
-//                }
-//                Log.e("MainActivity","UserId is "+s);
-////                return new UserInfo("1e60f61ba78d4b8fa1b5c2886b662c0b", "ww", Uri.parse("http://bmob-cdn-12281.b0.upaiyun.com/2017/06/20/0c6667253a72463cacc8ddf923e399cb.png"));
-//        return null;
-//            }
-//        },true);
 
     }
-//    Runnable updataNum=new Runnable() {
-//        @Override
-//        public void run() {
-//            BackService.getMainNum(MainActivity.this);
-//            handler.postDelayed(updataNum,2000);
-//        }
-//    };
 
     @Override
     protected void initEvent() {
         navClick();
         initAddrData();
-        //登录融云IM
-//        if (App.getHashData(Config.HAVE_RONG_TOKEN)!=null&&!"".equals(App.getHashData(Config.HAVE_RONG_TOKEN))){
-//            RongUtil.connectRong(App.getSharedData(Config.HAVE_RONG_TOKEN));
-//        }else{
-//            VolleyUtil.getToken(MainActivity.this,"aaaaa","aaaaa");
-//
-//        }
         binding.content.ryMain.setRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 binding.content.toolbar.pbTopRight.setVisibility(View.VISIBLE);
-                if (App.getHashData(Config.ADDRESS_LIST) != null) {
-                    addressList.clear();
-                    for (AddAddress adr : (List<AddAddress>) getHashData(Config.ADDRESS_LIST)
-                            ) {
-                        addressList.add(adr.getAddr());
-                    }
-                }
+                getData();
 //                showDialog("正在更新");
-                getMainData();
+//                getMainData();
             }
         });
         mainAdapter.setOnItemClickListener(new RecyclerArrayAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-//                BackService.getAddressList(MainActivity.this,"asdf","asdf");
-                App.setHashData(Config.ACTIVITY_SEND_DATA, mainAdapter.getAllData().get(position));
-                startActivity(ShowActivity.class);
+                ShowActivity.start(
+                        MainActivity.this,
+                        mainAdapter.getAllData().get(position).getObjectId(),
+                        mainAdapter.getAllData().get(position).getEssay(),
+                        mainAdapter.getAllData().get(position).getCreatedAt());
             }
         });
 
@@ -242,7 +194,7 @@ public class MainActivity extends BaseActivity implements QShareIO {
 
     //侧栏菜单事件
     private void navClick() {
-        startActivityWith(addActivity.class, binding.layoutNav.llAdd);
+        startActivityWith(AddPlanActivity.class, binding.layoutNav.llAdd);
         startActivityWith(AboutMeActivity.class, binding.layoutNav.llMe);
         startActivityWith(EncodeQrActivity.class, binding.layoutNav.ivNavHead);
         //关于
@@ -338,8 +290,37 @@ public class MainActivity extends BaseActivity implements QShareIO {
 
     @Override
     protected void getData() {
-        new FrdsManager().insert(new LChatFrds(null,"ww","1e60f61ba78d4b8fa1b5c2886b662c0b",
-                "http://bmob-cdn-12281.b0.upaiyun.com/2017/06/20/0c6667253a72463cacc8ddf923e399cb.png"));
+        mainAdapter.clear();
+        User user = BmobUser.getCurrentUser(User.class);
+        BmobQuery<PlanBean> query = new BmobQuery<>();
+        query.addWhereEqualTo("author",user);// 查询当前用户的所有帖子
+        query.order("-updatedAt");
+        query.include("author");// 希望在查询帖子信息的同时也把发布人的信息查询出来
+        query.findObjects(new FindListener<PlanBean>() {
+            @Override
+            public void done(List<PlanBean> list, BmobException e) {
+                if (e==null){
+                    mainAdapter.addAll(list);
+                }else{
+                    showToast("获取信息失败");
+                }
+            }
+        });
+        binding.content.toolbar.pbTopRight.setVisibility(View.GONE);
+        //删除帖子
+//        PlanBean p = new PlanBean();
+//        p.remove("author");
+//        p.update("ESIt3334", new UpdateListener() {
+//
+//            @Override
+//            public void done(BmobException e) {
+//                if(e==null){
+//                    Log.i("bmob","成功");
+//                }else{
+//                    Log.i("bmob","失败："+e.getMessage());
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -357,37 +338,37 @@ public class MainActivity extends BaseActivity implements QShareIO {
     }
 
     private void getMainData() {
-        mainAdapter.clear();
-        BmobQuery<AddAdrMsg> shuoBmobQuery = new BmobQuery<>();
-        shuoBmobQuery.addWhereEqualTo("addr", App.getSharedData(Config.AT_ADDRESS));
-//        shuoBmobQuery.setLimit(App.getHashMainNum(Config.NUM_OF_MAIN));
-        shuoBmobQuery.findObjects(new FindListener<AddAdrMsg>() {
-            @Override
-            public void done(List<AddAdrMsg> list, BmobException e) {
-                if (e == null) {
-                    mainAdapter.addAll(list);
-                } else {
-                    showToast("获取数据失败");
-                }
-                binding.content.toolbar.pbTopRight.setVisibility(View.GONE);
-//                closeDialog();
-            }
-        });
+//        mainAdapter.clear();
+//        BmobQuery<AddAdrMsg> shuoBmobQuery = new BmobQuery<>();
+//        shuoBmobQuery.addWhereEqualTo("addr", App.getSharedData(Config.AT_ADDRESS));
+////        shuoBmobQuery.setLimit(App.getHashMainNum(Config.NUM_OF_MAIN));
+//        shuoBmobQuery.findObjects(new FindListener<AddAdrMsg>() {
+//            @Override
+//            public void done(List<AddAdrMsg> list, BmobException e) {
+//                if (e == null) {
+//                    mainAdapter.addAll(list);
+//                } else {
+//                    showToast("获取数据失败");
+//                }
+//                binding.content.toolbar.pbTopRight.setVisibility(View.GONE);
+////                closeDialog();
+//            }
+//        });
     }
 
     void initAddrData() {
-        if (App.getHashData(Config.ADDRESS_LIST) != null) {
-            for (AddAddress adr : (List<AddAddress>) getHashData(Config.ADDRESS_LIST)
-                    ) {
-                addressList.add(adr.getAddr());
-            }
-        } else {
-            addressList.add("nothing");
-        }
-
-        adrrPick.setPicker(addressList);
-        adrrPick.setCyclic(false);
-        adrrPick.setSelectOptions(0);
+//        if (App.getHashData(Config.ADDRESS_LIST) != null) {
+//            for (AddAddress adr : (List<AddAddress>) getHashData(Config.ADDRESS_LIST)
+//                    ) {
+//                addressList.add(adr.getAddr());
+//            }
+//        } else {
+//            addressList.add("nothing");
+//        }
+//
+//        adrrPick.setPicker(addressList);
+//        adrrPick.setCyclic(false);
+//        adrrPick.setSelectOptions(0);
     }
 
     //广播：用于接收相应相应的事件

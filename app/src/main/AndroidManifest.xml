@@ -379,11 +379,13 @@
         <activity android:name=".thirdparty.codecamera.CaptureActivity" />
         <activity
             android:name=".thirdparty.codecamera.EncodeQrActivity"
-            android:label="@string/title_activity_encode_qr"></activity>
+            android:label="@string/title_activity_encode_qr" />
 
         <service
             android:name=".utils.IntentServiceUtil.InitChatService"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <activity android:name=".ui.AddPlanActivity"></activity>
     </application>
 
 </manifest>

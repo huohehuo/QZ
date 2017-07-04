@@ -17,7 +17,9 @@ import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.model.Conversation;
 import lins.com.qz.R;
 import lins.com.qz.adapter.AboutMeAdapter;
+import lins.com.qz.bean.locationBean.LChatFrds;
 import lins.com.qz.databinding.ConversationlistBinding;
+import lins.com.qz.manager.FrdsManager;
 import lins.com.qz.ui.AboutMeActivity;
 import lins.com.qz.ui.DetailFragment;
 import lins.com.qz.ui.FriendFragment;
@@ -75,5 +77,10 @@ public class IMActivity extends FragmentActivity {
         }else{
             return mConversationFragment;
         }
+    }
+
+    private void getFriendList(){
+        new FrdsManager().insert(new LChatFrds(null,"ww","1e60f61ba78d4b8fa1b5c2886b662c0b",
+                "http://bmob-cdn-12281.b0.upaiyun.com/2017/06/20/0c6667253a72463cacc8ddf923e399cb.png"));
     }
 }

@@ -1,24 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/activity_show"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="25dp"
-        android:orientation="vertical"
-        tools:context="lins.com.qz.ui.ShowActivity">
+        android:orientation="vertical">
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/top_bar"/>
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp">
 
-        <TextView
-            android:id="@+id/tv_titile"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="salkdjf" />
+            android:layout_margin="10dp"
+            android:layout_height="200dp">
 
-        <TextView
-            android:id="@+id/tv_word"
+            <TextView
+                android:id="@+id/tv_essay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="我的计划"
+                android:textSize="25sp" />
+            <View
+                android:id="@+id/llll"
+                android:layout_above="@+id/rl_llll"
+                android:layout_width="match_parent"
+                android:layout_height="0.6dp"
+                android:background="#aaaaaa"/>
+            <RelativeLayout
+                android:id="@+id/rl_llll"
+                android:layout_below="@+id/tv_main_essay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:text="2012-10-10"
+                    android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/tv_favour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toLeftOf="@+id/iv_favour"
+                    android:text="1人喜欢" />
+
+                <ImageView
+                    android:id="@+id/iv_favour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/add" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+        <com.jude.easyrecyclerview.EasyRecyclerView
+            android:id="@+id/ry_comment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="salkdjf" />
+            android:layout_height="match_parent"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:recyclerClipToPadding="true"
+            app:recyclerPadding="8dp"
+            app:recyclerPaddingBottom="8dp"
+            app:recyclerPaddingLeft="8dp"
+            app:recyclerPaddingRight="8dp"
+            app:recyclerPaddingTop="8dp"
+            app:scrollbarStyle="insideOverlay"
+            app:scrollbars="none" />
+
     </LinearLayout>
 </layout>

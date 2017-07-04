@@ -84,8 +84,9 @@ public class InitChatService extends IntentService {
     }
 
     /**
-     * Handle action Foo in the provided background thread with the provided
-     * parameters.
+     * //这里作用
+     // 需要获取数据库的好友信息（如id，头像url之类的）遍历出来
+     // 这样在聊天页面才会有相应的头像显示
      */
     private void handleActionFoo() {
         FrdsManager manager = new FrdsManager();

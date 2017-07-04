@@ -12,15 +12,15 @@ import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 
 import lins.com.qz.App;
 import lins.com.qz.R;
-import lins.com.qz.bean.PlanBean;
+import lins.com.qz.bean.PlanComment;
 
 
 /**
  * Created by LINS on 2017/5/2.
  */
 
-public class MainAdapter extends RecyclerArrayAdapter<PlanBean>{
-    public MainAdapter(Context context) {
+public class CommentAdapter extends RecyclerArrayAdapter<PlanComment>{
+    public CommentAdapter(Context context) {
         super(context);
     }
 
@@ -28,28 +28,21 @@ public class MainAdapter extends RecyclerArrayAdapter<PlanBean>{
     public BaseViewHolder OnCreateViewHolder(ViewGroup parent, int viewType) {
         return new MainHolder(parent);
     }
-    class MainHolder extends BaseViewHolder<PlanBean>{
+    class MainHolder extends BaseViewHolder<PlanComment>{
 
-        private TextView time;
-        private TextView eesay;
-        private ImageView favour;
-        private TextView num;
+        private TextView comment;
         public MainHolder(ViewGroup parent) {
-            super(parent, R.layout.item_plan);
-            time = $(R.id.tv_time);
-            eesay = $(R.id.tv_main_essay);
-            num = $(R.id.tv_favour);
-            favour = $(R.id.iv_favour);
+            super(parent, R.layout.item_comment);
+            comment = $(R.id.tv_comment);
         }
 
         @Override
-        public void setData(PlanBean data) {
+        public void setData(PlanComment data) {
             super.setData(data);
-            eesay.setText(data.getEssay());
-            time.setText(data.getCreatedAt());
+            comment.setText(data.getContent());
 //            num.setText(data.getFavour().get__op());
             
-            favour.setOnClickListener(new View.OnClickListener() {
+            comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(App.getContext(), "喜欢+1", Toast.LENGTH_SHORT).show();
