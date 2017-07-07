@@ -1,25 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="20dp"
-    android:orientation="vertical">
-<RelativeLayout
-    android:layout_margin="10dp"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
+    android:layout_height="200dp">
+
+    <ImageView
+        android:id="@+id/iv_sys_txt_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="标题"
-        android:textSize="25sp"
-        android:id="@+id/tv_sys_title"/>
-    <TextView
-        android:layout_below="@+id/tv_sys_title"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:background="#e9c257"
+        android:minHeight="180dp"
+        android:src="@drawable/add" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="正文"
-        android:textSize="20sp"
-        android:id="@+id/tv_sys_word"/>
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:background="#a02e2e2e"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_sys_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="标题"
+            android:layout_marginLeft="20dp"
+            android:textColor="#ffffff"
+            android:textSize="25sp" />
+    </LinearLayout>
+
 </RelativeLayout>
-</android.support.v7.widget.CardView>
+

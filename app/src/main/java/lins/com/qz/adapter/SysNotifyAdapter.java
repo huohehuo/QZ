@@ -3,8 +3,10 @@ package lins.com.qz.adapter;
 import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 
@@ -22,30 +24,54 @@ public class SysNotifyAdapter extends RecyclerArrayAdapter<SysNotify>{
 
     @Override
     public BaseViewHolder OnCreateViewHolder(ViewGroup parent, int viewType) {
-        return new SysHolder(parent);
+        if (getViewType(viewType)==1){
+            return new SysHolder(parent);
+        }else{
+            return new SysHolderForPic(parent);
+        }
     }
 
+    @Override
+    public int getViewType(int position) {
+        return Integer.valueOf(getAllData().get(position).getType())-1;
+    }
 
     class SysHolder extends BaseViewHolder<SysNotify>{
-        private TextView title,url;
+        private TextView title;
+        private ImageView txt_bg;
         public SysHolder(ViewGroup parent) {
             super(parent, R.layout.item_sys_notify);
-
             title = $(R.id.tv_sys_title);
-            url = $(R.id.tv_sys_word);
+            txt_bg = $(R.id.iv_sys_txt_bg);
         }
 
         @Override
         public void setData(SysNotify data) {
             super.setData(data);
             title.setText(data.getTitle());
-            url.setText(data.getUrl());
+            Glide.with(getContext())
+                    .load(data.getBgurl())
+                    .placeholder(R.mipmap.ic_launcher)
+                    .centerCrop()
+                    .into(txt_bg);
+        }
+    }
 
-            //            Glide.with(getContext())
-//                    .load(data.getPic())
-//                    .placeholder(R.mipmap.ic_launcher)
-//                    .centerCrop()
-//                    .into(imageView);
+    class SysHolderForPic extends BaseViewHolder<SysNotify>{
+        private ImageView txt_bg;
+        public SysHolderForPic(ViewGroup parent) {
+            super(parent, R.layout.item_sys_notify_for_only_pic);
+            txt_bg = $(R.id.iv_sys_pic);
+        }
+
+        @Override
+        public void setData(SysNotify data) {
+            super.setData(data);
+            Glide.with(getContext())
+                    .load(data.getBgurl())
+                    .placeholder(R.mipmap.ic_launcher)
+                    .centerCrop()
+                    .into(txt_bg);
         }
     }
 }

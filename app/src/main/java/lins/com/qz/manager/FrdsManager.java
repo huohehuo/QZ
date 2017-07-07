@@ -37,6 +37,26 @@ public class FrdsManager {
 //        mainAdapter.notifyDataSetChanged();
     }
 
+    public void insertList(List<LChatFrds> mainBean) {
+        LChatFrdsDao mainBeanDao = GreenDaoManager.getInstance().getSession().getLChatFrdsDao();
+        for (int i=0;i<mainBean.size();i++){
+            //先查找是否存在
+            LChatFrds findUser = mainBeanDao.queryBuilder()
+                    .where(LChatFrdsDao.Properties.Name.eq(mainBean.get(i).getName())).build().unique();
+            //若存在，删除再添加
+            if(findUser != null) {
+                delete(mainBean.get(i));
+                mainBeanDao.insert(mainBean.get(i));
+            }else{
+                mainBeanDao.insert(mainBean.get(i));
+            }
+        }
+
+//        list.clear();
+//        list.addAll(mainBeanDao.queryBuilder().build().list());
+//        mainAdapter.notifyDataSetChanged();
+    }
+
     public List<LChatFrds> queryList(String LChatFrdsid) {
         List<LChatFrds> list = new ArrayList<>();
         LChatFrdsDao userDao = GreenDaoManager.getInstance().getSession().getLChatFrdsDao();

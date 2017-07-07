@@ -27,6 +27,7 @@
             app:scrollbarStyle="insideOverlay"
             app:scrollbars="none" />
         <ImageView
+            android:visibility="gone"
             android:id="@+id/iv_choose_addr"
             android:layout_alignParentBottom="true"
             android:layout_margin="15dp"

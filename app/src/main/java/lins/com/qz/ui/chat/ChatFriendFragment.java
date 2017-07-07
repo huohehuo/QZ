@@ -11,13 +11,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import io.rong.imkit.RongIM;
+import lins.com.qz.App;
 import lins.com.qz.R;
 import lins.com.qz.adapter.FriendAdapter;
+import lins.com.qz.bean.AddAddress;
+import lins.com.qz.bean.User;
+import lins.com.qz.bean.locationBean.LChatFrds;
 import lins.com.qz.databinding.FragmentMyFriendBinding;
 import lins.com.qz.manager.FrdsManager;
+import lins.com.qz.utils.IntentServiceUtil.InitChatService;
 
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * A fragment with a Google +1 button.
@@ -97,26 +109,25 @@ public class ChatFriendFragment extends Fragment {
         binding.ryFriendlist.setAdapter(adapter = new FriendAdapter(getActivity()));
         binding.ryFriendlist.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        //查询数据库并添加好友信息
-        adapter.addAll(frdsManager.queryAll());
+
+        getAllUser();
 
 
-        binding.ryFriendlist.setRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-//                adapter.add("很棒啊");
-            }
-        });
+//        //查询数据库并添加好友信息
+//        adapter.addAll(frdsManager.queryAll());
 
+        //刷新
         binding.ryFriendlist.setRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 //查询数据库并添加好友信息
-                adapter.addAll(frdsManager.queryAll());
+//                adapter.addAll(frdsManager.queryAll());
+                getAllUser();
                 adapter.notifyDataSetChanged();
             }
         });
 
+        //点击好友聊天
         adapter.setOnItemClickListener(new RecyclerArrayAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -138,6 +149,41 @@ public class ChatFriendFragment extends Fragment {
         return binding.getRoot();
     }
 
+    private void getAllUser(){
+        BmobQuery<User> shuoBmobQuery = new BmobQuery<>();
+//        shuoBmobQuery.addWhereEqualTo("username", "asdf");
+//        shuoBmobQuery.setLimit(App.getHashMainNum(Config.NUM_OF_MAIN));
+        shuoBmobQuery.findObjects(new FindListener<User>() {
+            @Override
+            public void done(List<User> list, BmobException e) {
+                if (e == null) {
+                    getUser(list);
+                    for (int i = 0;i<list.size();i++){
+                    Log.e("getuser", list.get(i).toString());
+
+                    }
+
+                } else {
+                    Log.e("queryUser","查询用户失败");
+                }
+            }
+        });
+    }
+
+    private void getUser(List<User> list){
+        List<LChatFrds> lChatFrdses = new ArrayList<>();
+        for (User user:list) {
+            if (App.userName.equals(user.getUsername())){
+                continue;
+            }
+            lChatFrdses.add(new LChatFrds(null,user.getUsername(),user.getRongid(),user.getIconpic()));
+        }
+        //查询数据库并添加好友信息
+        adapter.addAll(lChatFrdses);
+        new FrdsManager().insertList(lChatFrdses);
+        InitChatService.initChatUser(getActivity());
+        adapter.notifyDataSetChanged();
+    }
     @Override
     public void onResume() {
         super.onResume();

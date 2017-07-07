@@ -10,6 +10,7 @@ public class SysNotify {
     private String title;
     private String url;
     private String bgurl;
+    private String type;
     private String createtime;
 
 
@@ -53,6 +54,14 @@ public class SysNotify {
         this.createtime = createtime;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "SysNotify{" +
@@ -60,6 +69,7 @@ public class SysNotify {
                 ", title='" + title + '\'' +
                 ", url='" + url + '\'' +
                 ", bgurl='" + bgurl + '\'' +
+                ", type='" + type + '\'' +
                 ", createtime='" + createtime + '\'' +
                 '}';
     }

@@ -10,6 +10,8 @@ public class Config {
 
     public static final String USER_NAME="user_name";
     public static final String USER_PWD="user_pwd";
+    public static final String USER_SEX="user_sex";
+    public static final String USER_HEAD_ICON="user_head_icon";
     public static final String IS_AUTO_LOGIN="is_auto_login";
     public static String NUM_OF_MAIN="num_of_main";
     public static String ACTIVITY_SEND_DATA="activity_to_activity_send_data";

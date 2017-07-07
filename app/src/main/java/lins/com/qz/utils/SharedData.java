@@ -3,6 +3,9 @@ package lins.com.qz.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import lins.com.qz.Config;
+import lins.com.qz.bean.User;
+
 /**
  * Created by aid on 9/18/16.
  */
@@ -28,6 +31,12 @@ public class SharedData {
     }
     public void clearShareData(){
         kv.getAll().clear();
+    }
+
+    public void saveUser(User user){
+        kv.edit().putString(Config.USER_NAME,user.getUsername()).apply();
+        kv.edit().putString(Config.USER_SEX,user.getSex()).apply();
+        kv.edit().putString(Config.USER_HEAD_ICON,user.getIconpic()).apply();
     }
 
 }

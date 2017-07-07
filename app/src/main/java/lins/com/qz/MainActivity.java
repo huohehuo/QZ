@@ -22,6 +22,7 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import com.bigkoo.pickerview.OptionsPickerView;
+import com.bumptech.glide.Glide;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import com.tencent.connect.share.QQShare;
 import com.tencent.tauth.Tencent;
@@ -38,6 +39,7 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 import io.rong.imkit.RongIM;
+import io.rong.imkit.manager.IUnReadMessageObserver;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
 import lins.com.qz.adapter.MainAdapter;
@@ -60,6 +62,7 @@ import lins.com.qz.ui.addActivity;
 import lins.com.qz.ui.base.BaseActivity;
 import lins.com.qz.ui.chat.IMActivity;
 import lins.com.qz.ui.login.LoginActivity;
+import lins.com.qz.utils.BadgeUtil;
 import lins.com.qz.utils.IntentServiceUtil.InitChatService;
 import lins.com.qz.utils.share.QShareIO;
 import lins.com.qz.utils.share.QShareListener;
@@ -165,6 +168,7 @@ public class MainActivity extends BaseActivity implements QShareIO {
             }
         });
 
+        //选择日期（弃）
         binding.content.ivChooseAddr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -181,6 +185,7 @@ public class MainActivity extends BaseActivity implements QShareIO {
             }
         });
 
+        //进入聊天Activity
         binding.content.toolbar.ivTopRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -197,6 +202,9 @@ public class MainActivity extends BaseActivity implements QShareIO {
         startActivityWith(AddPlanActivity.class, binding.layoutNav.llAdd);
         startActivityWith(AboutMeActivity.class, binding.layoutNav.llMe);
         startActivityWith(EncodeQrActivity.class, binding.layoutNav.ivNavHead);
+        //设置侧滑栏的头像
+        Glide.with(this).load("".equals(App.getSharedData(Config.USER_HEAD_ICON))?"":
+                App.getSharedData(Config.USER_HEAD_ICON)).into(binding.layoutNav.ivNavHead);
         //关于
         binding.layoutNav.llAbout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -249,7 +257,6 @@ public class MainActivity extends BaseActivity implements QShareIO {
         binding.layoutNav.llExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RongIM.getInstance().logout();
                 //<a href="myapp://jp.app/openwith?name=zhangsan&age=26">启动应用程序</a>
 //                String url = "gotoapp://apphost/openwith?name=zhangsan&age=26";
 //                String scheme = Uri.parse(url).getScheme();//还需要判断host
@@ -258,6 +265,7 @@ public class MainActivity extends BaseActivity implements QShareIO {
 //                    startActivity(intent);
 //                }
 
+                RongIM.getInstance().logout();//退出融云IM
                 App.clearShareData();
                 startActivity(LoginActivity.class);
                 finish();
@@ -290,6 +298,7 @@ public class MainActivity extends BaseActivity implements QShareIO {
 
     @Override
     protected void getData() {
+        getMessageNum();
         mainAdapter.clear();
         User user = BmobUser.getCurrentUser(User.class);
         BmobQuery<PlanBean> query = new BmobQuery<>();
@@ -395,6 +404,18 @@ public class MainActivity extends BaseActivity implements QShareIO {
         unregisterReceiver(receiver);
 //        ServiceUtil.stopServiceUtil(MainActivity.this);
         super.onDestroy();
+    }
+
+    private void getMessageNum(){
+        // 设置未读消息监听数
+        RongIM.getInstance().addUnReadMessageCountChangedObserver(new IUnReadMessageObserver() {
+            @Override
+            public void onCountChanged(int i) {
+                Log.e("数目：",""+i);
+                BadgeUtil.setBadgeCount(App.getContext(), i);
+                binding.content.toolbar.tvTopRight.setText(""+i);
+            }
+        });
     }
 
     /**

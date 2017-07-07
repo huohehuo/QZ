@@ -20,6 +20,7 @@ import cn.bmob.v3.BmobUser;
 import cn.jpush.android.api.JPushInterface;
 import io.rong.imkit.RongIM;
 import lins.com.qz.bean.AddAddress;
+import lins.com.qz.bean.User;
 import lins.com.qz.bean.gen.DaoMaster;
 import lins.com.qz.bean.gen.DaoSession;
 import lins.com.qz.manager.DaoManager;
@@ -79,6 +80,10 @@ public class App extends MultiDexApplication {
     }
     public static Handler getHandler() {
         return handler;
+    }
+
+    public static void setUser(User user){
+        new SharedData(mContext).saveUser(user);
     }
     public static String getSharedData(String key) {
         return new SharedData(mContext).getString(key,"0");

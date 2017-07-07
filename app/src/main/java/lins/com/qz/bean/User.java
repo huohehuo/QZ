@@ -1,5 +1,7 @@
 package lins.com.qz.bean;
 
+import java.io.Serializable;
+
 import cn.bmob.v3.BmobUser;
 
 import static android.R.attr.name;
@@ -8,7 +10,7 @@ import static android.R.attr.name;
  * Created by LINS on 2016/12/20.
  * Please Try Hard
  */
-public class User extends BmobUser {
+public class User extends BmobUser implements Serializable{
     private String sex;
     private String age;
     private String rongid;//为一个唯一的UUID

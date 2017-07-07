@@ -8,13 +8,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
+import io.rong.imkit.manager.IUnReadMessageObserver;
 import io.rong.imlib.model.Conversation;
+import lins.com.qz.App;
 import lins.com.qz.R;
 import lins.com.qz.adapter.AboutMeAdapter;
 import lins.com.qz.bean.locationBean.LChatFrds;
@@ -23,6 +27,7 @@ import lins.com.qz.manager.FrdsManager;
 import lins.com.qz.ui.AboutMeActivity;
 import lins.com.qz.ui.DetailFragment;
 import lins.com.qz.ui.FriendFragment;
+import lins.com.qz.utils.BadgeUtil;
 
 
 /**             会话列表
@@ -42,7 +47,7 @@ public class IMActivity extends FragmentActivity {
         binding.toolbar.tvTopTitle.setText("IM");
         mConversationList  = initConversationList();//获取融云会话列表对象
 
-
+getMessageNum();
         setupViewPager(binding.viewpager);
         binding.tabChat.setupWithViewPager(binding.viewpager);
 
@@ -79,6 +84,16 @@ public class IMActivity extends FragmentActivity {
         }
     }
 
+    private void getMessageNum(){
+        // 设置未读消息监听数
+        RongIM.getInstance().addUnReadMessageCountChangedObserver(new IUnReadMessageObserver() {
+            @Override
+            public void onCountChanged(int i) {
+                Log.e("数目：",""+i);
+                BadgeUtil.setBadgeCount(App.getContext(), i);
+            }
+        });
+    }
     private void getFriendList(){
         new FrdsManager().insert(new LChatFrds(null,"ww","1e60f61ba78d4b8fa1b5c2886b662c0b",
                 "http://bmob-cdn-12281.b0.upaiyun.com/2017/06/20/0c6667253a72463cacc8ddf923e399cb.png"));
