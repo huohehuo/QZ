@@ -13,14 +13,15 @@
             android:layout_height="@dimen/nav_header_height"
             android:background="@color/comment_blue">
 
-            <ImageView
+            <lins.com.qz.utils.piccut.CircleImageView
                 android:id="@+id/iv_nav_head"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="30dp"
                 android:layout_marginLeft="40dp"
-                app:srcCompat="@android:drawable/sym_def_app_icon" />
+                android:src="@drawable/dog"
+                 />
 
             <ImageView
                 android:id="@+id/iv_nav_ewm"

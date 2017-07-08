@@ -1,6 +1,7 @@
 package lins.com.qz.ui;
 
 import android.databinding.DataBindingUtil;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,6 +35,7 @@ public class SysNotifyActivity extends BaseActivity {
         binding= DataBindingUtil.setContentView(this,R.layout.activity_sys_notify);
         binding.toolbar.ivTopArrow.setImageResource(R.drawable.back);
         binding.toolbar.tvTopTitle.setText("系统活动");
+        setToolbarBack(binding.toolbar.ivTopArrow);
         binding.rySysNotify.setAdapter(adapter = new SysNotifyAdapter(SysNotifyActivity.this));
         binding.rySysNotify.setLayoutManager(new LinearLayoutManager(this));
 
@@ -47,10 +49,17 @@ public class SysNotifyActivity extends BaseActivity {
                 WebActivity.start(SysNotifyActivity.this,adapter.getAllData().get(position).getUrl());
             }
         });
+        binding.rySysNotify.setRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getData();
+            }
+        });
     }
 
     @Override
     protected void getData() {
+        binding.rySysNotify.setRefreshing(true);
         BmobQuery<SysNotify> query = new BmobQuery<>();
 //        query.addWhereEqualTo("title",)
         query.findObjects(new FindListener<SysNotify>() {
@@ -58,10 +67,12 @@ public class SysNotifyActivity extends BaseActivity {
             public void done(List<SysNotify> list, BmobException e) {
                 if (e==null){
                     Log.e("get",list.get(0).toString());
+        adapter.clear();
                     adapter.addAll(list);
                 }else{
                     showToast("error");
                 }
+                binding.rySysNotify.setRefreshing(false);
             }
         });
     }

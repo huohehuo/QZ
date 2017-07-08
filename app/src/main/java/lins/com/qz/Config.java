@@ -30,7 +30,7 @@ public class Config {
     //头像
     public static final String PATH_SELECT_AVATAR      = Environment.getExternalStorageDirectory().getAbsolutePath()+"/qz/avatar.png";
 
-    public static final String PATH_SELECT_COVER     =Environment.getExternalStorageDirectory().getAbsolutePath()+"/live36G/cover";
+    public static final String PATH_SELECT_PLAN     =Environment.getExternalStorageDirectory().getAbsolutePath()+"/qz/plan.png";
 
 
     public static final String HAVE_RONG_TOKEN="have_the_token_of_rong";

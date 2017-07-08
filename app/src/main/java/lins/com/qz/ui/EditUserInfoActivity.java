@@ -50,8 +50,9 @@ public class EditUserInfoActivity extends BaseActivity {
     ArrayList<ArrayList<String>> cities;
     OptionsPickerView locationPicker, constellationPicker;
     BmobUser bmobUser;
-    private String iconUrl;
+    private String iconUrl="";
     private String userName;
+    private boolean hasPic=false;
     String sex = "1";
     @Override
     protected void initView() {
@@ -246,30 +247,9 @@ public class EditUserInfoActivity extends BaseActivity {
     //更新用户数据
     private void updataUser(){
         //更新
-        File file =new File(Config.PATH_SELECT_AVATAR);
         //若上一步获取图片失败（或者本地历史存过的地址的缓存图片被删除），则不更新头像，只更新昵称签名之类的
-        if (file==null){
-            User user = new User();
-            user.setUsername(binding.etName.getText().toString());
-            user.setNote("".equals(binding.etNote.getText().toString())?"":binding.etNote.getText().toString());
-            user.update(bmobUser.getObjectId(), new UpdateListener() {
-                @Override
-                public void done(BmobException e) {
-                    if (e==null){
-                        //由于更新前后的昵称可能会有变化，所以本地数据库也要更新相应的昵称,签名，头像
-                        App.getDaoManager().updateUserIconNameNote(userName,"",
-                                BmobUser.getCurrentUser().getUsername(),
-                                binding.etNote.getText().toString());
-                        App.e("updata","用户数据更新成功");
-                        closeDialgWithActivity();
-                    }else{
-                        closeDialog();
-                        showToast("更新失败，请重试");
-                    }
-                }
-            });
-            return;
-        }else{
+        if (hasPic){
+            File file =new File(Config.PATH_SELECT_AVATAR);
             final BmobFile bmobFile = new BmobFile(file);
             bmobFile.uploadblock(new UploadFileListener() {
 
@@ -299,6 +279,8 @@ public class EditUserInfoActivity extends BaseActivity {
                         Log.e("updataIcon","success updata"+ bmobFile.getFileUrl());
                         //bmobFile.getFileUrl()--返回的上传文件的完整地址
                     }else{
+                        showToast("更新错误，图片文件不存在");
+                        closeDialog();
                         Log.e("updataIcon","error updata" + e.getMessage());
 
                     }
@@ -310,7 +292,28 @@ public class EditUserInfoActivity extends BaseActivity {
                     // 返回的上传进度（百分比）
                 }
             });
+        }else{
+            User user = new User();
+            user.setUsername(binding.etName.getText().toString());
+            user.setNote("".equals(binding.etNote.getText().toString())?"":binding.etNote.getText().toString());
+            user.update(bmobUser.getObjectId(), new UpdateListener() {
+                @Override
+                public void done(BmobException e) {
+                    if (e==null){
+                        //由于更新前后的昵称可能会有变化，所以本地数据库也要更新相应的昵称,签名，头像
+                        App.getDaoManager().updateUserIconNameNote(userName,"",
+                                BmobUser.getCurrentUser().getUsername(),
+                                binding.etNote.getText().toString());
+                        App.e("updata","用户数据更新成功");
+                        closeDialgWithActivity();
+                    }else{
+                        closeDialog();
+                        showToast("更新失败，请重试");
+                    }
+                }
+            });
         }
+
 
     }
 
@@ -329,6 +332,9 @@ public class EditUserInfoActivity extends BaseActivity {
                     Log.e("pp","获取到图片");
                     // Glide.with(EditMyInfoActivity.this).load(new File(URL.PATH_SELECT_AVATAR)).into(binding.ciAvatar);
                     Bitmap bitmap = BitmapFactory.decodeFile(Config.PATH_SELECT_AVATAR);
+                    if (bitmap!=null){
+                        hasPic=true;
+                    }
                     binding.ivEditIcon.setImageBitmap(bitmap);
                     Log.e("icon",Config.PATH_SELECT_AVATAR);
 

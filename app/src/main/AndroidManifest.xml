@@ -75,7 +75,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".ui.ShowActivity" />
+        <activity android:name=".ui.ShowPlanActivity" />
         <activity
             android:name=".ui.AccountActivity"
             android:label="@string/title_activity_account"

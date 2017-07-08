@@ -19,19 +19,20 @@ public class SelectPicUtil {
                 switch (id){
                     case SelectPhotoDialog.BN_TAKEPHOTO:
                         CropImageActivity.startActivity(activity, path, true, reusetCode);
-                        selectPhotoDialog.hide();
+                        selectPhotoDialog.dismiss();
                         break;
                     case SelectPhotoDialog.BN_SELECTPHOTO:
                         CropImageActivity.startActivity(activity, path, false, reusetCode);
-                        selectPhotoDialog.hide();
+                        selectPhotoDialog.dismiss();
                         break;
                     case SelectPhotoDialog.BN_CANCEL:
-                        selectPhotoDialog.hide();
+                        selectPhotoDialog.dismiss();
                         break;
                 }
             }
         });
         selectPhotoDialog.show();
+
     }
 
     public static void fShowSelectPhoto(final Fragment fragment, final int resultCode, final String path, final SelectPhotoDialog selectPhotoDialog){

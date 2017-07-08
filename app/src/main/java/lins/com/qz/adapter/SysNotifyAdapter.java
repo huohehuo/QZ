@@ -24,16 +24,16 @@ public class SysNotifyAdapter extends RecyclerArrayAdapter<SysNotify>{
 
     @Override
     public BaseViewHolder OnCreateViewHolder(ViewGroup parent, int viewType) {
-        if (getViewType(viewType)==1){
+        if (viewType==1){//图文布局
             return new SysHolder(parent);
-        }else{
+        }else{//图片布局
             return new SysHolderForPic(parent);
         }
     }
 
     @Override
     public int getViewType(int position) {
-        return Integer.valueOf(getAllData().get(position).getType())-1;
+        return Integer.valueOf(getAllData().get(position).getType());
     }
 
     class SysHolder extends BaseViewHolder<SysNotify>{

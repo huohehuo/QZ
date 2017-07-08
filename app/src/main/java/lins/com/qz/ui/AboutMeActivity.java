@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
 import lins.com.qz.App;
+import lins.com.qz.Config;
 import lins.com.qz.R;
 import lins.com.qz.adapter.AboutMeAdapter;
 import lins.com.qz.databinding.ActivityAboutMeBinding;
@@ -60,7 +61,8 @@ public class AboutMeActivity extends BaseActivity {
                 }
             }
         }else{
-
+            binding.tvName.setText(App.userName);
+            binding.tvSay.setText(App.userName);
         }
 
         binding.toolbar.tvTopRight.setOnClickListener(new View.OnClickListener() {

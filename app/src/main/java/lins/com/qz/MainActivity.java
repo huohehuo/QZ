@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.graphics.Point;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,7 +15,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.widget.LinearLayoutManager;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -37,28 +35,19 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.UpdateListener;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.manager.IUnReadMessageObserver;
 import io.rong.imlib.model.Conversation;
-import io.rong.imlib.model.UserInfo;
 import lins.com.qz.adapter.MainAdapter;
-import lins.com.qz.bean.AddAddress;
-import lins.com.qz.bean.AddAdrMsg;
 import lins.com.qz.bean.PlanBean;
 import lins.com.qz.bean.User;
-import lins.com.qz.bean.locationBean.LChatFrds;
-import lins.com.qz.bean.locationBean.LUser;
 import lins.com.qz.databinding.ActivityMainBinding;
-import lins.com.qz.manager.FrdsManager;
 import lins.com.qz.thirdparty.codecamera.CaptureActivity;
 import lins.com.qz.thirdparty.codecamera.EncodeQrActivity;
 import lins.com.qz.ui.AboutMeActivity;
 import lins.com.qz.ui.AddPlanActivity;
-import lins.com.qz.ui.EditUserInfoActivity;
-import lins.com.qz.ui.ShowActivity;
+import lins.com.qz.ui.ShowPlanActivity;
 import lins.com.qz.ui.SysNotifyActivity;
-import lins.com.qz.ui.addActivity;
 import lins.com.qz.ui.base.BaseActivity;
 import lins.com.qz.ui.chat.IMActivity;
 import lins.com.qz.ui.login.LoginActivity;
@@ -66,8 +55,6 @@ import lins.com.qz.utils.BadgeUtil;
 import lins.com.qz.utils.IntentServiceUtil.InitChatService;
 import lins.com.qz.utils.share.QShareIO;
 import lins.com.qz.utils.share.QShareListener;
-
-import static lins.com.qz.App.getHashData;
 
 public class MainActivity extends BaseActivity implements QShareIO {
     ActivityMainBinding binding;
@@ -108,9 +95,21 @@ public class MainActivity extends BaseActivity implements QShareIO {
     @Override
     protected void initView() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        binding.content.toolbar.ivTopArrow.setImageResource(R.drawable.bulb);
+//        binding.content.toolbar.ivTopArrow.setImageResource(R.drawable.bulb);
         binding.content.toolbar.tvTopTitle.setText("首页"+App.getSharedData(Config.USER_NAME));
         binding.content.toolbar.ivTopRight.setImageResource(R.drawable.add);
+
+        String icon = App.getSharedData(Config.USER_HEAD_ICON);
+        if (!"0".equals(icon)){
+            Glide.with(this)
+                    .load(icon)
+                    .into(binding.content.toolbar.ivTopArrow);
+        }else{
+            Glide.with(this)
+                    .load(R.drawable.dog).
+                    into(binding.content.toolbar.ivTopArrow);
+        }
+
         setDrawerLeftEdgeSize(this, binding.drawerLayout, 0.2f);//设置抽屉滑动响应范围
 
         map.put(Conversation.ConversationType.PRIVATE.getName(), false);
@@ -149,7 +148,7 @@ public class MainActivity extends BaseActivity implements QShareIO {
         mainAdapter.setOnItemClickListener(new RecyclerArrayAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                ShowActivity.start(
+                ShowPlanActivity.start(
                         MainActivity.this,
                         mainAdapter.getAllData().get(position).getObjectId(),
                         mainAdapter.getAllData().get(position).getEssay(),
@@ -203,8 +202,16 @@ public class MainActivity extends BaseActivity implements QShareIO {
         startActivityWith(AboutMeActivity.class, binding.layoutNav.llMe);
         startActivityWith(EncodeQrActivity.class, binding.layoutNav.ivNavHead);
         //设置侧滑栏的头像
-        Glide.with(this).load("".equals(App.getSharedData(Config.USER_HEAD_ICON))?"":
-                App.getSharedData(Config.USER_HEAD_ICON)).into(binding.layoutNav.ivNavHead);
+        String icon = App.getSharedData(Config.USER_HEAD_ICON);
+        if (!"0".equals(icon)){
+            Glide.with(this)
+                    .load(icon)
+                    .into(binding.layoutNav.ivNavHead);
+        }else{
+            Glide.with(this)
+                    .load(R.drawable.dog).
+                    into(binding.layoutNav.ivNavHead);
+        }
         //关于
         binding.layoutNav.llAbout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -299,7 +306,7 @@ public class MainActivity extends BaseActivity implements QShareIO {
     @Override
     protected void getData() {
         getMessageNum();
-        mainAdapter.clear();
+        binding.content.ryMain.setRefreshing(true);
         User user = BmobUser.getCurrentUser(User.class);
         BmobQuery<PlanBean> query = new BmobQuery<>();
         query.addWhereEqualTo("author",user);// 查询当前用户的所有帖子
@@ -309,10 +316,12 @@ public class MainActivity extends BaseActivity implements QShareIO {
             @Override
             public void done(List<PlanBean> list, BmobException e) {
                 if (e==null){
+                    mainAdapter.clear();
                     mainAdapter.addAll(list);
                 }else{
                     showToast("获取信息失败");
                 }
+                    binding.content.ryMain.setRefreshing(false);
             }
         });
         binding.content.toolbar.pbTopRight.setVisibility(View.GONE);

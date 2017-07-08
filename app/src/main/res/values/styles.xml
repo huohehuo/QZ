@@ -112,4 +112,11 @@
         <item name="android:windowHideAnimation">@anim/dialog_exit</item>
         <!-- 指定消失的动画xml  -->
     </style>
+
+
+
+    <style name="PopCommentStyle">
+        <item name="android:windowEnterAnimation">@anim/pop_comment_in</item>
+        <!--<item name="android:windowExitAnimation">@anim/popwindow_anim_list_out</item>-->
+    </style>
 </resources>

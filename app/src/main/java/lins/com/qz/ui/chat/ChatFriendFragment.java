@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import io.rong.imkit.RongIM;
@@ -19,6 +20,7 @@ import lins.com.qz.App;
 import lins.com.qz.R;
 import lins.com.qz.adapter.FriendAdapter;
 import lins.com.qz.bean.AddAddress;
+import lins.com.qz.bean.PlanBean;
 import lins.com.qz.bean.User;
 import lins.com.qz.bean.locationBean.LChatFrds;
 import lins.com.qz.databinding.FragmentMyFriendBinding;
@@ -30,6 +32,8 @@ import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static lins.com.qz.R.drawable.user;
 
 /**
  * A fragment with a Google +1 button.
@@ -150,6 +154,7 @@ public class ChatFriendFragment extends Fragment {
     }
 
     private void getAllUser(){
+        binding.ryFriendlist.setRefreshing(true);
         BmobQuery<User> shuoBmobQuery = new BmobQuery<>();
 //        shuoBmobQuery.addWhereEqualTo("username", "asdf");
 //        shuoBmobQuery.setLimit(App.getHashMainNum(Config.NUM_OF_MAIN));
@@ -157,7 +162,10 @@ public class ChatFriendFragment extends Fragment {
             @Override
             public void done(List<User> list, BmobException e) {
                 if (e == null) {
+                    adapter.clear();
+                    binding.ryFriendlist.setRefreshing(false);
                     getUser(list);
+                    ssss(list);
                     for (int i = 0;i<list.size();i++){
                     Log.e("getuser", list.get(i).toString());
 
@@ -183,6 +191,25 @@ public class ChatFriendFragment extends Fragment {
         new FrdsManager().insertList(lChatFrdses);
         InitChatService.initChatUser(getActivity());
         adapter.notifyDataSetChanged();
+    }
+    //查出相应的发布计划数据
+    private void ssss(List<User> users){
+        User user =users.get(0);
+        BmobQuery<PlanBean> query = new BmobQuery<>();
+            query.addWhereEqualTo("author",user);// 查询当前用户的所有帖子
+            query.order("-updatedAt");
+            query.include("author");// 希望在查询帖子信息的同时也把发布人的信息查询出来
+            query.findObjects(new FindListener<PlanBean>() {
+                @Override
+                public void done(List<PlanBean> list, BmobException e) {
+                    if (e==null){
+                        Log.e("getUserList",list.get(0).toString());
+                    }else{
+                        Log.e("getUserList","错误。。。。。");
+                    }
+                }
+            });
+
     }
     @Override
     public void onResume() {

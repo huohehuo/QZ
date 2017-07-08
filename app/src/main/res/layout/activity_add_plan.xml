@@ -23,12 +23,19 @@
                 android:layout_height="150dp"
                 android:hint="这周计划是什么呢"
                 android:textColorHint="#aaaaaa"
-                android:padding="18dp"
+                android:paddingRight="110dp"
                 android:background="@drawable/bg_edittext"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
-
+            <ImageView
+                android:id="@+id/iv_add"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/dog"
+                android:layout_marginRight="10dp"
+                android:layout_alignParentRight="true"/>
 
         </RelativeLayout>
 

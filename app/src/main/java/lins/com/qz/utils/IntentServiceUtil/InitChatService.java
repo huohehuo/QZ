@@ -95,7 +95,7 @@ public class InitChatService extends IntentService {
         partUsers.add(new LChatFrds(null,
                 App.getSharedData(Config.USER_NAME),
                 App.getSharedData(Config.USER_RONG_UUID),
-                "http://bmob-cdn-12281.b0.upaiyun.com/2017/07/03/56e257a2c700445c8729bbfc877dec4a.png"));
+                App.getSharedData(Config.USER_HEAD_ICON)));
 //        partUsers.add(new LUser("1e60f61ba78d4b8fa1b5c2886b662c0b","ww","http://bmob-cdn-12281.b0.upaiyun.com/2017/06/20/0c6667253a72463cacc8ddf923e399cb.png"));
 //        partUsers.add(new LUser("baa7b5acafb744b383fc9c5cb6aaee18","qq","http://bmob-cdn-12281.b0.upaiyun.com/2017/06/20/0c6667253a72463cacc8ddf923e399cb.png"));
         RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
@@ -104,7 +104,7 @@ public class InitChatService extends IntentService {
                 for (LChatFrds i : partUsers) {
                         Log.e("initchat：","获得一个chat:"+i.toString());
                     if (i.getRongid().equals(s)) {
-                        return new UserInfo(i.getRongid(), i.getName(), Uri.parse(i.getHead_icon()));
+                        return new UserInfo(i.getRongid(), i.getName(), Uri.parse(i.getHead_icon()==null?"":i.getHead_icon()));
                     }
                 }
                 Log.e("initchat","UserId is "+s);

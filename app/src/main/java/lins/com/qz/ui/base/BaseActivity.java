@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         getData();//加载数据
 
         bmobUser = BmobUser.getCurrentUser();
+    }
+
+    //设置基本的返回键，结束Activity
+    public void setToolbarBack(ImageView view){
+        view.setImageResource(R.drawable.back);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
 //    public void setToolBar(String )
