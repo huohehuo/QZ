@@ -363,7 +363,7 @@
 
         <activity android:name=".ui.SysNotifyActivity" />
         <activity android:name=".ui.WebActivity" />
-        <activity android:name=".ui.AboutMeActivity">
+        <activity android:name=".ui.account.AboutMeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

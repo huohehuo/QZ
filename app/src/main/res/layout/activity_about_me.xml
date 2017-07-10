@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="lins.com.qz.ui.AboutMeActivity">
+        tools:context="lins.com.qz.ui.account.AboutMeActivity">
 
         <include
             android:id="@+id/toolbar"
@@ -16,10 +16,11 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="150dp">
-            <ImageView
+            <com.flaviofaria.kenburnsview.KenBurnsView
                 android:id="@+id/ivImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:alpha="0.7"
                 android:background="@color/app_bg"
                 android:fitsSystemWindows="true" />
 

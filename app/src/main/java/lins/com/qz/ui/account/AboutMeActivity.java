@@ -1,26 +1,20 @@
-package lins.com.qz.ui;
+package lins.com.qz.ui.account;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
 
-import cn.bmob.v3.Bmob;
-import cn.bmob.v3.BmobUser;
 import lins.com.qz.App;
-import lins.com.qz.Config;
 import lins.com.qz.R;
 import lins.com.qz.adapter.AboutMeAdapter;
 import lins.com.qz.databinding.ActivityAboutMeBinding;
+import lins.com.qz.ui.EditUserInfoActivity;
 import lins.com.qz.ui.base.BaseActivity;
 
-import static android.R.attr.action;
 import static lins.com.qz.App.userName;
 
 public class AboutMeActivity extends BaseActivity {
@@ -75,8 +69,8 @@ public class AboutMeActivity extends BaseActivity {
     private void setupViewPager(ViewPager mViewPager) {
         AboutMeAdapter adapter = new AboutMeAdapter(getSupportFragmentManager());
         adapter.addFragment(DetailFragment.newInstance("有没有很棒"),"详细资料");
-        adapter.addFragment(new FriendFragment(),"我的计划");
-        adapter.addFragment(DetailFragment.newInstance( "有有有"),"关注");
+        adapter.addFragment(new PlanFragment(),"我的计划");
+//        adapter.addFragment(DetailFragment.newInstance( "有有有"),"关注");
         mViewPager.setAdapter(adapter);
     }
     @Override
@@ -91,6 +85,11 @@ public class AboutMeActivity extends BaseActivity {
 //                .placeholder(R.drawable.ic_account_circle)
                     .fitCenter()
                     .into(binding.ivicon);
+            Glide.with(AboutMeActivity.this)
+                    .load(icon)
+//                .placeholder(R.drawable.ic_account_circle)
+                    .fitCenter()
+                    .into(binding.ivImage);
         }else{
             App.e("About__nothing",icon);
             Glide.with(AboutMeActivity.this)
@@ -98,6 +97,11 @@ public class AboutMeActivity extends BaseActivity {
 //                .placeholder(R.drawable.ic_account_circle)
                     .fitCenter()
                     .into(binding.ivicon);
+            Glide.with(AboutMeActivity.this)
+                    .load("https://github.com/huohehuo/QZ/blob/master/app/src/main/res/drawable/mricon.png?raw=true")
+//                .placeholder(R.drawable.ic_account_circle)
+                    .fitCenter()
+                    .into(binding.ivImage);
         }
     }
 }

@@ -2,26 +2,25 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="20dp"
+    android:layout_marginTop="10dp"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="7dp">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/ll_top"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
             <TextView
                 android:gravity="center"
                 android:id="@+id/tv_main_essay"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:minHeight="100dp"
                 android:layout_below="@+id/ll_top"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:maxLines="5"
                 android:textColor="#aaaaaa"
                 android:ellipsize="end"
@@ -29,62 +28,6 @@
                 android:padding="19dp"
                 android:text="周末周末速度快速扩大反抗是肯德基哈萨克水陆空间的浪费空间上看到路上看见对方离开教室里的开发建设了款到即发螺丝扣得分酸辣粉森林砍伐"/>
 
-
-            <android.support.v7.widget.CardView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="150dp"
-            android:layout_margin="5dp"
-            android:layout_toRightOf="@+id/iv_main_bg">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_toRightOf="@+id/iv_main_bg"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <TextView
-                    android:id="@+id/tvppp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:text="评论:"
-                    android:textSize="18sp" />
-
-                <View
-                    android:id="@+id/vvv"
-                    android:layout_below="@id/tvppp"
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="#b3aaaaaa" />
-
-                <TextView
-                    android:id="@+id/tv_one"
-                    android:layout_below="@id/vvv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="真好看" />
-
-                <TextView
-                    android:layout_below="@+id/tv_one"
-                    android:id="@+id/tv_two"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="真好看" />
-
-                <TextView
-                    android:layout_alignParentBottom="true"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="bottom|right"
-                    android:text="评论数:"
-                    android:textSize="12sp"
-                    android:id="@+id/textView2" />
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
         </LinearLayout>
         <View
             android:id="@+id/llll"

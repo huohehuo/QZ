@@ -5,7 +5,7 @@
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent">
         <com.jude.easyrecyclerview.EasyRecyclerView
-            android:id="@+id/ry_friend"
+            android:id="@+id/ry_plan"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior=

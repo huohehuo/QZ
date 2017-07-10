@@ -44,7 +44,7 @@ import lins.com.qz.bean.User;
 import lins.com.qz.databinding.ActivityMainBinding;
 import lins.com.qz.thirdparty.codecamera.CaptureActivity;
 import lins.com.qz.thirdparty.codecamera.EncodeQrActivity;
-import lins.com.qz.ui.AboutMeActivity;
+import lins.com.qz.ui.account.AboutMeActivity;
 import lins.com.qz.ui.AddPlanActivity;
 import lins.com.qz.ui.ShowPlanActivity;
 import lins.com.qz.ui.SysNotifyActivity;

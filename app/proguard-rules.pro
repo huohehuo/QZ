@@ -36,3 +36,6 @@
  -dontnote io.rong.**
 
 -keep class lins.com.qz.utils.RongReceiver {*;}
+
+-keep class me.jessyan.progressmanager.** { *; }
+-keep interface me.jessyan.progressmanager.** { *; }

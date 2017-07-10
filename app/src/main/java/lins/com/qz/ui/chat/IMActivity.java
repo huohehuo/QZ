@@ -6,13 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
@@ -24,9 +20,6 @@ import lins.com.qz.adapter.AboutMeAdapter;
 import lins.com.qz.bean.locationBean.LChatFrds;
 import lins.com.qz.databinding.ConversationlistBinding;
 import lins.com.qz.manager.FrdsManager;
-import lins.com.qz.ui.AboutMeActivity;
-import lins.com.qz.ui.DetailFragment;
-import lins.com.qz.ui.FriendFragment;
 import lins.com.qz.utils.BadgeUtil;
 
 
