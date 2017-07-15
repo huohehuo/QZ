@@ -72,7 +72,8 @@ public class WelcomeActivity extends BaseActivity {
                         @Override
                         public void done(User user, BmobException e) {
                             if (e == null){
-                                App.setUser(user);
+                                App.saveObj(Config.OBJ_USER,user);
+//                                App.setUser(user);
                                 //将用户基本信息存入本地
                                 SaveService.startSaveLocationUser(App.getContext(),user.getAge(),
                                         user.getSex(),user.getNote(),user.getIconpic(),user.getRongid());

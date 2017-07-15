@@ -97,7 +97,6 @@ public class VolleyUtil {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // TODO 自动生成的方法存根
 //                        Log.e("连接融云服务器：返回数据：", response);
                         App.e("Volley","连接融云服务器：返回数据："+response);
                         try {

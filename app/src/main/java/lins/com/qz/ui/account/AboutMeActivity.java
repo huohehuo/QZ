@@ -12,7 +12,6 @@ import lins.com.qz.App;
 import lins.com.qz.R;
 import lins.com.qz.adapter.AboutMeAdapter;
 import lins.com.qz.databinding.ActivityAboutMeBinding;
-import lins.com.qz.ui.EditUserInfoActivity;
 import lins.com.qz.ui.base.BaseActivity;
 
 import static lins.com.qz.App.userName;
@@ -33,30 +32,41 @@ public class AboutMeActivity extends BaseActivity {
 
     @Override
     protected void initEvent() {
-        //<a href="myapp://jp.app/openwith?name=zhangsan&age=26">启动应用程序</a>
-        //通过下列方式，在其他activity中启动本acitivity，接收相应数据
-        /*String url = "gotoapp://apphost/openwith?name=zhangsan&age=26";
-        String scheme = Uri.parse(url).getScheme();//还需要判断host
-        if (TextUtils.equals("gotoapp", scheme)) {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(intent);
-        }*/
+//        //<a href="myapp://jp.app/openwith?name=zhangsan&age=26">启动应用程序</a>
+//        //通过下列方式，在其他activity中启动本acitivity，接收相应数据
+//        /*String url = "gotoapp://apphost/openwith?name=zhangsan&age=26";
+//        String scheme = Uri.parse(url).getScheme();//还需要判断host
+//        if (TextUtils.equals("gotoapp", scheme)) {
+//            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//            startActivity(intent);
+//        }*/
         Intent getAction = getIntent();
         if (getAction!=null){
+            App.e("dd","????");
             String action = getAction.getAction();
             if(Intent.ACTION_VIEW.equals(action)){
                 Uri uri = getAction.getData();
                 if(uri != null){
+                    App.e("dd","....../!");
                     String name = uri.getQueryParameter("name");
                     String age= uri.getQueryParameter("age");
                     binding.tvName.setText(name);
                     binding.tvSay.setText(age);
 //                binding.tvMe.setText(name+"\n"+age);
+                }else{
+                    App.e("dd","!!??????/!");
+                    binding.tvName.setText(user.getNickname());
+                    binding.tvSay.setText(user.getNote());
                 }
+            }else{
+                App.e("dd","...else.../!");
+                binding.tvName.setText(user.getNickname());
+                binding.tvSay.setText(user.getNote());
             }
         }else{
-            binding.tvName.setText(App.userName);
-            binding.tvSay.setText(App.userName);
+            App.e("dd","!!!!!");
+            binding.tvName.setText(user.getNickname());
+            binding.tvSay.setText(user.getNote());
         }
 
         binding.toolbar.tvTopRight.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +86,8 @@ public class AboutMeActivity extends BaseActivity {
     @Override
     protected void getData() {
         App.e("dd",userName);
-        String icon= App.getDaoManager().query(userName).getIconurl();
+//        String icon= App.getDaoManager().query(userName).getIconurl();
+        String icon= user.getIconpic();
         App.e("About",icon);
         if (icon!=null &&!"".equals(icon)){
             App.e("About__have",icon);

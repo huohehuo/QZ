@@ -82,11 +82,19 @@ public class App extends MultiDexApplication {
         return handler;
     }
 
-    public static void setUser(User user){
-        new SharedData(mContext).saveUser(user);
-    }
+
+//    public static void setUser(User user){
+//        new SharedData(mContext).saveUser(user);
+//    }
     public static String getSharedData(String key) {
         return new SharedData(mContext).getString(key,"0");
+    }
+
+    public static void saveObj(String key,Object obj){
+        new SharedData(mContext).setObject(key,obj);
+    }
+    public static <T> T getObj(String key){
+        return new SharedData(mContext).getObject(key);
     }
 
     public static void setSharedData(String key,String autoLogin) {
@@ -103,6 +111,7 @@ public class App extends MultiDexApplication {
 //        new KeyValueStorage(getContext()).putString(Config.IS_VIP,"");
 //    }
 
+    //-------------------------HashMap数据操作
     // 存数据*/
     public static void setHashData(String key, Object value) {
         allData.put(key, value);
@@ -126,6 +135,8 @@ public class App extends MultiDexApplication {
     public static void delAllHashData() {
         allData.clear();
     }
+
+    //---------------------------END
     public static Tencent getTencent(){
         return mTencent;
     }

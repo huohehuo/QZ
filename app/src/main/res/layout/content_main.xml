@@ -1,35 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        tools:context="lins.com.qz.MainActivity">
+        android:orientation="vertical">
 
         <include
             android:id="@+id/toolbar"
             layout="@layout/top_bar" />
 
-        <com.jude.easyrecyclerview.EasyRecyclerView
-            android:id="@+id/ry_main"
-            android:layout_below="@+id/toolbar"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:foreground="?android:attr/selectableItemBackground"
-            app:recyclerClipToPadding="true"
-            app:recyclerPaddingBottom="8dp"
-            app:recyclerPaddingTop="8dp"
-            app:scrollbarStyle="insideOverlay"
-            app:scrollbars="none" />
-        <ImageView
-            android:visibility="gone"
-            android:id="@+id/iv_choose_addr"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="15dp"
-            android:src="@drawable/eye"
-            android:layout_width="60dp"
-            android:layout_height="60dp" />
-    </RelativeLayout>
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabGravity="fill"
+                app:tabMode="fixed"
+                app:tabIndicatorColor="@color/black"
+                app:tabSelectedTextColor="@color/black"
+                app:tabTextColor="@color/block_gray"
+                />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/vp_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
 </layout>

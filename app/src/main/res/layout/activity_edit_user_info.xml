@@ -5,7 +5,7 @@
         android:id="@+id/activity_edit_user_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="lins.com.qz.ui.EditUserInfoActivity">
+        tools:context="lins.com.qz.ui.account.EditUserInfoActivity">
 
         <include
             android:id="@+id/toolbar"

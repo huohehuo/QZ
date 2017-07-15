@@ -11,6 +11,7 @@ import static android.R.attr.name;
  * Please Try Hard
  */
 public class User extends BmobUser implements Serializable{
+    private String nickname;
     private String sex;
     private String age;
     private String rongid;//为一个唯一的UUID
@@ -19,7 +20,8 @@ public class User extends BmobUser implements Serializable{
 
     public User(){}
 
-    public User(String sex, String age, String note, String iconpic) {
+    public User(String nickname,String sex, String age, String note, String iconpic) {
+        this.nickname = nickname;
         this.sex = sex;
         this.age = age;
         this.note = note;
@@ -66,10 +68,19 @@ public class User extends BmobUser implements Serializable{
         this.rongid = rongid;
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     @Override
     public String toString() {
         return "User{" +
-                "sex='" + sex + '\'' +
+                "nickname='" + nickname + '\'' +
+                ", sex='" + sex + '\'' +
                 ", age='" + age + '\'' +
                 ", rongid='" + rongid + '\'' +
                 ", note='" + note + '\'' +

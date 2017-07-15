@@ -30,13 +30,13 @@ public class addActivity extends BaseActivity{
     ArrayList<String> addressList;
     OptionsPickerView adrrPick;
     private String addr="all";
-    BmobUser bmobUser;
+//    BmobUser bmobUser;
     @Override
     protected void initView() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add);
         binding.toolbar.tvTopRight.setText("确定");
         binding.toolbar.tvTopTitle.setText("发布");
-        bmobUser = BmobUser.getCurrentUser();
+//        bmobUser = BmobUser.getCurrentUser();
     }
 
     @Override

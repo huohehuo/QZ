@@ -1,4 +1,4 @@
-package lins.com.qz.ui;
+package lins.com.qz.ui.account;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -20,23 +20,17 @@ import java.util.List;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 import lins.com.qz.App;
 import lins.com.qz.Config;
 import lins.com.qz.R;
-import lins.com.qz.bean.Friend;
-import lins.com.qz.bean.Friends;
 import lins.com.qz.bean.User;
 import lins.com.qz.ui.base.BaseActivity;
 import lins.com.qz.bean.PickerViewBean;
 import lins.com.qz.databinding.ActivityEditUserInfoBinding;
 import lins.com.qz.utils.SelectPhotoDialog;
 import lins.com.qz.utils.SelectPicUtil;
-
-import static lins.com.qz.R.drawable.close;
-import static lins.com.qz.R.drawable.user;
 
 public class EditUserInfoActivity extends BaseActivity {
     ActivityEditUserInfoBinding binding;
@@ -54,6 +48,7 @@ public class EditUserInfoActivity extends BaseActivity {
     private String userName;
     private boolean hasPic=false;
     String sex = "1";
+    private User user;
     @Override
     protected void initView() {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_edit_user_info);
@@ -65,6 +60,7 @@ public class EditUserInfoActivity extends BaseActivity {
         bmobUser = BmobUser.getCurrentUser();
         userName = bmobUser.getUsername();
         App.e("edit","更新前："+userName);
+        user = App.getObj(Config.OBJ_USER);
     }
 
     @Override
@@ -144,17 +140,37 @@ public class EditUserInfoActivity extends BaseActivity {
 
     @Override
     protected void getData() {
-        binding.etName.setText(userName);//昵称
-        String note = App.getDaoManager().query(bmobUser.getUsername()).getNote();
-        if (note!=null){
-            binding.etNote.setText(note);
+        if (user!=null){
+            if (user.getNickname()!=null){
+                binding.etName.setText(user.getNickname());
+            }else{
+                binding.etName.setText("");
+            }
+            if (user.getNote()!=null){
+                binding.etNote.setText(user.getNote());
+            }else{
+                binding.etNote.setText("");
+            }
+            if (user.getIconpic()!=null){
+                Glide.with(this).load(user.getIconpic())
+                        .into(binding.ivEditIcon);
+            }
+
+        }else{
+            binding.etName.setText("");
+            binding.etNote.setText("");
         }
-        //头像
-        String icon = App.getDaoManager().query(bmobUser.getUsername()).getIconurl();
-        if (icon!=null){
-            Glide.with(this).load(icon)
-                    .into(binding.ivEditIcon);
-        }
+//        binding.etName.setText(userName);//昵称
+//        String note = App.getDaoManager().query(bmobUser.getUsername()).getNote();
+//        if (note!=null){
+//            binding.etNote.setText(note);
+//        }
+//        //头像
+//        String icon = App.getDaoManager().query(bmobUser.getUsername()).getIconurl();
+//        if (icon!=null){
+//            Glide.with(this).load(icon)
+//                    .into(binding.ivEditIcon);
+//        }
 
     }
 
@@ -233,7 +249,7 @@ public class EditUserInfoActivity extends BaseActivity {
 //    }
 
     private boolean checkOutInput(){
-        if (TextUtils.isEmpty(binding.etName.getText().toString())){
+        if (isEmpty(binding.etName.getText().toString())){
             showToast("请输入昵称");
             return false;
         }
@@ -252,18 +268,22 @@ public class EditUserInfoActivity extends BaseActivity {
             File file =new File(Config.PATH_SELECT_AVATAR);
             final BmobFile bmobFile = new BmobFile(file);
             bmobFile.uploadblock(new UploadFileListener() {
-
                 @Override
                 public void done(BmobException e) {
                     if(e==null){
-                        User user = new User();
-                        user.setUsername(binding.etName.getText().toString());
+                        final User user = new User();
+                        user.setNickname(binding.etName.getText().toString());
                         user.setNote("".equals(binding.etNote.getText().toString())?"":binding.etNote.getText().toString());
                         user.setIconpic(bmobFile.getFileUrl());
                         user.update(bmobUser.getObjectId(), new UpdateListener() {
                             @Override
                             public void done(BmobException e) {
                                 if (e==null){
+                                    User user1 = App.getObj(Config.OBJ_USER);
+                                    user1.setNickname(binding.etName.getText().toString());
+                                    user1.setNote(binding.etNote.getText().toString());
+                                    user1.setIconpic(bmobFile.getFileUrl());
+                                    App.saveObj(Config.OBJ_USER,user1);
                                     //由于更新前后的昵称可能会有变化，所以本地数据库也要更新相应的昵称,签名，头像
                                     App.getDaoManager().updateUserIconNameNote(userName,bmobFile.getFileUrl(),
                                             BmobUser.getCurrentUser().getUsername(),
@@ -293,18 +313,22 @@ public class EditUserInfoActivity extends BaseActivity {
                 }
             });
         }else{
-            User user = new User();
-            user.setUsername(binding.etName.getText().toString());
+            final User user = new User();
+            user.setNickname(binding.etName.getText().toString());
             user.setNote("".equals(binding.etNote.getText().toString())?"":binding.etNote.getText().toString());
             user.update(bmobUser.getObjectId(), new UpdateListener() {
                 @Override
                 public void done(BmobException e) {
                     if (e==null){
+                        User user1 = App.getObj(Config.OBJ_USER);
+                        user1.setNickname(binding.etName.getText().toString());
+                        user1.setNote(binding.etNote.getText().toString());
+                        App.saveObj(Config.OBJ_USER,user1);
                         //由于更新前后的昵称可能会有变化，所以本地数据库也要更新相应的昵称,签名，头像
-                        App.getDaoManager().updateUserIconNameNote(userName,"",
-                                BmobUser.getCurrentUser().getUsername(),
-                                binding.etNote.getText().toString());
-                        App.e("updata","用户数据更新成功");
+//                        App.getDaoManager().updateUserIconNameNote(userName,"",
+//                                BmobUser.getCurrentUser().getUsername(),
+//                                binding.etNote.getText().toString());
+//                        App.e("updata","用户数据更新成功");
                         closeDialgWithActivity();
                     }else{
                         closeDialog();

@@ -40,6 +40,7 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
 
     <application
         android:name=".App"
@@ -209,7 +210,7 @@
             android:name=".utils.IntentServiceUtil.BackService"
             android:exported="false" />
 
-        <activity android:name=".ui.EditUserInfoActivity" />
+        <activity android:name=".ui.account.EditUserInfoActivity" />
 
         <service
             android:name=".utils.IntentServiceUtil.ServiceUtil"
@@ -385,7 +386,8 @@
             android:name=".utils.IntentServiceUtil.InitChatService"
             android:exported="false" />
 
-        <activity android:name=".ui.AddPlanActivity"></activity>
+        <activity android:name=".ui.AddPlanActivity" />
+        <activity android:name=".ui.SettingActivity"></activity>
     </application>
 
 </manifest>

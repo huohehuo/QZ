@@ -17,6 +17,7 @@ import cn.bmob.v3.BmobUser;
 import lins.com.qz.App;
 import lins.com.qz.Config;
 import lins.com.qz.R;
+import lins.com.qz.bean.User;
 import lins.com.qz.ui.login.WelcomeActivity;
 import lins.com.qz.utils.DialogUtils;
 import lins.com.qz.utils.RongUtil;
@@ -32,20 +33,28 @@ import static lins.com.qz.Config.USER_PWD;
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
+//    public String TGP = this.getA
     private Toast toast;
     private Dialog dialog;
     public BmobUser bmobUser;
+    public User user;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //去掉actionBar
 //        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        bmobUser = BmobUser.getCurrentUser();
+        user = App.getObj(Config.OBJ_USER);
+        Log.e("获取到User对象：",user.toString());
+        if (user==null){
+            user=new User("","","","","");
+        }
         initView();//初始化页面
         initEvent();//初始化事件
         getData();//加载数据
 
-        bmobUser = BmobUser.getCurrentUser();
     }
+
 
     //设置基本的返回键，结束Activity
     public void setToolbarBack(ImageView view){
@@ -161,6 +170,11 @@ public abstract class BaseActivity extends AppCompatActivity {
                     .getToken(rongid, App.getSharedData(USER_NAME));
         }
     }
+
+
+
+
+
 
     public static boolean isEmpty(String s) {
         if (null == s)

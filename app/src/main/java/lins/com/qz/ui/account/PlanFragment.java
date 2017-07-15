@@ -1,14 +1,19 @@
 package lins.com.qz.ui.account;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.BounceInterpolator;
 import android.widget.Toast;
 
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
@@ -26,6 +31,8 @@ import lins.com.qz.adapter.PlanAdapter;
 import lins.com.qz.bean.PlanBean;
 import lins.com.qz.bean.User;
 import lins.com.qz.databinding.FragmentFriendBinding;
+import lins.com.qz.thirdparty.rotatingtext.RotatingTextWrapper;
+import lins.com.qz.thirdparty.rotatingtext.models.Rotatable;
 import lins.com.qz.ui.ShowPlanActivity;
 
 
@@ -46,8 +53,7 @@ public class PlanFragment extends Fragment {
 
         getData();
         initEven();
-
-
+        Log.e("plan","onCreateView");
         return binding.getRoot();
     }
 
@@ -104,5 +110,58 @@ public class PlanFragment extends Fragment {
 //                }
 //            }
 //        });
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.e("plan","onActivityCreated");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();        Log.e("plan","onStart");
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();        Log.e("plan","onResume");
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();Log.e("plan","onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();        Log.e("plan","onStop");
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();        Log.e("plan","onDestroy");
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();        Log.e("plan","onDetach");
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();        Log.e("plan","onDestroyView");
+
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);Log.e("plan","onAttach");
     }
 }

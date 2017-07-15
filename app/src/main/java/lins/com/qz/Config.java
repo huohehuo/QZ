@@ -8,6 +8,8 @@ import android.os.Environment;
 
 public class Config {
 
+    public static final String OBJ_USER="obj_user";
+
     public static final String USER_NAME="user_name";
     public static final String USER_PWD="user_pwd";
     public static final String USER_SEX="user_sex";
@@ -65,5 +67,8 @@ public class Config {
     public static final String WX_APP_ID="wx639f8c1b491a8b64";
 
 
+
+    public static final String UPDATA_APK="https://raw.githubusercontent.com/huohehuo/LinsWeb/master/apk/app-debug.apk";
+    public static final String UPDATA_PATH=Environment.getExternalStorageDirectory().getAbsolutePath()+"/updata/";
 
 }

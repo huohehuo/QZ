@@ -13,6 +13,7 @@ import lins.com.qz.R;
 import lins.com.qz.ui.base.BaseActivity;
 import lins.com.qz.bean.User;
 import lins.com.qz.databinding.ActivityRegisterBinding;
+import lins.com.qz.utils.EmailUtil;
 
 public class RegisterActivity extends BaseActivity {
     ActivityRegisterBinding binding;
@@ -27,6 +28,13 @@ public class RegisterActivity extends BaseActivity {
         binding.btnRegisterReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!checkIsOkInput()){
+                    return;
+                }
+                if (!EmailUtil.isEmail(binding.etUsernameReg.getText().toString())){
+                    showToast("请输入正确的邮箱");
+                    return;
+                }
                 showDialog("正在注册");
                 User user = new User();
                 user.setUsername(binding.etUsernameReg.getText().toString());
@@ -58,6 +66,25 @@ public class RegisterActivity extends BaseActivity {
                 });
             }
         });
+    }
+    private boolean checkIsOkInput(){
+        if ("".equals(binding.etUsernameReg.getText().toString())){
+            showToast("邮箱不能为空");
+            return false;
+        }
+        if ("".equals(binding.etPasswordReg.getText().toString())){
+            showToast("密码不能为空");
+            return false;
+        }
+        if ("".equals(binding.etConfirmReg.getText().toString())){
+            showToast("再次输入的密码不能为空");
+            return false;
+        }
+        if (binding.etPasswordReg.getText().toString().equals(binding.etConfirmReg.getText().toString())){
+            showToast("两次输入的密码不一致，请重新检查");
+            return false;
+        }
+        return true;
     }
 
     @Override

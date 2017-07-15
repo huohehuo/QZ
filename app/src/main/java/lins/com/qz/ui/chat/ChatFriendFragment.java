@@ -1,5 +1,6 @@
 package lins.com.qz.ui.chat;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import io.rong.imkit.RongIM;
+import io.rong.imkit.manager.IUnReadMessageObserver;
 import lins.com.qz.App;
 import lins.com.qz.R;
 import lins.com.qz.adapter.FriendAdapter;
@@ -25,6 +27,7 @@ import lins.com.qz.bean.User;
 import lins.com.qz.bean.locationBean.LChatFrds;
 import lins.com.qz.databinding.FragmentMyFriendBinding;
 import lins.com.qz.manager.FrdsManager;
+import lins.com.qz.utils.BadgeUtil;
 import lins.com.qz.utils.IntentServiceUtil.InitChatService;
 
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
@@ -211,6 +214,19 @@ public class ChatFriendFragment extends Fragment {
             });
 
     }
+
+
+    private void getMessageNum(){
+        // 设置未读消息监听数
+        RongIM.getInstance().addUnReadMessageCountChangedObserver(new IUnReadMessageObserver() {
+            @Override
+            public void onCountChanged(int i) {
+                Log.e("数目：",""+i);
+                BadgeUtil.setBadgeCount(App.getContext(), i);
+//                binding.content.toolbar.tvTopRight.setText(""+i);
+            }
+        });
+    }
     @Override
     public void onResume() {
         super.onResume();
@@ -218,6 +234,41 @@ public class ChatFriendFragment extends Fragment {
         // Refresh the state of the +1 button each time the activity recei
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e(tag,"onDestroy");
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.e(tag,"onAttach");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.e(tag,"onPause");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.e(tag,"onDestroyView");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.e(tag,"onStart");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.e(tag,"onStop");
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

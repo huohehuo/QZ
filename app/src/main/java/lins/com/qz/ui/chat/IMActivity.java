@@ -40,7 +40,7 @@ public class IMActivity extends FragmentActivity {
         binding.toolbar.tvTopTitle.setText("IM");
         mConversationList  = initConversationList();//获取融云会话列表对象
 
-getMessageNum();
+        getMessageNum();
         setupViewPager(binding.viewpager);
         binding.tabChat.setupWithViewPager(binding.viewpager);
 
