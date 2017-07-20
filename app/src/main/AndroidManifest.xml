@@ -204,7 +204,8 @@
             android:name="JPUSH_APPKEY"
             android:value="1c941a62ca5de069cefcc90b" />
 
-        <activity android:name=".ui.login.LoginActivity" />
+        <activity android:name=".ui.login.LoginActivity"
+            android:launchMode="singleTask"/>
 
         <service
             android:name=".utils.IntentServiceUtil.BackService"
@@ -387,7 +388,7 @@
             android:exported="false" />
 
         <activity android:name=".ui.AddPlanActivity" />
-        <activity android:name=".ui.SettingActivity"></activity>
+        <activity android:name=".ui.setting.SettingActivity"></activity>
     </application>
 
 </manifest>

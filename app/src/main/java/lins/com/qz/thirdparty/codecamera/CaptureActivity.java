@@ -191,12 +191,7 @@ public final class CaptureActivity extends Activity implements
 		// 监听图片识别按钮
 		mBottomTv = (TextView) findViewById(R.id.capture_bottom_hint);	// 底部图片
 		
-		findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				finish();	// 销毁当前Activity
-			}
-		});
+
 
 		// PopupWindow的布局
 		mHideLly = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.view_hide_lly, null);
@@ -205,23 +200,28 @@ public final class CaptureActivity extends Activity implements
 		mFlashTv.setOnClickListener(this);
 		mHideLly.findViewById(R.id.tv_cancle).setOnClickListener(this);
 		mHideLly.findViewById(R.id.tv_encodeQr).setOnClickListener(this);
-		
-		mHideIv = (ImageView) findViewById(R.id.iv_hideLayout);
-		mHideIv.setOnClickListener(new View.OnClickListener() {
+		mHideLly.findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v) {
-				if(mPopupWindow == null) {
-					mPopupWindow = new PopupWindow(mHideLly, mBottomTv.getWidth(), mBottomTv.getHeight() * 2, true);
-					mPopupWindow.setBackgroundDrawable(new ColorDrawable());
-				}
-				if(isFlashlightOpen) {
-					mFlashTv.setText("关闭闪光灯");
-				}else {
-					mFlashTv.setText("打开闪光灯");
-				}
-				mPopupWindow.showAsDropDown(mBottomTv, 0, -mBottomTv.getHeight());
+			public void onClick(View view) {
+				finish();
 			}
 		});
+//		mHideIv = (ImageView) findViewById(R.id.iv_hideLayout);
+//		mHideIv.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				if(mPopupWindow == null) {
+//					mPopupWindow = new PopupWindow(mHideLly, mBottomTv.getWidth(), mBottomTv.getHeight() * 2, true);
+//					mPopupWindow.setBackgroundDrawable(new ColorDrawable());
+//				}
+//				if(isFlashlightOpen) {
+//					mFlashTv.setText("关闭闪光灯");
+//				}else {
+//					mFlashTv.setText("打开闪光灯");
+//				}
+//				mPopupWindow.showAsDropDown(mBottomTv, 0, -mBottomTv.getHeight());
+//			}
+//		});
 	}
 
 	@Override

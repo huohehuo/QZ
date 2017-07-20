@@ -20,6 +20,7 @@ import lins.com.qz.adapter.AboutMeAdapter;
 import lins.com.qz.bean.locationBean.LChatFrds;
 import lins.com.qz.databinding.ConversationlistBinding;
 import lins.com.qz.manager.FrdsManager;
+import lins.com.qz.ui.fragment.ChatFriendFragment;
 import lins.com.qz.utils.BadgeUtil;
 
 

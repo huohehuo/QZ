@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.graphics.Point;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -19,53 +18,42 @@ import android.support.v4.widget.ViewDragHelper;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TabHost;
+import android.widget.TextView;
 
-import com.bigkoo.pickerview.OptionsPickerView;
 import com.bumptech.glide.Glide;
-import com.tencent.connect.share.QQShare;
-import com.tencent.tauth.Tencent;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.model.Conversation;
-import lins.com.qz.adapter.MainAdapter;
 import lins.com.qz.adapter.MainPagerAdapter;
 import lins.com.qz.databinding.ActivityMainBinding;
 import lins.com.qz.thirdparty.codecamera.CaptureActivity;
 import lins.com.qz.thirdparty.codecamera.EncodeQrActivity;
 import lins.com.qz.ui.AddPlanActivity;
-import lins.com.qz.ui.SettingActivity;
-import lins.com.qz.ui.SquareFragment;
+import lins.com.qz.ui.setting.SettingActivity;
+import lins.com.qz.ui.fragment.ChatFragment;
+import lins.com.qz.ui.fragment.SquareFragment;
 import lins.com.qz.ui.SysNotifyActivity;
 import lins.com.qz.ui.account.AboutMeActivity;
 import lins.com.qz.ui.base.BaseActivity;
-import lins.com.qz.ui.chat.ChatFriendFragment;
-import lins.com.qz.ui.login.LoginActivity;
+import lins.com.qz.ui.fragment.ChatFriendFragment;
 import lins.com.qz.utils.IntentServiceUtil.InitChatService;
-import lins.com.qz.utils.share.QShareIO;
-import lins.com.qz.utils.share.QShareListener;
+import lins.com.qz.widget.FragmentTabHostEx;
 
-public class MainActivity extends BaseActivity implements QShareIO {
+public class MainActivity extends BaseActivity{
     ActivityMainBinding binding;
-    private MainAdapter mainAdapter;
-    private ArrayList<String> addressList;
-    private OptionsPickerView adrrPick;
+//    private MainAdapter mainAdapter;
+//    private ArrayList<String> addressList;
+//    private OptionsPickerView adrrPick;
     public static boolean isForeground = false;
-    private Map<String, Boolean> map = new HashMap<String, Boolean>();
+//    private Map<String, Boolean> map = new HashMap<String, Boolean>();
 //    BmobUser bmobUser;
-    private String atadrs = App.getSharedData(Config.AT_ADDRESS);
-    private QShareIO qShareIO = new QShareIO() {
-        @Override
-        public void getShareData(String str) {
-            showToast("分享成功");
-            Log.e("share","分享成功");
-        }
-    };
+//    private String atadrs = App.getSharedData(Config.AT_ADDRESS);
+
+    FragmentTabHostEx mTabHost;
 
 
     private Handler handler = new Handler() {
@@ -97,30 +85,49 @@ public class MainActivity extends BaseActivity implements QShareIO {
         setDrawerLeftEdgeSize(this, binding.drawerLayout, 0.2f);//设置抽屉滑动响应范围
         mConversationList  = initConversationList();//获取融云会话列表对象
 
-        setupViewPager(binding.content.vpMain);
-        binding.content.tabMain.setupWithViewPager(binding.content.vpMain);
-
+//        setupViewPager(binding.content.vpMain);
+//        binding.content.tabMain.setupWithViewPager(binding.content.vpMain);
+        mTabHost = (FragmentTabHostEx) findViewById(android.R.id.tabhost);
 
 //        map.put(Conversation.ConversationType.PRIVATE.getName(), false);
 //        ServiceUtil.startServiceUtil(MainActivity.this);
 
-        addressList = new ArrayList<>();
-        adrrPick = new OptionsPickerView(this);
+//        addressList = new ArrayList<>();
+//        adrrPick = new OptionsPickerView(this);
         //注册广播监听器
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Config.MAIN_RECEIVER_ACTION);
         registerReceiver(receiver, intentFilter);
 
-//        sendBroadcast(new Intent(Config.RECEIVER_IN_SERVICE).putExtra("content","0"));
-
         InitChatService.initChatUser(this);
+
+        mTabHost.setup(this, getSupportFragmentManager(), android.R.id.tabcontent);
+        MainTab[] mainTabs = MainTab.values();
+        for (int i = 0; i < mainTabs.length; ++i) {
+            MainTab mainTab = mainTabs[i];
+            Log.e("tag",mainTab.getTag());
+            TabHost.TabSpec tab = mTabHost.newTabSpec(mainTab.getTag());
+
+            View indicatorView = getLayoutInflater().inflate(R.layout.tab_indicator, null);
+//            if (i == 2) {
+//                mTabHost.setNoTabChangedTag(mainTab.getTag());
+//            }
+            ImageView ivTabIcon = (ImageView) indicatorView.findViewById(R.id.ivTabIcon);
+            ivTabIcon.setImageDrawable(getResources().getDrawable(mainTab.getResIcon()));
+
+            TextView tvText = (TextView)indicatorView.findViewById(R.id.tvText);
+            tvText.setText(getResources().getText(mainTab.getResText()));
+
+            tab.setIndicator(indicatorView);
+            mTabHost.addTab(tab, mainTab.getClz(), null);
+        }
 
     }
 
     @Override
     protected void initEvent() {
         navClick();
-        initAddrData();
+//        initAddrData();
 
 
         binding.content.toolbar.ivTopArrow.setOnClickListener(new View.OnClickListener() {
@@ -158,7 +165,6 @@ public class MainActivity extends BaseActivity implements QShareIO {
     private void navClick() {
         startActivityWith(AddPlanActivity.class, binding.layoutNav.llAdd);
         startActivityWith(AboutMeActivity.class, binding.layoutNav.llMe);
-        startActivityWith(EncodeQrActivity.class, binding.layoutNav.ivNavHead);
         startActivityWith(SettingActivity.class,binding.layoutNav.llSet);
         //设置侧滑栏的头像
 //        String icon = App.getSharedData(Config.USER_HEAD_ICON);
@@ -219,23 +225,7 @@ public class MainActivity extends BaseActivity implements QShareIO {
 //                });
             }
         });
-        //退出登录（将会取消自动登录）
-        binding.layoutNav.llExit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RongIM.getInstance().logout();//退出融云IM
-                App.clearShareData();
-                startActivity(LoginActivity.class);
-                finish();
-            }
-        });
 
-        binding.layoutNav.llDoublecode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, CaptureActivity.class));
-            }
-        });
 
 
         binding.drawerLayout.closeDrawer(GravityCompat.START);
@@ -249,7 +239,6 @@ public class MainActivity extends BaseActivity implements QShareIO {
     protected void onResume() {
         isForeground = true;
         super.onResume();
-//        BackService.getAddressList(MainActivity.this, bmobUser.getObjectId(), "addr");
     }
 
     @Override
@@ -260,15 +249,6 @@ public class MainActivity extends BaseActivity implements QShareIO {
 
 
     void initAddrData() {
-//        if (App.getHashData(Config.ADDRESS_LIST) != null) {
-//            for (AddAddress adr : (List<AddAddress>) getHashData(Config.ADDRESS_LIST)
-//                    ) {
-//                addressList.add(adr.getAddr());
-//            }
-//        } else {
-//            addressList.add("nothing");
-//        }
-//
 //        adrrPick.setPicker(addressList);
 //        adrrPick.setCyclic(false);
 //        adrrPick.setSelectOptions(0);
@@ -331,6 +311,79 @@ public class MainActivity extends BaseActivity implements QShareIO {
     }
 
 
+    public enum MainTab {
+
+        LIVE(0, SquareFragment.TAG, R.string.app_name,R.drawable.beiyong,
+                SquareFragment.class),
+
+        COLLEGE(1, "ChatListFragment", R.string.app_name, R.drawable.beiyong,
+                ChatFriendFragment.class),
+
+//        START(2, "none",  R.string.app_name,R.drawable.circle,
+//                null),
+
+        RANKING(2, "ChatFragment",R.string.app_name, R.drawable.beiyong,
+                ChatFragment.class);
+//
+//        ME(3, OneFragment.TAG, R.string.app_name, R.drawable.tab_find_selector,
+//                OneFragment.class);
+
+        private int      idx;
+        private String   tag;
+        private int resText;
+        private int      resIcon;
+        private Class<?> clz;
+
+        MainTab(int idx, String tag,int resText, int resIcon, Class<?> clz) {
+            this.idx = idx;
+            this.tag = tag;
+            this.resText = resText;
+            this.resIcon = resIcon;
+            this.clz = clz;
+        }
+
+        public int getResText() {
+            return resText;
+        }
+
+        public void setResText(int resText) {
+            this.resText = resText;
+        }
+
+        public int getIdx() {
+            return idx;
+        }
+
+        public void setIdx(int idx) {
+            this.idx = idx;
+        }
+
+        public String getTag() {
+            return tag;
+        }
+
+        public void setTag(String tag) {
+            this.tag = tag;
+        }
+
+        public int getResIcon() {
+            return resIcon;
+        }
+
+        public void setResIcon(int resIcon) {
+            this.resIcon = resIcon;
+        }
+
+        public Class<?> getClz() {
+            return clz;
+        }
+
+        public void setClz(Class<?> clz) {
+            this.clz = clz;
+        }
+    }
+
+
     /**
      * 设置全屏滑动
      */
@@ -378,10 +431,4 @@ public class MainActivity extends BaseActivity implements QShareIO {
     }
 
 
-
-    @Override
-    public void getShareData(String str) {
-        Log.e("back",str);
-            showToast(str);
-    }
 }

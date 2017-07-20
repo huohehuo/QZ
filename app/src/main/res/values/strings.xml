@@ -299,4 +299,7 @@
     <string name="title_activity_en_code_qr">EnCodeQrActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_encode_qr">EncodeQrActivity</string>
+    <string name="txt_detail">更新内容：%s</string>
+    <string name="txt_version">版本号：%s</string>
+    <string name="txt_size">大小：%s</string>
 </resources>

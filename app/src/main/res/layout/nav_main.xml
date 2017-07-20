@@ -81,7 +81,7 @@
 
                 <LinearLayout
                     android:id="@+id/ll_me"
-                    android:layout_width="match_parent"
+                    android:layout_width="350dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:orientation="horizontal">
@@ -96,7 +96,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="25dp"
-                        android:text="我的"
+                        android:text="个人资料"
                         android:textColor="#000000"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -118,7 +118,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="25dp"
-                        android:text="系统消息"
+                        android:text="活动消息"
                         android:textColor="#000000"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -140,7 +140,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="25dp"
-                        android:text="退出"
+                        android:text="搜索"
                         android:textColor="#000000"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -155,9 +155,10 @@
 
                 <LinearLayout
                     android:id="@+id/ll_set"
+                    android:background="@drawable/nav_tv_bg"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_height="40dp"
+                    android:paddingLeft="10dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -165,7 +166,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="设置与隐私"
+                        android:text="账户与设置"
                         android:textColor="#000000"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -177,10 +178,12 @@
                     android:alpha="0.6"
                     android:background="#aaaaaa" />
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/ll_doublecode"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_height="40dp"
+                    android:paddingLeft="10dp"
+                    android:background="@drawable/nav_tv_bg"
                     android:orientation="horizontal">
 
                     <TextView

@@ -1,38 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200dp">
+    android:layout_margin="18dp"
+    android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/iv_sys_txt_bg"
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:background="#e9c257"
-        android:minHeight="180dp"
-        android:src="@drawable/add" />
+        android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_alignParentBottom="true"
-        android:background="#a02e2e2e"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tv_sys_title"
+        <ImageView
+            android:id="@+id/iv_sys_txt_bg"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:text="标题"
-            android:layout_marginLeft="20dp"
-            android:textColor="#ffffff"
-            android:textSize="25sp" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:background="#e9c257"
+            android:minHeight="180dp"
+            android:src="@drawable/add" />
 
-</RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_sys_txt_bg"
+            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/tv_sys_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:ellipsize="end"
+                android:layout_centerVertical="true"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="标题"
+                android:textColor="#464646"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/tv_sys_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:layout_margin="10dp"
+                android:layout_below="@+id/tv_sys_title"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:text="time"
+                android:maxLength="10"
+                android:textColor="#646464"
+                android:textSize="14sp" />
+            <TextView
+                android:id="@+id/tv_sys"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:layout_margin="10dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:text=">>"
+                android:textColor="#646464"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

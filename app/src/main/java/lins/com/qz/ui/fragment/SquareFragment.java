@@ -1,4 +1,4 @@
-package lins.com.qz.ui;
+package lins.com.qz.ui.fragment;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -28,6 +28,7 @@ import lins.com.qz.bean.PlanBean;
 import lins.com.qz.bean.User;
 import lins.com.qz.databinding.FgSquareBinding;
 import lins.com.qz.databinding.FragmentFriendBinding;
+import lins.com.qz.ui.ShowPlanActivity;
 
 
 /**
@@ -35,20 +36,28 @@ import lins.com.qz.databinding.FragmentFriendBinding;
  */
 
 public class SquareFragment extends Fragment {
+    public static final String TAG = "three_fragment";
     FgSquareBinding binding;
     private MainAdapter adapter;
+    private View rootView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fg_square,container,false);
 
-        binding.rySquare.setAdapter(adapter = new MainAdapter(getActivity()));
-        binding.rySquare.setLayoutManager(new LinearLayoutManager(getActivity()));
+        if (rootView == null){
+            binding = DataBindingUtil.inflate(inflater, R.layout.fg_square,container,false);
+            rootView = binding.getRoot();
+            binding.rySquare.setAdapter(adapter = new MainAdapter(getActivity()));
+            binding.rySquare.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        getData();
-        initEven();
+            getData();
+            initEven();
+            return binding.getRoot();
+        }
+
+
         Log.e("plan","onCreateView");
-        return binding.getRoot();
+        return rootView;
     }
 
     //绑定事件

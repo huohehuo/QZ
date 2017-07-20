@@ -19,6 +19,7 @@ import lins.com.qz.Config;
 import lins.com.qz.R;
 import lins.com.qz.bean.User;
 import lins.com.qz.ui.login.WelcomeActivity;
+import lins.com.qz.utils.AppManager;
 import lins.com.qz.utils.DialogUtils;
 import lins.com.qz.utils.RongUtil;
 import lins.com.qz.utils.VolleyUtil;
@@ -43,9 +44,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //去掉actionBar
 //        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        AppManager.getAppManager().addActivity(this);
         bmobUser = BmobUser.getCurrentUser();
         user = App.getObj(Config.OBJ_USER);
-        Log.e("获取到User对象：",user.toString());
+//        Log.e("获取到User对象：",user.toString());
         if (user==null){
             user=new User("","","","","");
         }

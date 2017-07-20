@@ -33,6 +33,7 @@ public class Config {
     public static final String PATH_SELECT_AVATAR      = Environment.getExternalStorageDirectory().getAbsolutePath()+"/qz/avatar.png";
 
     public static final String PATH_SELECT_PLAN     =Environment.getExternalStorageDirectory().getAbsolutePath()+"/qz/plan.png";
+    public static final String PATH_APK  =Environment.getExternalStorageDirectory().getAbsolutePath()+"/qz/download/";
 
 
     public static final String HAVE_RONG_TOKEN="have_the_token_of_rong";
@@ -70,5 +71,9 @@ public class Config {
 
     public static final String UPDATA_APK="https://raw.githubusercontent.com/huohehuo/LinsWeb/master/apk/app-debug.apk";
     public static final String UPDATA_PATH=Environment.getExternalStorageDirectory().getAbsolutePath()+"/updata/";
+
+    public static final String USER_AGENT = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/525.19 (KHTML, like Gecko) Chrome/1.0.154.36 Safari/525.19";
+    public static final String UPDATER_URL = "https://github.com/huohehuo/LinsWeb/blob/master/json/update.json";
+    public static final String UPDATA_APK_URL = "https://github.com/huohehuo/LinsWeb/blob/master/apk/app-debug.apk";
 
 }

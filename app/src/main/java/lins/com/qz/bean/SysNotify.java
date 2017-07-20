@@ -1,10 +1,12 @@
 package lins.com.qz.bean;
 
+import cn.bmob.v3.BmobObject;
+
 /**
  * Created by LINS on 2017/6/22.
  */
 
-public class SysNotify {
+public class SysNotify extends BmobObject{
 
     private String id;
     private String title;

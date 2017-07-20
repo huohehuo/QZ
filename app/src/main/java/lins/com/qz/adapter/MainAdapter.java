@@ -39,10 +39,10 @@ public class MainAdapter extends RecyclerArrayAdapter<PlanBean>{
 //        }
 
         if (viewType==2){
-            Log.e("holder","返回图文布局");
+//            Log.e("holder","返回图文布局");
             return new MainHolder(parent);
         }else{
-            Log.e("holder","返回--文字--布局");
+//            Log.e("holder","返回--文字--布局");
             return new MainHolderForTxt(parent);
         }
 

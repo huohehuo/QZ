@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/ivTabIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="6dp" />
+
+    <TextView
+        android:id="@+id/tvText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivTabIcon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="1dp"
+        android:layout_marginTop="3dp"
+        android:textColor="#de8383"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tvUnreadMsgCount"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_alignEnd="@id/ivTabIcon"
+        android:layout_alignRight="@id/ivTabIcon"
+        android:layout_alignTop="@id/ivTabIcon"
+        android:layout_marginEnd="-9dp"
+        android:layout_marginRight="-9dp"
+        android:layout_marginTop="-4dp"
+        android:background="#aaaaaa"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        android:visibility="gone" />
+</RelativeLayout>

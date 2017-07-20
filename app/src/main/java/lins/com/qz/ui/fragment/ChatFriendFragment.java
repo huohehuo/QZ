@@ -1,4 +1,4 @@
-package lins.com.qz.ui.chat;
+package lins.com.qz.ui.fragment;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import io.rong.imkit.RongIM;
@@ -21,7 +20,6 @@ import io.rong.imkit.manager.IUnReadMessageObserver;
 import lins.com.qz.App;
 import lins.com.qz.R;
 import lins.com.qz.adapter.FriendAdapter;
-import lins.com.qz.bean.AddAddress;
 import lins.com.qz.bean.PlanBean;
 import lins.com.qz.bean.User;
 import lins.com.qz.bean.locationBean.LChatFrds;
@@ -33,10 +31,7 @@ import lins.com.qz.utils.IntentServiceUtil.InitChatService;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import static lins.com.qz.R.drawable.user;
 
 /**
  * A fragment with a Google +1 button.
@@ -52,12 +47,14 @@ public class ChatFriendFragment extends Fragment {
     private FriendAdapter adapter;
     FragmentMyFriendBinding binding;
     public static ChatFriendFragment instance = null;
-    public static ChatFriendFragment getInstance(){
-        if (instance == null){
+
+    public static ChatFriendFragment getInstance() {
+        if (instance == null) {
             instance = new ChatFriendFragment();
         }
         return instance;
     }
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -97,7 +94,7 @@ public class ChatFriendFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e(tag,"onCreate");
+        Log.e(tag, "onCreate");
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -105,58 +102,65 @@ public class ChatFriendFragment extends Fragment {
         frdsManager = new FrdsManager();
     }
 
+    private View rootView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.e(tag,"onCreateView");
-
-        // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_friend,container,false);
-        //Find the +1 butto
-        binding.ryFriendlist.setAdapter(adapter = new FriendAdapter(getActivity()));
-        binding.ryFriendlist.setLayoutManager(new LinearLayoutManager(getActivity()));
+        Log.e(tag, "onCreateView");
+        if (rootView == null) {
+            // Inflate the layout for this fragment
+            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_friend, container, false);
+            rootView = binding.getRoot();
 
 
-        getAllUser();
+            //Find the +1 butto
+            binding.ryFriendlist.setAdapter(adapter = new FriendAdapter(getActivity()));
+            binding.ryFriendlist.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+
+            getAllUser();
 
 //        //查询数据库并添加好友信息
 //        adapter.addAll(frdsManager.queryAll());
 
-        //刷新
-        binding.ryFriendlist.setRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                //查询数据库并添加好友信息
+            //刷新
+            binding.ryFriendlist.setRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    //查询数据库并添加好友信息
 //                adapter.addAll(frdsManager.queryAll());
-                getAllUser();
-                adapter.notifyDataSetChanged();
-            }
-        });
+                    getAllUser();
+                    adapter.notifyDataSetChanged();
+                }
+            });
 
-        //点击好友聊天
-        adapter.setOnItemClickListener(new RecyclerArrayAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Log.e("click",adapter.getAllData().get(position).getName());
+            //点击好友聊天
+            adapter.setOnItemClickListener(new RecyclerArrayAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(int position) {
+                    Log.e("click", adapter.getAllData().get(position).getName());
 //                App.whoTalk =adapter.getAllData().get(position);
-                /**
-                 * 启动单聊界面。
-                 *
-                 * @param context      应用上下文。
-                 * @param targetUserId 要与之聊天的用户 Id。
-                 * @param title        聊天的标题，开发者需要在聊天界面通过 intent.getData().getQueryParameter("title")
-                 *                     获取该值, 再手动设置为聊天界面的标题。
-                 */
-                RongIM.getInstance().startPrivateChat(getActivity(),
-                        adapter.getAllData().get(position).getRongid(),
-                        adapter.getAllData().get(position).getName());
-            }
-        });
-        return binding.getRoot();
+                    /**
+                     * 启动单聊界面。
+                     *
+                     * @param context      应用上下文。
+                     * @param targetUserId 要与之聊天的用户 Id。
+                     * @param title        聊天的标题，开发者需要在聊天界面通过 intent.getData().getQueryParameter("title")
+                     *                     获取该值, 再手动设置为聊天界面的标题。
+                     */
+                    RongIM.getInstance().startPrivateChat(getActivity(),
+                            adapter.getAllData().get(position).getRongid(),
+                            adapter.getAllData().get(position).getName());
+                }
+            });
+            return binding.getRoot();
+
+        }
+        return rootView;
     }
 
-    private void getAllUser(){
+    private void getAllUser() {
         binding.ryFriendlist.setRefreshing(true);
         BmobQuery<User> shuoBmobQuery = new BmobQuery<>();
 //        shuoBmobQuery.addWhereEqualTo("username", "asdf");
@@ -169,25 +173,25 @@ public class ChatFriendFragment extends Fragment {
                     binding.ryFriendlist.setRefreshing(false);
                     getUser(list);
                     ssss(list);
-                    for (int i = 0;i<list.size();i++){
-                    Log.e("getuser", list.get(i).toString());
+                    for (int i = 0; i < list.size(); i++) {
+                        Log.e("getuser", list.get(i).toString());
 
                     }
 
                 } else {
-                    Log.e("queryUser","查询用户失败");
+                    Log.e("queryUser", "查询用户失败");
                 }
             }
         });
     }
 
-    private void getUser(List<User> list){
+    private void getUser(List<User> list) {
         List<LChatFrds> lChatFrdses = new ArrayList<>();
-        for (User user:list) {
-            if (App.userName.equals(user.getUsername())){
+        for (User user : list) {
+            if (App.userName.equals(user.getUsername())) {
                 continue;
             }
-            lChatFrdses.add(new LChatFrds(null,user.getUsername(),user.getRongid(),user.getIconpic()));
+            lChatFrdses.add(new LChatFrds(null, user.getUsername(), user.getRongid(), user.getIconpic()));
         }
         //查询数据库并添加好友信息
         adapter.addAll(lChatFrdses);
@@ -195,84 +199,86 @@ public class ChatFriendFragment extends Fragment {
         InitChatService.initChatUser(getActivity());
         adapter.notifyDataSetChanged();
     }
+
     //查出相应的发布计划数据
-    private void ssss(List<User> users){
-        User user =users.get(0);
+    private void ssss(List<User> users) {
+        User user = users.get(0);
         BmobQuery<PlanBean> query = new BmobQuery<>();
-            query.addWhereEqualTo("author",user);// 查询当前用户的所有帖子
-            query.order("-updatedAt");
-            query.include("author");// 希望在查询帖子信息的同时也把发布人的信息查询出来
-            query.findObjects(new FindListener<PlanBean>() {
-                @Override
-                public void done(List<PlanBean> list, BmobException e) {
-                    if (e==null){
-                        Log.e("getUserList",list.get(0).toString());
-                    }else{
-                        Log.e("getUserList","错误。。。。。");
-                    }
+        query.addWhereEqualTo("author", user);// 查询当前用户的所有帖子
+        query.order("-updatedAt");
+        query.include("author");// 希望在查询帖子信息的同时也把发布人的信息查询出来
+        query.findObjects(new FindListener<PlanBean>() {
+            @Override
+            public void done(List<PlanBean> list, BmobException e) {
+                if (e == null) {
+                    Log.e("getUserList", list.get(0).toString());
+                } else {
+                    Log.e("getUserList", "错误。。。。。");
                 }
-            });
+            }
+        });
 
     }
 
 
-    private void getMessageNum(){
+    private void getMessageNum() {
         // 设置未读消息监听数
         RongIM.getInstance().addUnReadMessageCountChangedObserver(new IUnReadMessageObserver() {
             @Override
             public void onCountChanged(int i) {
-                Log.e("数目：",""+i);
+                Log.e("数目：", "" + i);
                 BadgeUtil.setBadgeCount(App.getContext(), i);
 //                binding.content.toolbar.tvTopRight.setText(""+i);
             }
         });
     }
+
     @Override
     public void onResume() {
         super.onResume();
-        Log.e(tag,"onResume");
+        Log.e(tag, "onResume");
         // Refresh the state of the +1 button each time the activity recei
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.e(tag,"onDestroy");
+        Log.e(tag, "onDestroy");
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Log.e(tag,"onAttach");
+        Log.e(tag, "onAttach");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.e(tag,"onPause");
+        Log.e(tag, "onPause");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.e(tag,"onDestroyView");
+        Log.e(tag, "onDestroyView");
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Log.e(tag,"onStart");
+        Log.e(tag, "onStart");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.e(tag,"onStop");
+        Log.e(tag, "onStop");
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.e(tag,"onActivityCreated");
+        Log.e(tag, "onActivityCreated");
     }
 }

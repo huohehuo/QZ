@@ -115,7 +115,6 @@ public class VolleyUtil {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                // TODO 自动生成的方法存根
 //                Log.e("check>>>>>>", "出错。。。。。。"+error.getMessage());
                 NetworkResponse response = error.networkResponse;
                 if (error instanceof ServerError && response != null) {
@@ -151,7 +150,6 @@ public class VolleyUtil {
             // 重写该方法，构造出post请求信息
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                // TODO 自动生成的方法存根
                 Map<String, String> map = new HashMap<String, String>();
                 map.put("userId", rongid);
                 map.put("name", name);

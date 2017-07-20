@@ -313,6 +313,7 @@ public final class CameraManager {
 				// Called early, before init even finished
 				return null;
 			}
+
 			rect.left = rect.left * cameraResolution.y / screenResolution.x;
 			rect.right = rect.right * cameraResolution.y / screenResolution.x;
 			rect.top = rect.top * cameraResolution.x / screenResolution.y;

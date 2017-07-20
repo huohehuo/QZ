@@ -66,7 +66,7 @@ public class SysNotifyActivity extends BaseActivity {
             @Override
             public void done(List<SysNotify> list, BmobException e) {
                 if (e==null){
-                    Log.e("get",list.get(0).toString());
+//                    Log.e("get",list.get(0).toString());
         adapter.clear();
                     adapter.addAll(list);
                 }else{

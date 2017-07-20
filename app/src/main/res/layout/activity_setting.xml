@@ -13,6 +13,7 @@
             layout="@layout/top_bar" />
 
         <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nvs"
             android:layout_below="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -80,44 +81,39 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="20dp"
                     android:text="账户"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:alpha="0.5"
-                    android:background="#aaaaaa" />
+
 
                 <TextView
+                    android:id="@+id/tv_code"
                     android:layout_width="match_parent"
                     android:layout_height="68dp"
                     android:layout_marginTop="30dp"
                     android:background="#ffffff"
                     android:gravity="center_vertical"
                     android:paddingLeft="20dp"
-                    android:text="是否打开蓝牙"
-                    android:textSize="20sp" />
+                    android:text="我的二维码"
+                    android:textSize="16sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:alpha="0.5"
+                    android:alpha="0.3"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:background="#aaaaaa" />
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="68dp"
                     android:background="#ffffff"
                     android:gravity="center_vertical"
                     android:paddingLeft="20dp"
                     android:text="是否打开位置共享"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:alpha="0.5"
-                    android:background="#aaaaaa" />
 
                 <TextView
                     android:id="@+id/tv_about"
@@ -128,12 +124,14 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="20dp"
                     android:text="关于"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:alpha="0.5"
+                    android:layout_height="0.3dp"
+                    android:alpha="0.3"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:background="#aaaaaa" />
 
                 <TextView
@@ -144,12 +142,14 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="20dp"
                     android:text="检查更新"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:alpha="0.5"
+                    android:layout_height="0.3dp"
+                    android:alpha="0.3"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:background="#aaaaaa" />
 
                 <TextView
@@ -160,12 +160,12 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="20dp"
                     android:text="分享给好友"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:alpha="0.5"
+                    android:layout_height="0.3dp"
+                    android:alpha="0.3"
                     android:background="#aaaaaa" />
 
                 <TextView
@@ -177,12 +177,12 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="20dp"
                     android:text="退出帐号"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:alpha="0.5"
+                    android:layout_height="0.3dp"
+                    android:alpha="0.3"
                     android:background="#aaaaaa" />
 
             </LinearLayout>
