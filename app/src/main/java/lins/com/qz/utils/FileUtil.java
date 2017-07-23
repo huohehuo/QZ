@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import lins.com.qz.Config;
+
 /**
  * Created by LINS on 2017/7/13.
  */
@@ -27,5 +29,19 @@ public class FileUtil {
         bm.compress(Bitmap.CompressFormat.JPEG, 80, bos);
         bos.flush();
         bos.close();
+    }
+
+    /**
+     * @return
+     * @throws IOException 判断下载目录是否存在
+     */
+    public static String isExistDir(String path){
+        // 下载位置
+        File downloadFile = new File(path);
+        if (!downloadFile.mkdirs()) {
+            downloadFile.mkdirs();
+        }
+        String savePath = downloadFile.getAbsolutePath();
+        return savePath;
     }
 }

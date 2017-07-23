@@ -33,6 +33,7 @@ import lins.com.qz.databinding.ActivityMainBinding;
 import lins.com.qz.thirdparty.codecamera.CaptureActivity;
 import lins.com.qz.thirdparty.codecamera.EncodeQrActivity;
 import lins.com.qz.ui.AddPlanActivity;
+import lins.com.qz.ui.fragment.MapFragment;
 import lins.com.qz.ui.setting.SettingActivity;
 import lins.com.qz.ui.fragment.ChatFragment;
 import lins.com.qz.ui.fragment.SquareFragment;
@@ -317,7 +318,7 @@ public class MainActivity extends BaseActivity{
                 SquareFragment.class),
 
         COLLEGE(1, "ChatListFragment", R.string.app_name, R.drawable.beiyong,
-                ChatFriendFragment.class),
+                MapFragment.class),
 
 //        START(2, "none",  R.string.app_name,R.drawable.circle,
 //                null),

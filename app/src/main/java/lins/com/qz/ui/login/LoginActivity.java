@@ -14,6 +14,7 @@ import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import lins.com.qz.App;
 import lins.com.qz.Config;
+import lins.com.qz.HomeActivity;
 import lins.com.qz.MainActivity;
 import lins.com.qz.R;
 import lins.com.qz.ui.base.BaseActivity;
@@ -64,7 +65,7 @@ public class LoginActivity extends BaseActivity {
 
                                     //设置为下次自动登录
                                     App.setSharedData(Config.IS_AUTO_LOGIN, "1");
-                                    startActivity(MainActivity.class);
+                                    startActivity(HomeActivity.class);
                                     finish();
                                 } else {
                                     showToast("登录失败");

@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Aria/Aria.iml" filepath="$PROJECT_DIR$/Aria/Aria.iml" />
-      <module fileurl="file://$PROJECT_DIR$/AriaAnnotations/AriaAnnotations.iml" filepath="$PROJECT_DIR$/AriaAnnotations/AriaAnnotations.iml" />
-      <module fileurl="file://$PROJECT_DIR$/AriaCompiler/AriaCompiler.iml" filepath="$PROJECT_DIR$/AriaCompiler/AriaCompiler.iml" />
       <module fileurl="file://$PROJECT_DIR$/IMKit/IMKit.iml" filepath="$PROJECT_DIR$/IMKit/IMKit.iml" />
       <module fileurl="file://$PROJECT_DIR$/IMLib/IMLib.iml" filepath="$PROJECT_DIR$/IMLib/IMLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/QZ.iml" filepath="$PROJECT_DIR$/QZ.iml" />

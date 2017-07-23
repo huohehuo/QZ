@@ -14,6 +14,7 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.LogInListener;
 import lins.com.qz.App;
 import lins.com.qz.Config;
+import lins.com.qz.HomeActivity;
 import lins.com.qz.MainActivity;
 import lins.com.qz.R;
 import lins.com.qz.bean.locationBean.LUser;
@@ -80,7 +81,7 @@ public class WelcomeActivity extends BaseActivity {
                                 //检查Im是否存在Token。存在就登录，否则服务器重新获取
                                 checkIM(user.getRongid());
 
-                                startActivity(MainActivity.class);
+                                startActivity(HomeActivity.class);
                                 finish();
                             }else{
                                 App.e("welcome","登录失败："+e.toString());

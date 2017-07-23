@@ -188,6 +188,14 @@ public class App extends MultiDexApplication {
         }
     }
 
+    public static void e(String str){
+        if (str==null||"".equals(str)){
+            Log.e("qz测试Log","---------|\n"+"！！！！ 传值为空 / NULL"+"\n---------");
+        }else{
+            Log.e("qz测试Log","---------|\n"+str+"\n---------");
+        }
+    }
+
 
 
 

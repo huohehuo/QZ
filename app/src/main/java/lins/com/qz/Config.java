@@ -34,6 +34,7 @@ public class Config {
 
     public static final String PATH_SELECT_PLAN     =Environment.getExternalStorageDirectory().getAbsolutePath()+"/qz/plan.png";
     public static final String PATH_APK  =Environment.getExternalStorageDirectory().getAbsolutePath()+"/qz/download/";
+    public static final String PATH_MAP_STYLE  =Environment.getExternalStorageDirectory().getAbsolutePath()+"/qz/mapstyle/";
 
 
     public static final String HAVE_RONG_TOKEN="have_the_token_of_rong";

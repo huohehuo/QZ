@@ -2,6 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao' // apply plugin
 
 android {
+    signingConfigs {
+        rele {
+            keyAlias 'lins.keystore'
+            keyPassword 'linsworkspace'
+            storeFile file('D:/LinsProject/key/lins.keystore')
+            storePassword 'linsworkspace'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "25.0.1"
     useLibrary 'org.apache.http.legacy'
@@ -15,7 +23,7 @@ android {
         multiDexEnabled true
         ndk {
             //选择要添加的对应cpu类型的.so库。
-            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a','x86', 'x86_64'
             // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
         }
         manifestPlaceholders = [
@@ -29,24 +37,28 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.rele
+            zipAlignEnabled true
+        }
+        debug {
+            signingConfig signingConfigs.rele
+            minifyEnabled false
+            zipAlignEnabled true
         }
     }
-
     sourceSets {
         main {
             jni.srcDirs = []
             jniLibs.srcDirs = ['src/main/libs']
         }
     }
-
     greendao {
-        schemaVersion 1
+        schemaVersion 2
         daoPackage 'lins.com.qz.bean.gen'
         targetGenDir 'src/main/java'
     }
-
 }
 
 dependencies {
@@ -99,5 +111,10 @@ dependencies {
     //    compile 'com.jakewharton:butterknife:8.4.0'
     //滚动文字
     //    compile 'com.sdsmdg.harjot:rotatingtext:1.0.1'
-//    compile project(':Aria')
+
+
+
+    compile 'com.amap.api:3dmap:5.2.1'
+    compile 'com.amap.api:location:3.4.1'
+    compile 'com.amap.api:search:5.2.1'
 }

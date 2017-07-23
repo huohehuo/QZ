@@ -58,6 +58,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
+    public void initMap(Bundle bundle){
+
+    }
+
 
     //设置基本的返回键，结束Activity
     public void setToolbarBack(ImageView view){

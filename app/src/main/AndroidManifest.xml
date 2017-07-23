@@ -40,7 +40,7 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <uses-permission android:name="android.permission.FLASHLIGHT" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
     <application
         android:name=".App"
@@ -77,10 +77,10 @@
         </receiver>
 
         <activity android:name=".ui.ShowPlanActivity" />
-        <activity
-            android:name=".ui.AccountActivity"
-            android:label="@string/title_activity_account"
-            android:theme="@style/AppTheme" />
+        <!-- <activity -->
+        <!-- android:name=".ui.AccountActivity" -->
+        <!-- android:label="@string/title_activity_account" -->
+        <!-- android:theme="@style/AppTheme" /> -->
         <activity
             android:name=".utils.piccut.CropImageActivity"
             android:screenOrientation="portrait"
@@ -204,8 +204,9 @@
             android:name="JPUSH_APPKEY"
             android:value="1c941a62ca5de069cefcc90b" />
 
-        <activity android:name=".ui.login.LoginActivity"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:launchMode="singleTask" />
 
         <service
             android:name=".utils.IntentServiceUtil.BackService"
@@ -388,7 +389,20 @@
             android:exported="false" />
 
         <activity android:name=".ui.AddPlanActivity" />
-        <activity android:name=".ui.setting.SettingActivity"></activity>
+        <activity android:name=".ui.setting.SettingActivity" />
+
+        <!-- 高德地图 -->
+
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="33adc1d6734f0d584b5139a518716edc" />
+
+        <!-- END -->
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".ui.map.MapActivity" />
+        <activity android:name=".ui.map.MapSettingActivity" />
+        <activity android:name=".ui.map.CityActivity" />
+        <activity android:name=".ui.map.DownCityActivity"></activity>
     </application>
 
 </manifest>
