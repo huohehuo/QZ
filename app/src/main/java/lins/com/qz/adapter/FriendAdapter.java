@@ -1,8 +1,6 @@
 package lins.com.qz.adapter;
 
 import android.content.Context;
-import android.media.Image;
-import android.support.annotation.LayoutRes;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,8 +9,7 @@ import com.bumptech.glide.Glide;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 
-import org.w3c.dom.Text;
-
+import lins.com.qz.App;
 import lins.com.qz.R;
 import lins.com.qz.bean.locationBean.LChatFrds;
 
@@ -49,7 +46,7 @@ public class FriendAdapter extends RecyclerArrayAdapter<LChatFrds>{
 //                    .placeholder(R.mipmap.ic_launcher)
 //                    .centerCrop()
 //                    .into(imageView);
-            Glide.with(getContext())
+            Glide.with(App.getContext())
                     .load(data.getHead_icon())
                     .placeholder(R.mipmap.ic_launcher)
                     .into(head_icon);

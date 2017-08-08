@@ -1,12 +1,7 @@
 package lins.com.qz.ui.map;
 
 import android.databinding.DataBindingUtil;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 
-import com.amap.api.maps.AMapException;
 import com.amap.api.maps.offlinemap.OfflineMapCity;
 import com.amap.api.maps.offlinemap.OfflineMapManager;
 
@@ -53,35 +48,6 @@ public class MapSettingActivity extends BaseActivity implements OfflineMapManage
             }
         }
 
-//        User user = BmobUser.getCurrentUser(User.class);
-//        BmobQuery<PlanBean> query = new BmobQuery<>();
-//        query.addWhereEqualTo("author",user);// 查询当前用户的所有帖子
-//        query.order("-updatedAt");
-//        query.include("author");// 希望在查询帖子信息的同时也把发布人的信息查询出来
-//        query.findObjects(new FindListener<PlanBean>() {
-//            @Override
-//            public void done(List<PlanBean> list, BmobException e) {
-//                if (e==null){
-//
-//                }else{
-//                    Toast.makeText(getActivity(), "获取信息失败", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-        //删除帖子
-//        PlanBean p = new PlanBean();
-//        p.remove("author");
-//        p.update("ESIt3334", new UpdateListener() {
-//
-//            @Override
-//            public void done(BmobException e) {
-//                if(e==null){
-//                    Log.i("bmob","成功");
-//                }else{
-//                    Log.i("bmob","失败："+e.getMessage());
-//                }
-//            }
-//        });
     }
 
 

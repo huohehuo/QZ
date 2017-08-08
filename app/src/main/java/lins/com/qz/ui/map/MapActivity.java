@@ -3,23 +3,19 @@ package lins.com.qz.ui.map;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.location.Location;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 import com.amap.api.maps.AMap;
-import com.amap.api.maps.AMapException;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.MyLocationStyle;
-import com.amap.api.maps.offlinemap.OfflineMapManager;
 
-import lins.com.qz.App;
 import lins.com.qz.Config;
 import lins.com.qz.R;
 import lins.com.qz.databinding.ActivityMapBinding;
-import lins.com.qz.ui.base.BaseActivity;
 
 public class MapActivity extends AppCompatActivity {
 
@@ -89,6 +85,12 @@ public class MapActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
+
+
+
 
 
     @Override

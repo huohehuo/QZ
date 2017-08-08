@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,14 +37,13 @@ import lins.com.qz.utils.share.QShareIO;
 import lins.com.qz.utils.share.QShareListener;
 import lins.com.qz.widget.CustomPopWindow;
 
-import static lins.com.qz.R.id.progressBar;
-
 public class SettingActivity extends BaseActivity implements QShareIO {
     ActivitySettingBinding binding;
     private Tencent mTencent = App.getTencent();
     private View contentView;
     private CustomPopWindow popWindow;
     private Version versionBean=null;
+
     private QShareIO qShareIO = new QShareIO() {
         @Override
         public void getShareData(String str) {
