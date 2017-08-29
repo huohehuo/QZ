@@ -1,10 +1,8 @@
 package lins.com.qz;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
-import android.location.LocationManager;
 import android.os.Handler;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
@@ -13,22 +11,17 @@ import android.util.Log;
 import com.tencent.tauth.Tencent;
 
 import java.util.HashMap;
-import java.util.List;
 
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
 import cn.jpush.android.api.JPushInterface;
 import io.rong.imkit.RongIM;
-import lins.com.qz.bean.AddAddress;
-import lins.com.qz.bean.User;
 import lins.com.qz.bean.gen.DaoMaster;
 import lins.com.qz.bean.gen.DaoSession;
 import lins.com.qz.manager.DaoManager;
 import lins.com.qz.manager.GreenDaoManager;
 import lins.com.qz.manager.UpgradeHelper;
 import lins.com.qz.utils.SharedData;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * Created by LINS on 2017/5/2.
@@ -89,6 +82,9 @@ public class App extends MultiDexApplication {
     public static String getSharedData(String key) {
         return new SharedData(mContext).getString(key,"0");
     }
+    public static void setSharedData(String key,String autoLogin) {
+        new SharedData(mContext).putString(key,autoLogin);
+    }
 
     public static void saveObj(String key,Object obj){
         new SharedData(mContext).setObject(key,obj);
@@ -97,9 +93,6 @@ public class App extends MultiDexApplication {
         return new SharedData(mContext).getObject(key);
     }
 
-    public static void setSharedData(String key,String autoLogin) {
-        new SharedData(mContext).putString(key,autoLogin);
-    }
     public static void clearShareData(){
         new SharedData(mContext).clearShareData();
     }

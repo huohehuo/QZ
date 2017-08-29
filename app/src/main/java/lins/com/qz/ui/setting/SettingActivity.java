@@ -12,8 +12,6 @@ import android.widget.TextView;
 import com.tencent.connect.share.QQShare;
 import com.tencent.tauth.Tencent;
 
-import org.json.JSONObject;
-
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
@@ -26,7 +24,6 @@ import lins.com.qz.R;
 import lins.com.qz.bean.Version;
 import lins.com.qz.databinding.ActivitySettingBinding;
 import lins.com.qz.thirdparty.codecamera.EncodeQrActivity;
-import lins.com.qz.thirdparty.downfile.asihttp.JsonHttpResponseHandler;
 import lins.com.qz.ui.account.EditUserInfoActivity;
 import lins.com.qz.ui.base.BaseActivity;
 import lins.com.qz.ui.login.LoginActivity;
@@ -58,19 +55,19 @@ public class SettingActivity extends BaseActivity implements QShareIO {
         setToolbarBack(binding.toolbar.ivTopArrow);
         binding.toolbar.tvTopLeft.setText("设置");
 
-        UpdataUtil.getGitHubJson(SettingActivity.this, Config.UPDATER_URL, null, new JsonHttpResponseHandler() {
-            @Override
-            public void onFailure(Throwable error) {
-                Log.e("check---no", error.toString());
-            }
-
-            @Override
-            public void onSuccess(final JSONObject response) {
-                Log.e("check", response.toString());
-//                showToast(response.toString());
-
-            }
-        });
+//        UpdataUtil.getGitHubJson(SettingActivity.this, Config.UPDATER_URL, null, new JsonHttpResponseHandler() {
+//            @Override
+//            public void onFailure(Throwable error) {
+//                Log.e("check---no", error.toString());
+//            }
+//
+//            @Override
+//            public void onSuccess(final JSONObject response) {
+//                Log.e("check", response.toString());
+////                showToast(response.toString());
+//
+//            }
+//        });
     }
 
     @Override
@@ -123,7 +120,7 @@ public class SettingActivity extends BaseActivity implements QShareIO {
         query.findObjects(new FindListener<Version>() {
             @Override
             public void done(List<Version> list, BmobException e) {
-                App.e("updata",list.get(0).toString());
+                App.e("updata",list.toString());
                 if (e==null){
                     versionBean = list.get(0);
                 }else{

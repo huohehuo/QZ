@@ -12,6 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
@@ -27,11 +32,6 @@ import lins.com.qz.databinding.FragmentMyFriendBinding;
 import lins.com.qz.manager.FrdsManager;
 import lins.com.qz.utils.BadgeUtil;
 import lins.com.qz.utils.IntentServiceUtil.InitChatService;
-
-import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A fragment with a Google +1 button.
